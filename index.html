@@ -1,0 +1,2228 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>폴스타 틴팅 예약 신청</title>
+  <meta name="description" content="폴스타 업그레이드 프로모션 신청 페이지 디자인 시안" />
+  <link rel="icon" type="image/png" href="https://smith.speedgabia.com/logo_data/vibe_sim.png">
+  <link rel="apple-touch-icon" href="https://smith.speedgabia.com/logo_data/vibe_sim.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #141414;
+      --ink-2: #2b2b2b;
+      --muted: #747474;
+      --line: #dedede;
+      --line-dark: rgba(255,255,255,.18);
+      --paper: #ffffff;
+      --soft: #f5f5f2;
+      --dark: #090909;
+      --dark-2: #161616;
+      --accent: #141414;
+      --accent-2: #090909;
+      --danger: #c83e3e;
+      --shadow: none;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--soft);
+      font-family: "DM Sans", "Noto Sans KR", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: -.02em;
+    }
+
+    a { color: inherit; }
+    button, input, select, textarea { font: inherit; }
+    button {
+      appearance: none;
+      -webkit-appearance: none;
+      border-radius: 0;
+    }
+
+    .topbar {
+      position: fixed;
+      inset: 0 0 auto 0;
+      height: 72px;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid rgba(0,0,0,.1);
+      background: #fff;
+      color: var(--ink);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+    .topbar-inner {
+      width: min(var(--max), calc(100% - 40px));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-size: 14px;
+    }
+
+    .mark {
+      width: 34px;
+      height: 34px;
+      border: 0;
+      background: transparent;
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 4px;
+    }
+    .mark img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+    }
+
+    .nav-meta {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      color: rgba(20,20,20,.72);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .nav-meta a {
+      text-decoration: none;
+      border-bottom: 1px solid rgba(20,20,20,.42);
+      padding-bottom: 3px;
+    }
+
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: grid;
+      align-items: end;
+      overflow: hidden;
+      background: var(--dark);
+      color: #fff;
+      isolation: isolate;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.62);
+      z-index: -1;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("https://www.polestar.com/dato-assets/11286/1737022038-01-polestar-5-light-pdp-overview-hero-m-4.png?q=35&dpr=2&w=768");
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      z-index: -2;
+      transform: none;
+      filter: none;
+      opacity: .82;
+    }
+
+    .hero-inner {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+      padding: 138px 0 78px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 52px;
+      align-items: end;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 22px;
+      color: rgba(255,255,255,.76);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .16em;
+    }
+    .eyebrow::before {
+      content: "";
+      width: 42px;
+      height: 1px;
+      background: currentColor;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 780px;
+      font-size: clamp(46px, 8vw, 104px);
+      line-height: 1.12;
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: -.065em;
+    }
+
+    .hero-copy {
+      max-width: 590px;
+      margin: 26px 0 0;
+      color: rgba(255,255,255,.78);
+      font-size: clamp(16px, 1.8vw, 20px);
+      line-height: 1.48;
+      font-weight: 400;
+      word-break: keep-all;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 36px;
+    }
+
+    .btn {
+      min-height: 54px;
+      border: 0;
+      border-radius: 0;
+      padding: 0 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-decoration: none;
+      cursor: pointer;
+      font-weight: 900;
+      letter-spacing: -.02em;
+      transition: none;
+    }
+    .btn:hover { transform: none; }
+    .btn-primary { background: #fff; color: #090909; }
+    .btn-primary:hover { background: #f2f2f2; color: #090909; }
+    .btn-ghost { color: #fff; border: 1px solid rgba(255,255,255,.48); background: rgba(255,255,255,.04); }
+    .btn-ghost:hover { border-color: #fff; background: transparent; }
+
+    main { background: var(--paper); }
+
+    .intro-strip {
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+    }
+    .intro-grid {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      border-left: 1px solid var(--line);
+    }
+    .intro-card {
+      min-height: 154px;
+      padding: 30px;
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+    .intro-card span { color: var(--muted); font-size: 12px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
+    .intro-card strong { font-size: 22px; line-height: 1.18; font-weight: 400; word-break: keep-all; }
+
+    .vehicle-select-label {
+      display: block;
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .vehicle-select-help {
+      margin: 8px 0 0;
+      color: var(--ink-2);
+      font-size: 15px;
+      line-height: 1.45;
+      font-weight: 400;
+      word-break: keep-all;
+    }
+
+    .vehicle-choice-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .vehicle-choice input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .vehicle-card {
+      position: relative;
+      min-height: 214px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: #f7f7f5;
+      cursor: pointer;
+      isolation: isolate;
+      transition: none;
+    }
+
+    .vehicle-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,.28) 48%, rgba(0,0,0,.56) 100%),
+        linear-gradient(90deg, rgba(0,0,0,.22) 0%, rgba(0,0,0,.08) 52%, rgba(0,0,0,.18) 100%);
+    }
+
+    .vehicle-card:hover {
+      transform: none;
+      border-color: #9c9c9c;
+      box-shadow: none;
+    }
+
+    .vehicle-name {
+      display: none;
+    }
+
+    .vehicle-card .vehicle-title-en {
+      position: absolute;
+      left: 22px;
+      right: 92px;
+      bottom: 18px;
+      z-index: 3;
+      color: #fff;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+      line-height: .78;
+      text-align: left;
+      text-shadow: none;
+      pointer-events: none;
+    }
+
+    .vehicle-card .vehicle-title-brand {
+      display: none;
+    }
+
+    .vehicle-card .vehicle-title-number {
+      display: block;
+      color: inherit;
+      font-size: clamp(98px, 9.8vw, 148px);
+      line-height: .72;
+      font-weight: 950;
+      letter-spacing: -.11em;
+      text-transform: none;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .vehicle-image {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      height: auto;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      color: #1d1d1d;
+      filter: blur(5px) grayscale(1) brightness(.58);
+      transform: scale(1.05);
+      transition: none;
+    }
+
+    .vehicle-image svg,
+    .vehicle-image img {
+      width: 100%;
+      max-width: none;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+      filter: none;
+    }
+
+    .vehicle-image svg {
+      width: 118%;
+      height: 118%;
+      padding: 26px 10px 34px;
+      box-sizing: border-box;
+      color: #202020;
+      filter: none;
+    }
+
+    .vehicle-image img {
+      transform: none;
+      transform-origin: center;
+    }
+
+    .vehicle-card .vehicle-check {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      z-index: 6;
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      opacity: 0;
+      pointer-events: none;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      transform: none;
+      transition: none;
+    }
+
+    .vehicle-card .vehicle-check svg {
+      width: 48px;
+      height: 48px;
+      filter: none;
+    }
+
+    .vehicle-choice input:checked + .vehicle-card {
+      border-color: #141414;
+      background: #fff;
+      box-shadow: none;
+    }
+
+    .vehicle-choice input:checked + .vehicle-card .vehicle-image {
+      filter: none;
+      transform: none;
+    }
+
+    .vehicle-choice input:not(:checked) + .vehicle-card .vehicle-title-number {
+      color: rgba(255,255,255,.58);
+    }
+
+    .vehicle-choice input:checked + .vehicle-card .vehicle-check {
+      opacity: 1;
+      transform: none;
+    }
+
+
+    .vehicle-choice input:checked + .vehicle-card .vehicle-title-en {
+      z-index: 4;
+      color: rgba(255,255,255,.92);
+      text-shadow: none;
+    }
+
+    .vehicle-choice input:checked + .vehicle-card .vehicle-title-number {
+      color: rgba(255,255,255,.78);
+    }
+
+
+    .vehicle-choice input:focus-visible + .vehicle-card {
+      outline: 3px solid rgba(0,0,0,.16);
+      outline-offset: 3px;
+    }
+
+    .price-guide {
+      margin-top: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .price-guide-btn {
+      width: 100%;
+      min-height: 52px;
+      border: 1px solid #141414;
+      border-radius: 0;
+      background: #141414;
+      color: #fff;
+      padding: 0 20px;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: -.01em;
+      cursor: pointer;
+    }
+
+    .price-guide-btn:hover {
+      background: #000;
+    }
+
+    .price-guide-panel {
+      display: none;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      padding: 16px;
+    }
+
+    .price-guide-panel.is-open {
+      display: block;
+    }
+
+    .price-guide-panel img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .price-guide-message {
+      margin: 0;
+      min-height: 80px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      background: #f7f7f5;
+      color: var(--ink-2);
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .price-guide-close {
+      width: 100%;
+      min-height: 46px;
+      margin-top: 12px;
+      border: 1px solid #141414;
+      border-radius: 0;
+      background: #fff;
+      color: #141414;
+      padding: 0 18px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .price-guide-close:hover {
+      background: #f2f2f2;
+    }
+
+    .form-section {
+      position: relative;
+      background: #fff;
+      padding: 92px 0 110px;
+    }
+
+    .form-shell {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: .58fr 1fr;
+      gap: 54px;
+      align-items: start;
+    }
+
+    .section-kicker {
+      margin: 0 0 18px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 64px);
+      line-height: 1.02;
+      font-weight: 300;
+      letter-spacing: -.06em;
+      text-transform: uppercase;
+    }
+
+    .section-copy {
+      max-width: 430px;
+      margin: 24px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.65;
+      word-break: keep-all;
+    }
+
+    .notice {
+      margin-top: 32px;
+      padding: 22px;
+      background: var(--dark);
+      color: #fff;
+      font-size: 15px;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
+    .notice b { color: #fff; }
+
+    .form-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      box-shadow: none;
+    }
+
+    .form-head {
+      padding: 30px 34px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .form-head h2 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.2;
+      font-weight: 900;
+    }
+    .required-note { color: var(--muted); font-size: 13px; white-space: nowrap; }
+    .req { color: var(--danger); font-weight: 900; }
+    .optional {
+      display: inline-block;
+      margin-left: 8px;
+      color: var(--muted);
+      font-size: 0.55em;
+      font-weight: 700;
+      vertical-align: middle;
+    }
+
+    form { padding: 34px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+    .field { margin-bottom: 20px; }
+    .field.full { grid-column: 1 / -1; }
+
+    label {
+      display: block;
+      margin: 0 0 9px;
+      color: var(--ink-2);
+      font-size: 14px;
+      line-height: 1.42;
+      font-weight: 700;
+      word-break: keep-all;
+    }
+
+    .label-note {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+      font-weight: 500;
+    }
+
+    input[type="text"], input[type="tel"], input[type="date"], input[type="time"], input[type="datetime-local"], select, textarea {
+      width: 100%;
+      min-height: 52px;
+      padding: 13px 14px;
+      border: 1px solid #cfcfcf;
+      border-radius: 0;
+      background: #fff;
+      color: var(--ink);
+      outline: none;
+      transition: none;
+    }
+    input[type="datetime-local"], .datetime-display { cursor: pointer; }
+    .datetime-display-wrap {
+      position: relative;
+    }
+    .datetime-display-wrap .datetime-display {
+      color: transparent;
+      caret-color: transparent;
+    }
+    .datetime-display-wrap .datetime-display::placeholder {
+      color: transparent;
+    }
+    .datetime-display-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 13px 14px;
+      color: var(--ink);
+      pointer-events: none;
+      white-space: nowrap;
+      font: inherit;
+    }
+    .datetime-display-text.is-placeholder {
+      color: var(--muted);
+      gap: 0;
+    }
+    .datetime-display-date,
+    .datetime-display-time {
+      display: inline-block;
+    }
+    textarea { min-height: 118px; resize: vertical; line-height: 1.5; }
+
+    .price-estimate {
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      background: #f7f7f5;
+      padding: 16px 18px;
+      color: var(--ink);
+    }
+
+    .price-estimate-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 18px;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid rgba(0,0,0,.08);
+    }
+
+    .price-estimate-label {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .price-estimate-total {
+      font-size: clamp(20px, 2.4vw, 26px);
+      line-height: 1.1;
+      font-weight: 800;
+      letter-spacing: -.035em;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .price-estimate-list {
+      display: grid;
+      gap: 5px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      color: var(--ink-2);
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 500;
+    }
+
+    .price-estimate-note {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+      word-break: keep-all;
+    }
+
+    .datetime-picker {
+      position: fixed;
+      z-index: 80;
+      width: min(420px, calc(100vw - 28px));
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, .10);
+      border-radius: 0;
+      box-shadow: none;
+      padding: 16px;
+      display: none;
+      overflow: hidden;
+      transform-origin: top left;
+    }
+    .datetime-picker.is-open {
+      display: block;
+    }
+    .picker-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .picker-title {
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: -.03em;
+    }
+    .picker-nav {
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      cursor: pointer;
+      font-weight: 900;
+    }
+    .picker-weekdays,
+    .picker-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+    }
+    .picker-weekdays {
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      text-align: center;
+    }
+    .picker-weekday.is-weekend { color: #aaa; }
+    .picker-day {
+      min-height: 38px;
+      border: 1px solid transparent;
+      background: #f7f7f7;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .picker-day:hover { border-color: #777; }
+    .picker-day.is-other-month { color: #aaa; background: #fbfbfb; }
+    .picker-day.is-selected { background: var(--dark); color: #fff; border-color: var(--dark); }
+    .picker-day.is-weekend,
+    .picker-day:disabled {
+      background: #efefef;
+      color: #b0b0b0;
+      border-color: #e6e6e6;
+      cursor: not-allowed;
+      text-decoration: line-through;
+    }
+    .time-wheel-picker {
+      position: relative;
+      margin: 18px -16px -16px;
+      background: #f3f3f3;
+      border-top: 1px solid rgba(0, 0, 0, .10);
+      box-shadow: none;
+      overflow: hidden;
+    }
+    .time-wheel-picker::before,
+    .time-wheel-picker::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .time-wheel-picker::before {
+      top: 62px;
+      height: 42px;
+      background: transparent;
+    }
+    .time-wheel-picker::after {
+      bottom: 48px;
+      height: 40px;
+      background: transparent;
+    }
+    .time-wheel-title {
+      position: relative;
+      z-index: 3;
+      padding: 18px 18px 15px;
+      color: #1f1f1f;
+      background: #f3f3f3;
+      border-bottom: 0;
+      box-shadow: none;
+      font-size: 25px;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: -.045em;
+      text-shadow: none;
+    }
+    .time-wheel-title::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 3px;
+      background: #141414;
+      box-shadow: none;
+    }
+    .time-wheel-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      padding: 24px 28px 20px;
+      perspective: none;
+    }
+    .time-wheel-grid::before {
+      content: '';
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      top: calc(50% - 24px);
+      height: 48px;
+      transform: none;
+      border: 1px solid rgba(0, 0, 0, .18);
+      border-radius: 0;
+      background: #fff;
+      box-shadow: none;
+      pointer-events: none;
+    }
+    .time-wheel-column {
+      position: relative;
+      z-index: 3;
+      display: grid;
+      gap: 8px;
+      transform-style: flat;
+    }
+    .time-wheel-option {
+      min-height: 42px;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: #9b9b9b;
+      cursor: pointer;
+      font-size: 22px;
+      line-height: 1;
+      font-weight: 600;
+      text-align: center;
+      text-shadow: none;
+      transition: none;
+    }
+    .time-wheel-option:first-child:not(.is-selected):not(.is-empty) {
+      opacity: .58;
+      transform: none;
+    }
+    .time-wheel-option:last-child:not(.is-selected):not(.is-empty) {
+      opacity: .58;
+      transform: none;
+    }
+    .time-wheel-option:hover {
+      color: #141414;
+      background: #fff;
+      box-shadow: none;
+    }
+    .time-wheel-option.is-empty {
+      pointer-events: none;
+      border-color: transparent;
+      background: transparent;
+    }
+    .time-wheel-option.is-selected {
+      color: #111;
+      background: #fff;
+      border-top: 0;
+      border-bottom: 0;
+      box-shadow: none;
+      font-weight: 850;
+      transform: none;
+    }
+    .time-wheel-separator {
+      position: relative;
+      z-index: 3;
+      color: #4c4c4c;
+      font-size: 26px;
+      font-weight: 800;
+      text-shadow: none;
+      transform: none;
+    }
+    .picker-apply {
+      position: relative;
+      z-index: 3;
+      width: calc(100% - 36px);
+      min-height: 50px;
+      margin: 0 18px 18px;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 0;
+      background: #111;
+      color: #fff;
+      padding: 0 16px;
+      cursor: pointer;
+      font-weight: 900;
+      font-size: 15px;
+      letter-spacing: .01em;
+      box-shadow: none;
+      transition: none;
+    }
+    .picker-apply:hover {
+      transform: none;
+      box-shadow: none;
+    }
+    .picker-apply:active {
+      transform: none;
+      box-shadow: none;
+    }
+    .picker-apply:disabled { color: #aaa; cursor: not-allowed; }
+    .picker-help {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%23111' stroke-width='1.5'/%3E%3C/svg%3E");
+      background-position: calc(100% - 16px) 50%;
+      background-size: 12px 8px;
+      background-repeat: no-repeat;
+      padding-right: 40px;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: none;
+      background: #fff;
+    }
+    .datetime-display:focus {
+      border-color: #777;
+      box-shadow: none;
+    }
+
+    .check-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      background: #fafafa;
+    }
+    .check-row + .check-row { margin-top: 10px; }
+    input[type="checkbox"] {
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      margin: 0;
+      border: 1px solid #9f9f9f;
+      background: #fff;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      cursor: pointer;
+    }
+    input[type="checkbox"]:checked {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    input[type="checkbox"]:checked::after {
+      content: "";
+      width: 6px;
+      height: 11px;
+      border: solid #fff;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg) translateY(-1px);
+    }
+    .check-row label {
+      margin: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      min-height: 22px;
+      line-height: 1.35;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--line);
+      margin: 28px 0;
+    }
+
+    .privacy-box {
+      margin-top: 18px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      background: #f7f7f7;
+      color: #4d4d4d;
+      font-size: 13px;
+      line-height: 1.68;
+      word-break: keep-all;
+    }
+    .privacy-box h3 {
+      margin: 18px 0 8px;
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.45;
+      font-weight: 900;
+    }
+    .privacy-box h3:first-child { margin-top: 0; }
+    .privacy-box p { margin: 0 0 8px; }
+    .privacy-box p:last-child { margin-bottom: 0; }
+    .privacy-box ul {
+      margin: 0 0 10px;
+      padding-left: 18px;
+    }
+    .privacy-box li { margin: 0 0 6px; }
+    .privacy-box a {
+      color: var(--ink);
+      font-weight: 800;
+      text-underline-offset: 3px;
+    }
+
+    .submit-row { margin-top: 24px; }
+    .submit-btn {
+      width: 100%;
+      min-height: 60px;
+      background: var(--dark);
+      color: #fff;
+      border: 0;
+      border-radius: 0;
+      cursor: pointer;
+      font-weight: 900;
+      font-size: 16px;
+      transition: none;
+    }
+    .submit-btn:hover { background: #000; transform: none; }
+
+    .mobile-sticky {
+      display: none;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%) translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 50;
+      background: #111;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.18);
+      padding: 14px 18px;
+      box-shadow: none;
+      transition: none;
+      font-size: 14px;
+      text-align: center;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%); }
+
+
+    /* Flat visual system override: no depth effects, glows, 3D transforms, or animated UI chrome. */
+    .topbar,
+    .form-card,
+    .datetime-picker,
+    .time-wheel-picker,
+    .time-wheel-title,
+    .time-wheel-grid::before,
+    .time-wheel-option,
+    .picker-apply,
+    .submit-btn,
+    .toast,
+    .mobile-sticky,
+    .vehicle-card,
+    .vehicle-card .vehicle-check {
+      box-shadow: none;
+      text-shadow: none;
+    }
+
+    .btn,
+    .vehicle-card,
+    .vehicle-image,
+    .vehicle-card .vehicle-check,
+    input[type="text"], input[type="tel"], input[type="date"], input[type="time"], input[type="datetime-local"], select, textarea,
+    .datetime-picker,
+    .time-wheel-option,
+    .picker-apply,
+    .submit-btn,
+    .toast,
+    .mobile-sticky {
+      transition: none;
+    }
+
+    .btn:hover,
+    .vehicle-card:hover,
+    .vehicle-choice input:checked + .vehicle-card .vehicle-image,
+    .vehicle-choice input:checked + .vehicle-card .vehicle-check,
+    .picker-apply:hover,
+    .picker-apply:active,
+    .submit-btn:hover,
+    .time-wheel-option:first-child:not(.is-selected):not(.is-empty),
+    .time-wheel-option:last-child:not(.is-selected):not(.is-empty),
+    .time-wheel-option.is-selected,
+    .time-wheel-separator {
+      transform: none;
+    }
+
+    .datetime-picker,
+    .time-wheel-picker,
+    .time-wheel-title,
+    .time-wheel-grid::before,
+    .time-wheel-option.is-selected,
+    .picker-apply {
+      background-image: none;
+    }
+
+    @media (max-width: 980px) {
+      .hero-inner, .form-shell { grid-template-columns: 1fr; }
+      .intro-grid { grid-template-columns: 1fr; border-top: 1px solid var(--line); }
+      .intro-card { min-height: auto; }
+    }
+
+    @media (max-width: 680px) {
+      html { scroll-padding-top: 76px; }
+      body { padding-bottom: 78px; }
+      .topbar { height: 62px; }
+      .topbar-inner { width: calc(100% - 28px); }
+      .brand { gap: 10px; font-size: 12px; letter-spacing: .06em; }
+      .mark { width: 30px; height: 30px; }
+      .nav-meta { gap: 12px; font-size: 12px; }
+      .nav-meta span { display: none; }
+      .hero {
+        min-height: auto;
+      }
+      .hero::before {
+        background: rgba(0,0,0,.62);
+      }
+      .hero::after {
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        opacity: .86;
+        transform: none;
+      }
+      .hero-inner {
+        width: calc(100% - 28px);
+        padding: 104px 0 34px;
+        gap: 24px;
+        align-items: start;
+      }
+      .eyebrow { margin-bottom: 170px; font-size: 11px; }
+      .eyebrow::before { width: 28px; }
+      h1 {
+        max-width: 330px;
+        font-size: clamp(38px, 13vw, 54px);
+        line-height: 1.12;
+        letter-spacing: -.07em;
+      }
+      .hero-copy {
+        margin-top: 18px;
+        max-width: 320px;
+        font-size: 15px;
+        line-height: 1.55;
+      }
+      .hero-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 24px;
+      }
+      .btn {
+        min-height: 50px;
+        padding: 0 14px;
+        font-size: 14px;
+      }
+      .intro-card {
+        padding: 20px 18px;
+        gap: 8px;
+      }
+      .intro-card strong { font-size: 18px; }
+      .vehicle-choice-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-top: 16px;
+      }
+      .vehicle-card {
+        min-height: 174px;
+      }
+      .vehicle-name {
+        display: none;
+      }
+      .vehicle-card .vehicle-title-en {
+        left: 8px;
+        right: 8px;
+        bottom: 12px;
+        font-size: clamp(34px, 12vw, 48px);
+        letter-spacing: -.085em;
+        line-height: .82;
+      }
+      .vehicle-image {
+        position: absolute;
+        inset: 0;
+        height: auto;
+        margin: 0;
+      }
+      .vehicle-image img {
+        object-fit: cover;
+        object-position: center;
+      }
+      .vehicle-image svg {
+        width: 104%;
+        height: 104%;
+        padding: 22px 22px 42px;
+      }
+      .vehicle-card .vehicle-check {
+        top: 14px;
+        right: 14px;
+        width: 48px;
+        height: 48px;
+      }
+      .vehicle-card .vehicle-check svg {
+        width: 48px;
+        height: 48px;
+      }
+      .form-section { padding: 58px 0 72px; }
+      .form-shell, .intro-grid { width: calc(100% - 28px); }
+      .form-shell { gap: 28px; }
+      .form-head { padding: 24px 20px; align-items: flex-start; flex-direction: column; }
+      form { padding: 22px 20px; }
+      .grid-2 { grid-template-columns: 1fr; gap: 0; }
+      .field.full { grid-column: auto; }
+      .field { margin-bottom: 18px; }
+      label { font-size: 13.5px; line-height: 1.48; }
+      input[type="text"], input[type="tel"], input[type="date"], input[type="time"], input[type="datetime-local"], select, textarea {
+        min-height: 54px;
+        font-size: 16px;
+        padding: 14px 13px;
+      }
+      select {
+        background-position: calc(100% - 16px) 50%;
+      }
+      textarea { min-height: 112px; }
+      .datetime-picker {
+        border-radius: 0;
+      }
+      .time-wheel-title {
+        font-size: 23px;
+        padding: 17px 16px 14px;
+      }
+      .time-wheel-grid {
+        gap: 8px;
+        padding: 22px 18px 18px;
+      }
+      .time-wheel-grid::before {
+        left: 14px;
+        right: 14px;
+      }
+      .picker-apply {
+        width: calc(100% - 28px);
+        margin: 0 14px 16px;
+      }
+      .check-row {
+        padding: 14px;
+        gap: 10px;
+      }
+      input[type="checkbox"] {
+        width: 24px;
+        height: 24px;
+      }
+      .privacy-box {
+        max-height: 188px;
+        overflow: auto;
+        padding: 16px;
+        font-size: 12px;
+        line-height: 1.6;
+        -webkit-overflow-scrolling: touch;
+      }
+      .submit-btn { min-height: 58px; font-size: 16px; }
+      .notice { margin-top: 24px; }
+      .section-title { font-size: 38px; }
+      .section-copy { margin-top: 16px; font-size: 15px; line-height: 1.6; }
+      .mobile-sticky {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 40;
+        display: grid;
+        grid-template-columns: .8fr 1.2fr;
+        gap: 8px;
+        padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+        background: #090909;
+        border-top: 1px solid rgba(255,255,255,.16);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        transition: none;
+      }
+      .mobile-sticky.is-hidden {
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(100%);
+      }
+      .mobile-sticky a {
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 900;
+      }
+      .mobile-sticky .call {
+        color: #fff;
+        border: 1px solid rgba(255,255,255,.34);
+      }
+      .mobile-sticky .apply {
+        color: #090909;
+        background: #fff;
+      }
+      .toast {
+        width: calc(100% - 28px);
+        bottom: 92px;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .brand span:last-child { max-width: 150px; white-space: nowrap; }
+      .hero::after { background-size: cover; background-position: center center; }
+      .eyebrow { margin-bottom: 146px; }
+      h1 { font-size: 40px; }
+      .hero-actions { grid-template-columns: 1fr; }
+      .section-title { font-size: 34px; }
+      .form-head h2 { font-size: 21px; }
+      form { padding-inline: 16px; }
+      .form-head { padding-inline: 16px; }
+      .intro-card { padding-inline: 16px; }
+    }
+
+    @media (max-width: 680px) {
+      .hero::before { background: rgba(0,0,0,.62); }
+      .hero::after { transform: none; filter: none; }
+      .vehicle-image img { transform: none; }
+      .mobile-sticky { backdrop-filter: none; -webkit-backdrop-filter: none; transition: none; }
+    }
+
+  </style>
+</head>
+<body>
+  <header class="topbar" aria-label="상단 내비게이션">
+    <div class="topbar-inner">
+      <a class="brand" href="#top" aria-label="처음으로 이동"><span class="mark" aria-hidden="true"><img src="https://smith.speedgabia.com/logo_data/vibe_sim.png" alt=""></span><span>Polestar Tinting</span></a>
+      <nav class="nav-meta" aria-label="빠른 링크">
+        <span>POLSTAR</span>
+        <a href="tel:031-921-1210">031-921-1210</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" id="top">
+    <div class="hero-inner">
+      <div>
+        <p class="eyebrow">Upgrade Promotion</p>
+        <h1>폴스타 틴팅<br>예약 신청</h1>
+        <p class="hero-copy">원하시는 옵션 및 대리점을 선택하여주세요.<br>기타 문의는 전화문의 버튼을 클릭해주세요.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#reservation">예약 정보 입력</a>
+          <a class="btn btn-ghost" href="tel:031-921-1210">전화문의</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section class="intro-strip" aria-label="프로모션 요약">
+      <div class="intro-grid">
+        <div class="intro-card">
+          <div>
+            <p class="vehicle-select-label" id="vehicleModelLabel">Vehicle</p>
+            <p class="vehicle-select-help">구매하신 차량을 선택하여 주세요.</p>
+          </div>
+          <div class="vehicle-choice-grid" role="radiogroup" aria-labelledby="vehicleModelLabel">
+            <label class="vehicle-choice">
+              <input type="radio" name="vehicleModel" value="폴스타4" form="reservationForm" checked required>
+              <span class="vehicle-card">
+                <span class="vehicle-check" aria-hidden="true"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 25.5L20.5 34L36 15" stroke="#fff" stroke-width="5" stroke-linecap="square" stroke-linejoin="miter"/></svg></span>
+                <span class="vehicle-name">폴스타4</span>
+                <span class="vehicle-image" aria-hidden="true">
+                  <img src="assets/polestar-4-card.webp" alt="" loading="lazy">
+                </span>
+                <span class="vehicle-title-en" aria-hidden="true"><span class="vehicle-title-brand">POLESTAR</span><span class="vehicle-title-number">4</span></span>
+              </span>
+            </label>
+            <label class="vehicle-choice">
+              <input type="radio" name="vehicleModel" value="폴스타3" form="reservationForm" required>
+              <span class="vehicle-card">
+                <span class="vehicle-check" aria-hidden="true"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 25.5L20.5 34L36 15" stroke="#fff" stroke-width="5" stroke-linecap="square" stroke-linejoin="miter"/></svg></span>
+                <span class="vehicle-name">폴스타3</span>
+                <span class="vehicle-image" aria-hidden="true">
+                  <img src="assets/polestar-3-card.webp" alt="" loading="lazy">
+                </span>
+                <span class="vehicle-title-en" aria-hidden="true"><span class="vehicle-title-brand">POLESTAR</span><span class="vehicle-title-number">3</span></span>
+              </span>
+            </label>
+            <label class="vehicle-choice">
+              <input type="radio" name="vehicleModel" value="폴스타5" form="reservationForm" required>
+              <span class="vehicle-card">
+                <span class="vehicle-check" aria-hidden="true"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 25.5L20.5 34L36 15" stroke="#fff" stroke-width="5" stroke-linecap="square" stroke-linejoin="miter"/></svg></span>
+                <span class="vehicle-name">폴스타5</span>
+                <span class="vehicle-image" aria-hidden="true">
+                  <img src="assets/polestar-5-card.webp" alt="" loading="lazy">
+                </span>
+                <span class="vehicle-title-en" aria-hidden="true"><span class="vehicle-title-brand">POLESTAR</span><span class="vehicle-title-number">5</span></span>
+              </span>
+            </label>
+          </div>
+          <div class="price-guide" aria-live="polite">
+            <button class="price-guide-btn" id="priceGuideButton" type="button">폴스타4 업그레이드 안내 가격표</button>
+            <div class="price-guide-panel" id="priceGuidePanel" aria-label="업그레이드 안내 가격표"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="form-section" id="reservation">
+      <div class="form-shell">
+        <div class="form-copy">
+          <p class="section-kicker">Reservation Form</p>
+          <h2 class="section-title">정보를 입력하여주세요.</h2>
+          <p class="section-copy">폴스타 차량 전용 틴팅 예약을 간편하게 신청해 주세요.<br>전문 상담 후 일정과 시공 내용을 안내드립니다.</p>
+          <div class="notice"><b>안내</b><br>원활한 시공 예약을 위해 최소 3일 전 접수 부탁드립니다.</div>
+        </div>
+
+        <div class="form-card">
+          <div class="form-head">
+            <h2>폴스타 예약 정보</h2>
+            <span class="required-note"><span class="req">*</span> 필수 입력</span>
+          </div>
+
+          <form id="reservationForm">
+            <div class="grid-2">
+              <div class="field">
+                <label for="contractor">실 계약자 성함을 입력하여주세요. <span class="req">*</span></label>
+                <input id="contractor" name="contractor" type="text" autocomplete="name" required>
+              </div>
+
+              <div class="field">
+                <label for="phone">연락받을 번호를 입력하여 주세요. <span class="req">*</span></label>
+                <input id="phone" name="phone" type="tel" inputmode="numeric" pattern="[0-9\-\s]+" autocomplete="tel" required>
+              </div>
+
+              <div class="field">
+                <label for="deliveryDateTime">인도일자와 시간을 선택하여 주세요. <span class="req">*</span></label>
+                <input id="deliveryDateTime" name="deliveryDateTime" type="datetime-local" required>
+                <input id="deliveryDate" name="deliveryDate" type="hidden">
+                <input id="deliveryTime" name="deliveryTime" type="hidden">
+              </div>
+
+              <div class="field">
+                <label for="deliveryShowroom">인도 전시장을 선택하여 주세요. <span class="req">*</span></label>
+                <select id="deliveryShowroom" name="deliveryShowroom" required>
+                  <option value="" selected disabled>선택해주세요</option>
+                  <option>하남</option>
+                  <option>서울</option>
+                  <option>대전</option>
+                  <option>부산</option>
+                  <option>제주</option>
+                </select>
+              </div>
+
+              <div class="field full">
+                <label for="serviceCenter">시공점을 선택하여 주세요. <span class="req">*</span></label>
+                <select id="serviceCenter" name="serviceCenter" required>
+                  <option value="" selected disabled>선택해주세요</option>
+                  <option>바이브나인 본사</option>
+                  <option>바이브나인 일산 센터</option>
+                  <option>바이브나인 서초 센터</option>
+                  <option>바이브나인 중랑 센터</option>
+                  <option>바이브나인 구로 센터</option>
+                  <option>바이브나인 논현 센터</option>
+                  <option>바이브나인 송파 센터</option>
+                  <option>바이브나인 신사 센터</option>
+                  <option>바이브나인 하남 센터</option>
+                  <option>바이브나인 판교 센터</option>
+                  <option>바이브나인 화성(동탄)센터</option>
+                  <option>바이브나인 안양 센터</option>
+                  <option>바이브나인 수원 센터</option>
+                  <option>바이브나인 인천남동 센터</option>
+                  <option>바이브나인 김해 센터</option>
+                  <option>바이브나인 진주 센터</option>
+                  <option>바이브나인 부산남구 센터</option>
+                  <option>바이브나인 부산 해운대 센터</option>
+                  <option>바이브나인 창원 센터</option>
+                  <option>바이브나인 구미칠곡 센터</option>
+                  <option>바이브나인 대구중동교 센터</option>
+                  <option>바이브나인 대구수성 센터</option>
+                  <option>바이브나인 울산 센터</option>
+                  <option>바이브나인 목포 센터</option>
+                  <option>바이브나인 여수신기 센터</option>
+                  <option>바이브나인 광주 센터</option>
+                  <option>바이브나인 전주 센터</option>
+                  <option>바이브나인 천안 센터</option>
+                  <option>바이브나인 청주 센터</option>
+                  <option>바이브나인 대전유성 센터</option>
+                  <option>바이브나인 대전동구 센터</option>
+                  <option>바이브나인 원주 센터</option>
+                  <option>바이브나인 제주 센터</option>
+                  <option>바이브나인 김포고촌 센터</option>
+                  <option>바이브나인 부산 수영 센터</option>
+                </select>
+              </div>
+
+              <div class="field full">
+                <label for="centerInDateTime">시공점 차량 입고일과 시간을 선택해 주세요. <span class="req">*</span><span class="label-note">(토요일 오후, 일요일 및 공휴일은 시공이 불가능 할 수 있습니다.)</span></label>
+                <input id="centerInDateTime" name="centerInDateTime" type="datetime-local" required>
+                <input id="centerInDate" name="centerInDate" type="hidden">
+                <input id="centerInTime" name="centerInTime" type="hidden">
+              </div>
+
+              <div class="field">
+                <label for="frontFilm">전면 필름 및 농도를 선택하여 주세요.</label>
+                <select id="frontFilm" name="frontFilm">
+                  <option value="" selected>선택해주세요</option>
+                  <option>발키리 15% । 업그레이드 필름</option>
+                  <option>발키리 30% । 업그레이드 필름</option>
+                  <option>벨벳 15% । 업그레이드 필름</option>
+                  <option>벨벳 30% । 업그레이드 필름</option>
+                  <option>벨벳 40% । 업그레이드 필름</option>
+                  <option>볼티지 15% । 기본 필름</option>
+                  <option>볼티지 35% । 기본 필름</option>
+                  <option>볼티지 45% । 기본 필름</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="sideOneFilm">측면 (1열) 필름 및 농도를 선택하여 주세요. <span class="req">*</span></label>
+                <select id="sideOneFilm" name="sideOneFilm" required>
+                  <option value="" selected disabled>선택해주세요</option>
+                  <option>벨벳 5% । 업그레이드 필름</option>
+                  <option>벨벳 15% । 업그레이드 필름</option>
+                  <option>벨벳 30% । 업그레이드 필름</option>
+                  <option>벨벳 40% । 업그레이드 필름</option>
+                  <option>볼티지 5% । 기본 필름</option>
+                  <option>볼티지 15% । 기본 필름</option>
+                  <option>볼티지 35% । 기본 필름</option>
+                  <option>볼티지 45% । 기본 필름</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="sideTwoFilm">측면 (2열) 필름 및 농도를 선택하여 주세요.</label>
+                <select id="sideTwoFilm" name="sideTwoFilm">
+                  <option value="" selected>선택해주세요</option>
+                  <option>벨벳 5% । 업그레이드 필름</option>
+                  <option>벨벳 15% । 업그레이드 필름</option>
+                  <option>벨벳 30% । 업그레이드 필름</option>
+                  <option>벨벳 40% । 업그레이드 필름</option>
+                  <option>볼티지 5% । 기본 필름</option>
+                  <option>볼티지 15% । 기본 필름</option>
+                  <option>볼티지 35% । 기본 필름</option>
+                  <option>볼티지 45% । 기본 필름</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="glassRoofFilm">글라스루프 필름 및 농도를 선택하여 주세요.</label>
+                <select id="glassRoofFilm" name="glassRoofFilm">
+                  <option value="" selected>선택해주세요</option>
+                  <option>선택하지 않음</option>
+                  <option>벨벳 5% । 업그레이드 필름</option>
+                  <option>벨벳 15% । 업그레이드 필름</option>
+                  <option>벨벳 30% । 업그레이드 필름</option>
+                  <option>벨벳 40% । 업그레이드 필름</option>
+                  <option>볼티지 5% । 기본 필름</option>
+                  <option>볼티지 15% । 기본 필름</option>
+                  <option>볼티지 35% । 기본 필름</option>
+                  <option>볼티지 45% । 기본 필름</option>
+                </select>
+              </div>
+
+              <div class="field full">
+                <div class="check-row">
+                  <input id="ppf" name="ppf" type="checkbox" value="true">
+                  <label for="ppf">PPF 생활보호 3종 옵션 선택 (추가금 15만원)</label>
+                </div>
+                <div class="check-row">
+                  <input id="hipass" name="hipass" type="checkbox" value="true">
+                  <label for="hipass">하이패스 매립 추가 시공</label>
+                </div>
+              </div>
+
+              <div class="field full">
+                <label for="memo">기타 문의사항을 입력하여 주세요.</label>
+                <textarea id="memo" name="memo" placeholder="기타 문의사항을 입력하여 주세요."></textarea>
+                <div class="price-estimate" id="priceEstimate" aria-live="polite">
+                  <div class="price-estimate-head">
+                    <span class="price-estimate-label">예상가격</span>
+                    <strong class="price-estimate-total" id="priceEstimateTotal">0원</strong>
+                  </div>
+                  <ul class="price-estimate-list" id="priceEstimateList"></ul>
+                  <p class="price-estimate-note">예약금을 제외한 비용은 대리점에서 결제가 진행됩니다.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="divider" aria-hidden="true"></div>
+
+            <div class="check-row">
+              <input id="privacy" name="privacy" type="checkbox" value="true" required>
+              <label for="privacy">개인정보 수집·이용에 동의합니다. <span class="req">*</span></label>
+            </div>
+            <div class="check-row">
+              <input id="thirdPartyConsent" name="thirdPartyConsent" type="checkbox" value="true" required>
+              <label for="thirdPartyConsent">개인정보 제3자 제공에 동의합니다. <span class="req">*</span></label>
+            </div>
+            <div class="check-row">
+              <input id="marketingConsent" name="marketingConsent" type="checkbox" value="true">
+              <label for="marketingConsent">이벤트·프로모션 등 광고성 정보 수신에 동의합니다. <span class="optional">(선택)</span></label>
+            </div>
+
+            <div class="privacy-box" id="privacyPolicy" aria-label="개인정보 수집 및 이용 안내">
+              <h3>개인정보 수집·이용 동의 <span class="req">*</span></h3>
+              <ul>
+                <li>수집·이용 목적 : 폴스타 틴팅 예약 접수, 시공 일정 상담, 고객 안내</li>
+                <li>필수 수집 항목 : 이름, 휴대전화 번호, 차량 모델, 인도 전시장, 시공점, 인도/입고 일정, 선택 시공 옵션</li>
+                <li>선택 수집 항목 : 기타 문의사항</li>
+                <li>보유 및 이용 기간 : 입력일로부터 5년</li>
+                <li>동의 거부 권리 및 불이익 : 필수 항목 수집·이용에 동의하지 않을 경우 예약 접수 및 틴팅 안내가 제한됩니다.</li>
+              </ul>
+
+              <h3>개인정보 제3자 제공 동의 <span class="req">*</span></h3>
+              <ul>
+                <li>제공받는 자 : 바이브나인 대리점 및 선택 시공점</li>
+                <li>제공 목적 : 예약 확인, 시공 일정 조율, 시공 관련 고객 안내</li>
+                <li>제공 항목 : 이름, 휴대전화 번호, 차량 모델, 인도 전시장, 시공점, 인도/입고 일정, 선택 시공 옵션, 기타 문의사항</li>
+                <li>보유 및 이용 기간 : 제공일로부터 2년</li>
+                <li>동의 거부 권리 및 불이익 : 제3자 제공에 동의하지 않을 경우 대리점 및 시공점을 통한 예약 안내가 제한됩니다.</li>
+              </ul>
+
+              <h3>광고성 정보 수신 동의 <span class="optional">선택</span></h3>
+              <ul>
+                <li>이용 목적 : 이벤트, 프로모션, 혜택 및 서비스 안내</li>
+                <li>이용 항목 : 이름, 휴대전화 번호</li>
+                <li>보유 및 이용 기간 : 동의 철회 또는 입력일로부터 2년 중 먼저 도래하는 시점까지</li>
+                <li>선택 동의이므로 동의하지 않아도 예약 접수에는 제한이 없습니다.</li>
+              </ul>
+
+              <h3>개인정보처리방침 및 사업자 정보</h3>
+              <p><a href="#privacyPolicy">개인정보처리방침 보기</a></p>
+              <p>사업자 정보 : 바이브나인 / 대표자 김태준 / 사업자등록번호 139-88-02094</p>
+              <p>주소 : 경기도 고양시 일산동구 일산로 418 (정발산동)</p>
+              <p>연락처 : 031-921-1210</p>
+            </div>
+
+            <div class="submit-row">
+              <button class="submit-btn" type="submit">신청하기</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="mobile-sticky" aria-label="모바일 빠른 예약">
+    <a class="call" href="tel:031-921-1210">전화문의</a>
+    <a class="apply" href="#reservation">예약하기</a>
+  </nav>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">디자인 시안입니다. 실제 접수 연동은 다음 단계에서 연결하면 됩니다.</div>
+
+  <script>
+    const form = document.getElementById('reservationForm');
+    const toast = document.getElementById('toast');
+    const mobileSticky = document.querySelector('.mobile-sticky');
+    const reservationSection = document.getElementById('reservation');
+    const priceGuideButton = document.getElementById('priceGuideButton');
+    const priceGuidePanel = document.getElementById('priceGuidePanel');
+    const vehicleModelInputs = Array.from(document.querySelectorAll('input[name="vehicleModel"]'));
+    const priceGuideImage = 'https://smith.speedgabia.com/dummy/PS4_price.jpg';
+    const priceEstimateTotal = document.getElementById('priceEstimateTotal');
+    const priceEstimateList = document.getElementById('priceEstimateList');
+    const priceEstimateInputs = ['frontFilm', 'sideOneFilm', 'sideTwoFilm', 'glassRoofFilm', 'ppf', 'hipass']
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
+    const dateTimePairs = [
+      { source: 'deliveryDateTime', date: 'deliveryDate', time: 'deliveryTime' },
+      { source: 'centerInDateTime', date: 'centerInDate', time: 'centerInTime' }
+    ];
+
+    function syncDateTimeFields() {
+      dateTimePairs.forEach(({ source, date, time }) => {
+        const sourceInput = document.getElementById(source);
+        const dateInput = document.getElementById(date);
+        const timeInput = document.getElementById(time);
+        if (!sourceInput || !dateInput || !timeInput) return;
+
+        const [dateValue = '', timeValue = ''] = sourceInput.value.split('T');
+        dateInput.value = dateValue;
+        timeInput.value = timeValue;
+      });
+    }
+
+    function getSelectedVehicleModel() {
+      const selectedInput = vehicleModelInputs.find((input) => input.checked);
+      return selectedInput ? selectedInput.value : '폴스타4';
+    }
+
+    function updatePriceGuideButton() {
+      if (!priceGuideButton || !priceGuidePanel) return;
+      const vehicleModel = getSelectedVehicleModel();
+      priceGuideButton.textContent = `${vehicleModel} 업그레이드 안내 가격표`;
+      priceGuidePanel.classList.remove('is-open');
+      priceGuidePanel.innerHTML = '';
+    }
+
+    function formatWon(value) {
+      return `${value.toLocaleString('ko-KR')}원`;
+    }
+
+    function getFilmGrade(value) {
+      if (!value || value.includes('선택하지 않음')) return '';
+      if (value.includes('발키리')) return 'valkyrie';
+      if (value.includes('벨벳')) return 'velvet';
+      if (value.includes('볼티지')) return 'voltage';
+      return '';
+    }
+
+    function getSelectedOptionText(id) {
+      const input = document.getElementById(id);
+      return input ? input.value : '';
+    }
+
+    function getFrontSideEstimate() {
+      const front = getFilmGrade(getSelectedOptionText('frontFilm'));
+      const sideOne = getFilmGrade(getSelectedOptionText('sideOneFilm'));
+      const sideTwo = getFilmGrade(getSelectedOptionText('sideTwoFilm'));
+      const sideGrades = [sideOne, sideTwo].filter(Boolean);
+      const selectedGrades = [front, ...sideGrades].filter(Boolean);
+      const upgradeGrades = selectedGrades.filter((grade) => grade && grade !== 'voltage');
+
+      if (!upgradeGrades.length) return null;
+
+      if (front === 'valkyrie' && sideGrades.length && sideGrades.every((grade) => grade === 'velvet')) {
+        return { label: '전면 발키리 + 측면 벨벳 업그레이드', amount: 600000 };
+      }
+
+      if (upgradeGrades.includes('valkyrie')) {
+        return { label: '발키리 업그레이드', amount: 700000 };
+      }
+
+      return { label: '벨벳 업그레이드', amount: 500000 };
+    }
+
+    function getRoofEstimate() {
+      const roof = getFilmGrade(getSelectedOptionText('glassRoofFilm'));
+      if (roof === 'voltage') return { label: '글라스루프 볼티지', amount: 250000 };
+      if (roof === 'velvet') return { label: '글라스루프 벨벳', amount: 300000 };
+      return null;
+    }
+
+    function calculatePriceEstimate() {
+      const vehicleModel = getSelectedVehicleModel();
+      const items = [];
+
+      if (vehicleModel !== '폴스타4') {
+        return {
+          total: 0,
+          items: [`${vehicleModel} 가격표는 준비중입니다. 폴스타4 선택 시 가격표 기준 예상가가 표시됩니다.`]
+        };
+      }
+
+      const frontSide = getFrontSideEstimate();
+      const roof = getRoofEstimate();
+      let filmTotal = 0;
+
+      if (frontSide && roof && roof.label === '글라스루프 벨벳' && frontSide.label === '벨벳 업그레이드') {
+        filmTotal = 750000;
+        items.push({ label: '전·측면 벨벳 + 루프 벨벳 패키지', amount: 750000 });
+      } else {
+        if (frontSide) {
+          filmTotal += frontSide.amount;
+          items.push(frontSide);
+        }
+        if (roof) {
+          filmTotal += roof.amount;
+          items.push(roof);
+        }
+      }
+
+      let total = filmTotal;
+      const hasUpgradeConstruction = Boolean(frontSide || (roof && roof.label === '글라스루프 벨벳'));
+
+      const ppf = document.getElementById('ppf');
+      if (ppf && ppf.checked) {
+        total += 150000;
+        items.push({ label: 'PPF 생활보호 3종', amount: 150000 });
+      }
+
+      const hipass = document.getElementById('hipass');
+      if (hipass && hipass.checked) {
+        if (hasUpgradeConstruction) {
+          items.push({ label: '하이패스 매립 추가 시공 (업그레이드 무상)', amount: 0 });
+        } else {
+          total += 20000;
+          items.push({ label: '하이패스 매립 추가 시공', amount: 20000 });
+        }
+      }
+
+      return {
+        total,
+        items: items.length ? items : ['선택된 내역이 없습니다.']
+      };
+    }
+
+    function updatePriceEstimate() {
+      if (!priceEstimateTotal || !priceEstimateList) return;
+      const estimate = calculatePriceEstimate();
+      priceEstimateTotal.textContent = formatWon(estimate.total);
+      priceEstimateList.innerHTML = '';
+
+      estimate.items.forEach((item) => {
+        const li = document.createElement('li');
+        li.textContent = typeof item === 'string' ? item : `${item.label} · ${formatWon(item.amount)}`;
+        priceEstimateList.appendChild(li);
+      });
+    }
+
+    function closePriceGuide() {
+      if (!priceGuidePanel) return;
+      priceGuidePanel.classList.remove('is-open');
+      priceGuidePanel.innerHTML = '';
+    }
+
+    function renderPriceGuideCloseButton() {
+      return '<button class="price-guide-close" type="button" data-price-guide-close>접기</button>';
+    }
+
+    function openPriceGuide() {
+      if (!priceGuidePanel) return;
+      const vehicleModel = getSelectedVehicleModel();
+      priceGuidePanel.classList.add('is-open');
+
+      if (vehicleModel === '폴스타4') {
+        priceGuidePanel.innerHTML = `<img src="${priceGuideImage}" alt="폴스타4 업그레이드 안내 가격표" loading="lazy">${renderPriceGuideCloseButton()}`;
+        return;
+      }
+
+      priceGuidePanel.innerHTML = `<p class="price-guide-message">준비중입니다.</p>${renderPriceGuideCloseButton()}`;
+    }
+
+    if (priceGuidePanel) {
+      priceGuidePanel.addEventListener('click', (event) => {
+        if (event.target.closest('[data-price-guide-close]')) closePriceGuide();
+      });
+    }
+
+    vehicleModelInputs.forEach((input) => {
+      input.addEventListener('change', () => {
+        updatePriceGuideButton();
+        updatePriceEstimate();
+      });
+    });
+
+    priceEstimateInputs.forEach((input) => {
+      input.addEventListener('change', updatePriceEstimate);
+      input.addEventListener('input', updatePriceEstimate);
+    });
+
+    if (priceGuideButton) {
+      priceGuideButton.addEventListener('click', openPriceGuide);
+      updatePriceGuideButton();
+    }
+
+    updatePriceEstimate();
+
+    function padNumber(value) {
+      return String(value).padStart(2, '0');
+    }
+
+    function formatDateTimeValue(dateValue, timeValue) {
+      return `${dateValue}T${timeValue}`;
+    }
+
+    function parseDateTimeValue(value) {
+      const [dateValue = '', timeValue = ''] = value.split('T');
+      return { dateValue, timeValue };
+    }
+
+    function updateDateTimeDisplay(input, displayText) {
+      const { dateValue, timeValue } = parseDateTimeValue(input.value);
+      displayText.textContent = '';
+
+      if (!dateValue || !timeValue) {
+        displayText.classList.add('is-placeholder');
+        displayText.textContent = input.placeholder || '날짜와 시간을 선택해주세요';
+        return;
+      }
+
+      displayText.classList.remove('is-placeholder');
+      const dateSpan = document.createElement('span');
+      dateSpan.className = 'datetime-display-date';
+      dateSpan.textContent = dateValue;
+
+      const timeSpan = document.createElement('span');
+      timeSpan.className = 'datetime-display-time';
+      timeSpan.textContent = timeValue;
+
+      displayText.append(dateSpan, timeSpan);
+    }
+
+    function createDateTimeDisplay(input) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'datetime-display-wrap';
+      input.parentNode.insertBefore(wrapper, input);
+      wrapper.appendChild(input);
+
+      const displayText = document.createElement('span');
+      displayText.className = 'datetime-display-text is-placeholder';
+      displayText.setAttribute('aria-hidden', 'true');
+      wrapper.appendChild(displayText);
+
+      updateDateTimeDisplay(input, displayText);
+      input.addEventListener('input', () => updateDateTimeDisplay(input, displayText));
+    }
+
+    function isWeekend(date) {
+      const day = date.getDay();
+      return day === 0 || day === 6;
+    }
+
+    function createDateFromValue(dateValue) {
+      const [year, month, day] = dateValue.split('-').map(Number);
+      if (!year || !month || !day) return null;
+      return new Date(year, month - 1, day);
+    }
+
+    const timeWheelHours = Array.from({ length: 12 }, (_, index) => index + 1);
+    const timeWheelMinutes = [0, 30];
+    const timeWheelPeriods = ['AM', 'PM'];
+
+    function createTimeState(timeValue = '09:00') {
+      const [hourRaw = '09', minuteRaw = '00'] = timeValue.split(':');
+      let hour24 = Number(hourRaw);
+      if (!Number.isInteger(hour24) || hour24 < 0 || hour24 > 23) hour24 = 9;
+
+      const minuteNumber = Number(minuteRaw);
+      const minute = Number.isFinite(minuteNumber) && minuteNumber >= 30 ? 30 : 0;
+      const period = hour24 >= 12 ? 'PM' : 'AM';
+      const hour = hour24 % 12 || 12;
+      return { hour, minute, period };
+    }
+
+    function formatTimeState({ hour, minute, period }) {
+      let hour24 = hour % 12;
+      if (period === 'PM') hour24 += 12;
+      return `${padNumber(hour24)}:${padNumber(minute)}`;
+    }
+
+    function renderTimeWheelColumn(column, values, selectedValue, formatter, onSelect, cycle = false) {
+      column.innerHTML = '';
+      const selectedIndex = values.indexOf(selectedValue);
+      const positions = [selectedIndex - 1, selectedIndex, selectedIndex + 1];
+
+      positions.forEach((position) => {
+        if (!cycle && (position < 0 || position >= values.length)) {
+          const spacer = document.createElement('span');
+          spacer.className = 'time-wheel-option is-empty';
+          spacer.setAttribute('aria-hidden', 'true');
+          column.appendChild(spacer);
+          return;
+        }
+
+        const value = values[(position + values.length) % values.length];
+        const displayValue = formatter(value);
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'time-wheel-option';
+        button.dataset.value = displayValue;
+        button.textContent = displayValue;
+        button.setAttribute('aria-pressed', String(value === selectedValue));
+        if (value === selectedValue) button.classList.add('is-selected');
+        button.addEventListener('click', () => onSelect(value));
+        column.appendChild(button);
+      });
+    }
+
+    function createDateTimePicker(input) {
+      const picker = document.createElement('div');
+      picker.className = 'datetime-picker';
+      picker.setAttribute('role', 'dialog');
+      picker.setAttribute('aria-label', '날짜 및 시간 선택');
+      picker.innerHTML = `
+        <div class="picker-head">
+          <button class="picker-nav prev" type="button" aria-label="이전 달">‹</button>
+          <div class="picker-title" aria-live="polite"></div>
+          <button class="picker-nav next" type="button" aria-label="다음 달">›</button>
+        </div>
+        <div class="picker-weekdays" aria-hidden="true">
+          <span class="picker-weekday">월</span>
+          <span class="picker-weekday">화</span>
+          <span class="picker-weekday">수</span>
+          <span class="picker-weekday">목</span>
+          <span class="picker-weekday">금</span>
+          <span class="picker-weekday is-weekend">토</span>
+          <span class="picker-weekday is-weekend">일</span>
+        </div>
+        <div class="picker-days"></div>
+        <p class="picker-help">토요일과 일요일은 선택할 수 없습니다. 시간은 30분 단위로 선택됩니다.</p>
+        <div class="time-wheel-picker" aria-label="시간 선택">
+          <div class="time-wheel-title">Set time</div>
+          <div class="time-wheel-grid">
+            <div class="time-wheel-column" data-unit="hour" aria-label="시"></div>
+            <span class="time-wheel-separator" aria-hidden="true">:</span>
+            <div class="time-wheel-column" data-unit="minute" aria-label="분"></div>
+            <div class="time-wheel-column" data-unit="period" aria-label="오전 또는 오후"></div>
+          </div>
+          <button class="picker-apply" type="button">Done</button>
+        </div>
+      `;
+      document.body.appendChild(picker);
+
+      const title = picker.querySelector('.picker-title');
+      const days = picker.querySelector('.picker-days');
+      const prev = picker.querySelector('.prev');
+      const next = picker.querySelector('.next');
+      const hourColumn = picker.querySelector('.time-wheel-column[data-unit="hour"]');
+      const minuteColumn = picker.querySelector('.time-wheel-column[data-unit="minute"]');
+      const periodColumn = picker.querySelector('.time-wheel-column[data-unit="period"]');
+      const apply = picker.querySelector('.picker-apply');
+
+      let viewDate = new Date();
+      let selectedDate = null;
+      let timeState = createTimeState('09:00');
+
+      function renderTimeWheel() {
+        renderTimeWheelColumn(hourColumn, timeWheelHours, timeState.hour, String, (value) => {
+          timeState.hour = value;
+          renderTimeWheel();
+          setInputValue();
+        }, true);
+        renderTimeWheelColumn(minuteColumn, timeWheelMinutes, timeState.minute, padNumber, (value) => {
+          timeState.minute = value;
+          renderTimeWheel();
+          setInputValue();
+        });
+        renderTimeWheelColumn(periodColumn, timeWheelPeriods, timeState.period, String, (value) => {
+          timeState.period = value;
+          renderTimeWheel();
+          setInputValue();
+        });
+      }
+
+      function setInputValue() {
+        if (!selectedDate) return;
+        const dateValue = `${selectedDate.getFullYear()}-${padNumber(selectedDate.getMonth() + 1)}-${padNumber(selectedDate.getDate())}`;
+        input.value = formatDateTimeValue(dateValue, formatTimeState(timeState));
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+
+      function positionPicker() {
+        const rect = input.getBoundingClientRect();
+        const margin = 14;
+        const pickerWidth = Math.min(420, window.innerWidth - margin * 2);
+        let left = Math.min(rect.left, window.innerWidth - pickerWidth - margin);
+        left = Math.max(margin, left);
+        let top = rect.bottom + 8;
+        if (top + 560 > window.innerHeight) top = Math.max(margin, rect.top - 560);
+        picker.style.left = `${left}px`;
+        picker.style.top = `${top}px`;
+      }
+
+      function renderCalendar() {
+        const year = viewDate.getFullYear();
+        const month = viewDate.getMonth();
+        title.textContent = `${year}년 ${month + 1}월`;
+        days.innerHTML = '';
+
+        const firstDate = new Date(year, month, 1);
+        const startOffset = (firstDate.getDay() + 6) % 7;
+        const gridStart = new Date(year, month, 1 - startOffset);
+
+        for (let index = 0; index < 42; index += 1) {
+          const cellDate = new Date(gridStart.getFullYear(), gridStart.getMonth(), gridStart.getDate() + index);
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'picker-day';
+          button.textContent = cellDate.getDate();
+          button.setAttribute('aria-label', `${cellDate.getFullYear()}년 ${cellDate.getMonth() + 1}월 ${cellDate.getDate()}일`);
+
+          if (cellDate.getMonth() !== month) button.classList.add('is-other-month');
+          if (isWeekend(cellDate)) {
+            button.classList.add('is-weekend');
+            button.disabled = true;
+          }
+          if (selectedDate && cellDate.toDateString() === selectedDate.toDateString()) button.classList.add('is-selected');
+
+          button.addEventListener('click', () => {
+            selectedDate = cellDate;
+            apply.disabled = false;
+            renderCalendar();
+          });
+          days.appendChild(button);
+        }
+      }
+
+      function openPicker() {
+        const { dateValue, timeValue } = parseDateTimeValue(input.value);
+        const parsedDate = createDateFromValue(dateValue);
+        if (parsedDate && !isWeekend(parsedDate)) {
+          selectedDate = parsedDate;
+          viewDate = new Date(parsedDate.getFullYear(), parsedDate.getMonth(), 1);
+        } else {
+          selectedDate = null;
+          viewDate = new Date();
+        }
+        timeState = createTimeState(timeValue || '09:00');
+        apply.disabled = !selectedDate;
+        renderCalendar();
+        renderTimeWheel();
+        picker.classList.add('is-open');
+        positionPicker();
+      }
+
+      function closePicker() {
+        picker.classList.remove('is-open');
+      }
+
+      prev.addEventListener('click', () => {
+        viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1);
+        renderCalendar();
+      });
+      next.addEventListener('click', () => {
+        viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1);
+        renderCalendar();
+      });
+      apply.addEventListener('click', () => {
+        setInputValue();
+        closePicker();
+      });
+
+      input.type = 'text';
+      input.readOnly = true;
+      input.classList.add('datetime-display');
+      input.placeholder = '날짜와 시간을 선택해주세요';
+      createDateTimeDisplay(input);
+      input.addEventListener('click', openPicker);
+      input.addEventListener('touchend', openPicker);
+      input.addEventListener('focus', openPicker);
+      picker.addEventListener('click', (event) => {
+        event.stopPropagation();
+      });
+
+      document.addEventListener('click', (event) => {
+        if (event.target === input || picker.contains(event.target)) return;
+        closePicker();
+      });
+      window.addEventListener('resize', () => {
+        if (picker.classList.contains('is-open')) positionPicker();
+      });
+      window.addEventListener('scroll', () => {
+        if (picker.classList.contains('is-open')) positionPicker();
+      }, true);
+    }
+
+    dateTimePairs.forEach(({ source }) => {
+      const sourceInput = document.getElementById(source);
+      if (!sourceInput) return;
+      sourceInput.addEventListener('input', syncDateTimeFields);
+      createDateTimePicker(sourceInput);
+    });
+
+    if (mobileSticky && reservationSection && 'IntersectionObserver' in window) {
+      const stickyObserver = new IntersectionObserver((entries) => {
+        const isFormVisible = entries.some((entry) => entry.isIntersecting);
+        mobileSticky.classList.toggle('is-hidden', isFormVisible);
+      }, { threshold: 0.04 });
+      stickyObserver.observe(reservationSection);
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      syncDateTimeFields();
+      if (!form.reportValidity()) return;
+      toast.classList.add('show');
+      window.setTimeout(() => toast.classList.remove('show'), 3600);
+    });
+  </script>
+</body>
+</html>
