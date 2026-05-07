@@ -2182,15 +2182,45 @@
       input.classList.add('datetime-display');
       input.placeholder = '날짜와 시간을 선택해주세요';
       createDateTimeDisplay(input);
-      input.addEventListener('click', openPicker);
-      input.addEventListener('touchend', openPicker);
+      const inputWrapper = input.closest('.datetime-display-wrap');
+      const suppressImmediateOutsideClose = () => {
+        window.__dateTimePickerSuppressOutsideCloseUntil = performance.now() + 350;
+      };
+      const shouldSuppressOutsideClose = () => performance.now() < (window.__dateTimePickerSuppressOutsideCloseUntil || 0);
+      const openPickerFromInput = (event) => {
+        suppressImmediateOutsideClose();
+        event.stopPropagation();
+        openPicker();
+      };
+      const openPickerOnPointerDown = (event) => {
+        suppressImmediateOutsideClose();
+        event.preventDefault();
+        event.stopPropagation();
+        openPicker();
+      };
+
+      input.addEventListener('pointerdown', openPickerOnPointerDown);
+      input.addEventListener('click', openPickerFromInput);
+      input.addEventListener('touchend', openPickerFromInput);
       input.addEventListener('focus', openPicker);
+      if (inputWrapper) {
+        inputWrapper.addEventListener('pointerdown', openPickerOnPointerDown);
+        inputWrapper.addEventListener('click', openPickerFromInput);
+        inputWrapper.addEventListener('touchend', openPickerFromInput);
+      }
       picker.addEventListener('click', (event) => {
+        event.stopPropagation();
+      });
+      picker.addEventListener('touchend', (event) => {
         event.stopPropagation();
       });
 
       document.addEventListener('click', (event) => {
-        if (event.target === input || picker.contains(event.target)) return;
+        if (shouldSuppressOutsideClose() || event.target === input || picker.contains(event.target) || (inputWrapper && inputWrapper.contains(event.target))) return;
+        closePicker();
+      });
+      document.addEventListener('touchend', (event) => {
+        if (shouldSuppressOutsideClose() || event.target === input || picker.contains(event.target) || (inputWrapper && inputWrapper.contains(event.target))) return;
         closePicker();
       });
       window.addEventListener('resize', () => {
