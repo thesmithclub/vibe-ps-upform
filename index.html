@@ -745,192 +745,220 @@
     .datetime-picker {
       position: fixed;
       z-index: 80;
-      width: min(420px, calc(100vw - 28px));
-      background: #fff;
-      border: 1px solid rgba(0, 0, 0, .10);
-      border-radius: 0;
-      box-shadow: none;
-      padding: 16px;
-      display: none;
+      width: min(720px, calc(100vw - 28px));
+      background: #f7f2fa;
+      border: 1px solid rgba(103, 80, 164, .20);
+      border-radius: 28px;
+      box-shadow: 0 20px 52px rgba(32, 24, 54, .18);
+      padding: 22px;
       max-height: calc(100vh - 28px);
       overflow-y: auto;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
       transform-origin: top left;
+      color: #1d1b20;
+      display: none;
+      grid-template-columns: minmax(250px, 1fr) 330px;
+      align-items: start;
+      gap: 0 22px;
     }
     .datetime-picker.is-open {
-      display: block;
+      display: grid;
+    }
+    .datetime-picker .picker-head,
+    .datetime-picker .picker-weekdays,
+    .datetime-picker .picker-days,
+    .datetime-picker .picker-help {
+      grid-column: 1;
+    }
+    .datetime-picker .clock-time-picker {
+      grid-column: 2;
+      grid-row: 1 / span 4;
+      align-self: start;
+      margin-top: 0;
     }
     .picker-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .picker-title {
-      font-size: 16px;
-      font-weight: 900;
-      letter-spacing: -.03em;
+      color: #1d1b20;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -.02em;
     }
     .picker-nav {
-      width: 34px;
-      height: 34px;
-      border: 1px solid var(--line);
-      background: #fff;
-      color: var(--ink);
+      width: 36px;
+      height: 36px;
+      border: 0;
+      border-radius: 50%;
+      background: #ede7f6;
+      color: #6750a4;
       cursor: pointer;
-      font-weight: 900;
+      font-size: 22px;
+      line-height: 1;
+      font-weight: 800;
     }
     .picker-weekdays,
     .picker-days {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 6px;
+      gap: 4px;
     }
     .picker-weekdays {
-      margin-bottom: 8px;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 900;
+      margin: 0 0 8px;
+      padding: 0 12px;
+      color: #6f6878;
+      font-size: 11px;
+      font-weight: 800;
       text-align: center;
     }
-    .picker-weekday.is-weekend { color: #aaa; }
+    .picker-weekday.is-weekend { color: #b2a8bb; }
+    .picker-days {
+      padding: 12px;
+      border: 1px solid rgba(103, 80, 164, .12);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .72);
+    }
     .picker-day {
-      min-height: 38px;
-      border: 1px solid transparent;
-      background: #f7f7f7;
-      color: var(--ink);
+      min-height: 34px;
+      aspect-ratio: 1;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      color: #1d1b20;
       cursor: pointer;
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 700;
     }
-    .picker-day:hover { border-color: #777; }
-    .picker-day.is-other-month { color: #aaa; background: #fbfbfb; }
-    .picker-day.is-selected { background: var(--dark); color: #fff; border-color: var(--dark); }
+    .picker-day:hover { background: #ede7f6; color: #4f378b; }
+    .picker-day.is-other-month { color: #a9a2ae; background: transparent; }
+    .picker-day.is-selected { background: #6750a4; color: #fff; }
     .picker-day.is-weekend,
     .picker-day:disabled {
-      background: #efefef;
-      color: #b0b0b0;
-      border-color: #e6e6e6;
+      background: transparent;
+      color: #c5bdca;
       cursor: not-allowed;
-      text-decoration: line-through;
+      text-decoration: none;
     }
     .clock-time-picker {
       position: relative;
-      margin: 18px -16px -16px;
-      padding: 0 0 18px;
-      background: #f3f3f3;
-      border-top: 1px solid rgba(0, 0, 0, .10);
+      margin: 18px 0 0;
+      padding: 0;
+      background: transparent;
+      border: 0;
       box-shadow: none;
-      overflow: hidden;
+      overflow: visible;
     }
     .clock-time-title {
       position: relative;
       z-index: 3;
-      padding: 22px 22px 24px;
-      color: #111;
-      background: #f3f3f3;
-      border-bottom: 0;
+      padding: 0;
+      color: #5f5868;
+      background: transparent;
+      border: 0;
       box-shadow: none;
-      font-size: 31px;
+      font-size: 12px;
       line-height: 1;
-      font-weight: 900;
-      letter-spacing: -.045em;
+      font-weight: 800;
+      letter-spacing: -.01em;
       text-shadow: none;
     }
-    .clock-time-title::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 4px;
-      background: #141414;
-      box-shadow: none;
-    }
     .clock-time-readout {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 58px;
+      align-items: stretch;
       gap: 12px;
-      padding: 18px 18px 0;
+      padding: 16px 0 0;
     }
     .clock-time-value {
-      color: #111;
-      font-size: 28px;
-      line-height: 1;
-      font-weight: 950;
-      letter-spacing: -.04em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      color: #1d1b20;
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
     }
-    .clock-period-toggle {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      min-width: 132px;
-      border: 1px solid #111;
-      background: #fff;
-    }
+    .clock-time-chip,
     .clock-period-btn,
-    .clock-step-btn,
-    .clock-number {
+    .clock-number,
+    .picker-cancel,
+    .picker-apply,
+    .clock-keyboard-toggle {
       appearance: none;
       -webkit-appearance: none;
-      border-radius: 0;
       box-shadow: none;
       text-shadow: none;
-      transition: none;
       cursor: pointer;
       font-family: inherit;
     }
-    .clock-period-btn {
-      min-height: 38px;
+    .clock-time-chip {
+      width: 88px;
+      min-height: 72px;
       border: 0;
-      border-left: 1px solid #111;
-      background: #fff;
-      color: #111;
-      font-size: 14px;
-      font-weight: 900;
+      border-radius: 8px;
+      background: #ece7f2;
+      color: #1d1b20;
+      padding: 0 8px 4px;
+      font-size: 47px;
+      line-height: 1;
+      font-weight: 500;
+      letter-spacing: -.06em;
+      text-align: center;
     }
-    .clock-period-btn:first-child { border-left: 0; }
-    .clock-period-btn.is-selected {
-      background: #111;
-      color: #fff;
+    .clock-time-chip.is-active {
+      background: #c7b7ff;
+      color: #4f378b;
     }
-    .clock-step-toggle {
+    .clock-time-colon {
+      display: inline-flex;
+      align-items: center;
+      min-height: 72px;
+      color: #1d1b20;
+      font-size: 46px;
+      line-height: 1;
+      font-weight: 700;
+      transform: translateY(-3px);
+    }
+    .clock-period-toggle {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      margin: 14px 18px 0;
-      border: 1px solid #d5d5d5;
-      background: #fff;
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+      min-width: 58px;
+      border: 1px solid #79747e;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .35);
+      overflow: hidden;
     }
-    .clock-step-btn {
-      min-height: 40px;
+    .clock-period-btn {
+      min-height: 36px;
       border: 0;
-      border-left: 1px solid #d5d5d5;
-      background: #fff;
-      color: #777;
-      font-size: 13px;
-      font-weight: 900;
+      background: transparent;
+      color: #49454f;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -.01em;
     }
-    .clock-step-btn:first-child { border-left: 0; }
-    .clock-step-btn.is-active {
-      background: #111;
-      color: #fff;
+    .clock-period-btn:first-child { border-bottom: 1px solid #79747e; }
+    .clock-period-btn.is-selected {
+      background: #f4a7f2;
+      color: #351a55;
     }
     .clock-face {
-      --clock-radius: 118px;
-      --clock-hand-length: 92px;
+      --clock-radius: 96px;
+      --clock-hand-length: 96px;
       --clock-hand-angle: -90deg;
       position: relative;
-      width: min(300px, calc(100vw - 96px));
+      width: min(252px, calc(100vw - 88px));
       aspect-ratio: 1;
-      margin: 20px auto 18px;
-      border: 2px solid #111;
+      margin: 24px auto 18px;
+      border: 0;
       border-radius: 50%;
-      background: #fff;
-      box-shadow: none;
+      background: #ece7f2;
+      box-shadow: inset 0 0 0 1px rgba(103, 80, 164, .03);
     }
     .clock-face::before {
       content: '';
@@ -941,7 +969,7 @@
       height: 8px;
       margin: -4px 0 0 -4px;
       border-radius: 50%;
-      background: #111;
+      background: #6750a4;
       z-index: 3;
     }
     .clock-hand {
@@ -950,7 +978,7 @@
       top: 50%;
       width: var(--clock-hand-length);
       height: 2px;
-      background: #111;
+      background: #6750a4;
       transform-origin: 0 50%;
       transform: rotate(var(--clock-hand-angle));
       z-index: 2;
@@ -965,58 +993,95 @@
       position: absolute;
       left: 50%;
       top: 50%;
-      width: 48px;
-      min-height: 36px;
-      margin: -18px 0 0 -24px;
-      border: 1px solid transparent;
+      width: 44px;
+      min-height: 44px;
+      margin: -22px 0 0 -22px;
+      border: 0;
+      border-radius: 50%;
       background: transparent;
-      color: #777;
+      color: #1d1b20;
       font-size: 15px;
       line-height: 1;
-      font-weight: 900;
+      font-weight: 600;
       text-align: center;
       transform: rotate(var(--clock-angle)) translate(var(--clock-radius)) rotate(var(--clock-angle-reverse));
     }
     .clock-number:hover {
-      border-color: #111;
-      color: #111;
-      background: #fff;
+      color: #4f378b;
+      background: rgba(103, 80, 164, .12);
     }
     .clock-number.is-selected {
-      border-color: #111;
-      background: #111;
+      background: #6750a4;
       color: #fff;
     }
+    .clock-face[data-mode="minute"] .clock-number {
+      font-size: 20px;
+      font-weight: 500;
+      letter-spacing: -.05em;
+    }
+    .clock-picker-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 42px;
+    }
+    .clock-keyboard-toggle {
+      width: 42px;
+      height: 40px;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      color: #49454f;
+      display: inline-grid;
+      place-items: center;
+      padding: 0;
+    }
+    .clock-keyboard-toggle svg {
+      width: 22px;
+      height: 22px;
+      display: block;
+    }
+    .clock-action-group {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+    .picker-cancel,
     .picker-apply {
       position: relative;
       z-index: 3;
-      width: calc(100% - 36px);
-      min-height: 50px;
-      margin: 0 18px;
-      border: 1px solid rgba(255,255,255,.16);
-      border-radius: 0;
-      background: #111;
-      color: #fff;
-      padding: 0 16px;
-      cursor: pointer;
-      font-weight: 900;
-      font-size: 15px;
-      letter-spacing: .01em;
+      width: auto;
+      min-height: 40px;
+      margin: 0;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: #6750a4;
+      padding: 0 12px;
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: -.01em;
       box-shadow: none;
-      transition: none;
+      transition: background-color .14s ease, color .14s ease;
     }
+    .picker-cancel:hover,
     .picker-apply:hover {
+      background: rgba(103, 80, 164, .10);
       transform: none;
       box-shadow: none;
     }
+    .picker-cancel:active,
     .picker-apply:active {
+      background: rgba(103, 80, 164, .18);
       transform: none;
       box-shadow: none;
     }
-    .picker-apply:disabled { color: #aaa; cursor: not-allowed; }
+    .picker-apply:disabled { color: #b9aec4; cursor: not-allowed; }
     .picker-help {
-      margin: 10px 0 0;
-      color: var(--muted);
+      margin: 10px 2px 0;
+      color: #756d7f;
       font-size: 12px;
       line-height: 1.45;
     }
@@ -1156,17 +1221,9 @@
     .toast.show { opacity: 1; transform: translateX(-50%); }
 
 
-    /* Flat visual system override: no depth effects, glows, 3D transforms, or animated UI chrome. */
+    /* Flat visual system override: keep the page chrome flat while allowing the custom picker to use the requested rounded Material-style treatment. */
     .topbar,
     .form-card,
-    .datetime-picker,
-    .clock-time-picker,
-    .clock-time-title,
-    .clock-face,
-    .clock-period-btn,
-    .clock-step-btn,
-    .clock-number,
-    .picker-apply,
     .submit-btn,
     .toast,
     .mobile-sticky,
@@ -1181,11 +1238,6 @@
     .vehicle-image,
     .vehicle-card .vehicle-check,
     input[type="text"], input[type="tel"], input[type="date"], input[type="time"], input[type="datetime-local"], select, textarea,
-    .datetime-picker,
-    .clock-period-btn,
-    .clock-step-btn,
-    .clock-number,
-    .picker-apply,
     .submit-btn,
     .toast,
     .mobile-sticky {
@@ -1196,20 +1248,8 @@
     .vehicle-card:hover,
     .vehicle-choice input:checked + .vehicle-card .vehicle-image,
     .vehicle-choice input:checked + .vehicle-card .vehicle-check,
-    .picker-apply:hover,
-    .picker-apply:active,
     .submit-btn:hover {
       transform: none;
-    }
-
-    .datetime-picker,
-    .clock-time-picker,
-    .clock-time-title,
-    .clock-number.is-selected,
-    .clock-period-btn.is-selected,
-    .clock-step-btn.is-active,
-    .picker-apply {
-      background-image: none;
     }
 
     @media (max-width: 980px) {
@@ -1339,38 +1379,60 @@
       }
       textarea { min-height: 112px; }
       .datetime-picker {
-        border-radius: 0;
+        width: min(360px, calc(100vw - 20px));
+        padding: 20px;
+        border-radius: 28px;
+        grid-template-columns: 1fr;
+      }
+      .datetime-picker.is-open {
+        display: block;
+      }
+      .datetime-picker .clock-time-picker {
+        margin-top: 18px;
       }
       .clock-time-title {
-        font-size: 28px;
-        padding: 20px 18px 22px;
+        font-size: 12px;
+        padding: 0;
       }
       .clock-time-readout {
+        grid-template-columns: minmax(0, 1fr) 54px;
         align-items: stretch;
-        flex-direction: column;
-        gap: 12px;
+        gap: 10px;
       }
       .clock-time-value {
-        font-size: 26px;
+        gap: 4px;
+      }
+      .clock-time-chip {
+        width: clamp(70px, 22vw, 82px);
+        min-height: 64px;
+        font-size: clamp(36px, 11vw, 42px);
+      }
+      .clock-time-colon {
+        min-height: 64px;
+        font-size: clamp(34px, 10vw, 42px);
       }
       .clock-period-toggle {
-        width: 100%;
-        min-width: 0;
+        width: auto;
+        min-width: 54px;
       }
       .clock-face {
-        --clock-radius: 98px;
-        --clock-hand-length: 76px;
-        width: min(252px, calc(100vw - 84px));
+        --clock-radius: 96px;
+        --clock-hand-length: 96px;
+        width: min(232px, calc(100vw - 96px));
+        margin: 22px auto 16px;
       }
       .clock-number {
-        width: 42px;
-        min-height: 32px;
-        margin: -16px 0 0 -21px;
-        font-size: 13px;
+        width: 40px;
+        min-height: 40px;
+        margin: -20px 0 0 -20px;
+        font-size: 14px;
+      }
+      .clock-face[data-mode="minute"] .clock-number {
+        font-size: 18px;
       }
       .picker-apply {
-        width: calc(100% - 28px);
-        margin: 0 14px 16px;
+        width: auto;
+        margin: 0;
       }
       .check-row {
         padding: 14px;
@@ -2127,23 +2189,34 @@
         <div class="picker-days"></div>
         <p class="picker-help">토요일과 일요일은 선택할 수 없습니다. 시간 선택 후 분을 5분 단위로 선택합니다.</p>
         <div class="clock-time-picker" aria-label="시간 선택">
-          <div class="clock-time-title">Set time</div>
+          <div class="clock-time-title">Select time</div>
           <div class="clock-time-readout">
-            <div class="clock-time-value" aria-live="polite">오전 09:00</div>
-            <div class="clock-period-toggle" aria-label="오전 또는 오후">
-              <button class="clock-period-btn" type="button" data-period="오전">오전</button>
-              <button class="clock-period-btn" type="button" data-period="오후">오후</button>
+            <div class="clock-time-value" aria-live="polite">
+              <button class="clock-time-chip" type="button" data-mode="hour" role="tab" aria-label="시 선택">09</button>
+              <span class="clock-time-colon" aria-hidden="true">:</span>
+              <button class="clock-time-chip" type="button" data-mode="minute" role="tab" aria-label="분 선택">00</button>
             </div>
-          </div>
-          <div class="clock-step-toggle" role="tablist" aria-label="시간 또는 분 선택">
-            <button class="clock-step-btn" type="button" data-mode="hour" role="tab">시</button>
-            <button class="clock-step-btn" type="button" data-mode="minute" role="tab">분</button>
+            <div class="clock-period-toggle" aria-label="오전 또는 오후">
+              <button class="clock-period-btn" type="button" data-period="오전">AM</button>
+              <button class="clock-period-btn" type="button" data-period="오후">PM</button>
+            </div>
           </div>
           <div class="clock-face" aria-label="시 선택">
             <span class="clock-hand" aria-hidden="true"></span>
             <div class="clock-numbers"></div>
           </div>
-          <button class="picker-apply" type="button">Done</button>
+          <div class="clock-picker-footer">
+            <button class="clock-keyboard-toggle" type="button" aria-label="키보드 입력 보기" tabindex="-1">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <rect x="3" y="6" width="18" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.7"/>
+                <path d="M6 9h1.6M9.2 9h1.6M12.4 9H14M15.6 9h1.6M6 12h1.6M9.2 12h1.6M12.4 12H14M15.6 12h1.6M7 15h10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+              </svg>
+            </button>
+            <div class="clock-action-group">
+              <button class="picker-cancel" type="button">Cancel</button>
+              <button class="picker-apply" type="button">OK</button>
+            </div>
+          </div>
         </div>
       `;
       document.body.appendChild(picker);
@@ -2153,10 +2226,13 @@
       const prev = picker.querySelector('.prev');
       const next = picker.querySelector('.next');
       const timeValueLabel = picker.querySelector('.clock-time-value');
+      const timeHourButton = picker.querySelector('.clock-time-chip[data-mode="hour"]');
+      const timeMinuteButton = picker.querySelector('.clock-time-chip[data-mode="minute"]');
       const periodButtons = Array.from(picker.querySelectorAll('.clock-period-btn'));
-      const modeButtons = Array.from(picker.querySelectorAll('.clock-step-btn'));
+      const modeButtons = Array.from(picker.querySelectorAll('.clock-time-chip'));
       const clockFace = picker.querySelector('.clock-face');
       const clockNumbers = picker.querySelector('.clock-numbers');
+      const cancel = picker.querySelector('.picker-cancel');
       const apply = picker.querySelector('.picker-apply');
 
       let viewDate = new Date();
@@ -2165,7 +2241,9 @@
       let clockMode = 'hour';
 
       function renderTimeClock() {
-        timeValueLabel.textContent = `${timeState.period} ${padNumber(timeState.hour)}:${padNumber(timeState.minute)}`;
+        timeHourButton.textContent = padNumber(timeState.hour);
+        timeMinuteButton.textContent = padNumber(timeState.minute);
+        timeValueLabel.setAttribute('aria-label', `${timeState.period} ${padNumber(timeState.hour)}시 ${padNumber(timeState.minute)}분`);
         periodButtons.forEach((button) => {
           const isSelected = button.dataset.period === timeState.period;
           button.classList.toggle('is-selected', isSelected);
@@ -2199,8 +2277,8 @@
       function positionPicker() {
         const rect = input.getBoundingClientRect();
         const margin = 14;
-        const pickerWidth = Math.min(420, window.innerWidth - margin * 2);
-        const pickerHeight = picker.offsetHeight || 640;
+        const pickerWidth = Math.min(720, window.innerWidth - margin * 2);
+        const pickerHeight = picker.offsetHeight || 520;
         let left = Math.min(rect.left, window.innerWidth - pickerWidth - margin);
         left = Math.max(margin, left);
         let top = rect.bottom + 8;
@@ -2287,6 +2365,7 @@
           renderTimeClock();
         });
       });
+      cancel.addEventListener('click', closePicker);
       apply.addEventListener('click', () => {
         setInputValue();
         closePicker();
