@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>개인정보처리방침 | 바이브나인 폴스타 업그레이드 신청</title>
+  <meta name="description" content="바이브나인 폴스타 업그레이드 신청 페이지의 개인정보처리방침입니다." />
+  <link rel="icon" type="image/png" href="https://smith.speedgabia.com/logo_data/vibe_sim.png">
+  <link rel="apple-touch-icon" href="https://smith.speedgabia.com/logo_data/vibe_sim.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #141414;
+      --muted: #6f6f6f;
+      --line: #dedede;
+      --paper: #ffffff;
+      --soft: #f5f5f2;
+      --dark: #090909;
+      --max: 980px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--soft);
+      font-family: "DM Sans", "Noto Sans KR", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: -.02em;
+      line-height: 1.72;
+      word-break: keep-all;
+    }
+    a { color: inherit; }
+    .topbar {
+      border-bottom: 1px solid rgba(0,0,0,.1);
+      background: #fff;
+    }
+    .topbar-inner {
+      width: min(var(--max), calc(100% - 40px));
+      height: 72px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-weight: 900;
+      letter-spacing: -.04em;
+    }
+    .brand img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 14px;
+      border: 1px solid var(--ink);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 900;
+      background: #fff;
+    }
+    main {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+      padding: 70px 0 90px;
+    }
+    .hero {
+      margin-bottom: 36px;
+      border-bottom: 2px solid var(--ink);
+      padding-bottom: 28px;
+    }
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 7vw, 68px);
+      line-height: .98;
+      letter-spacing: -.07em;
+    }
+    .summary {
+      max-width: 760px;
+      margin: 20px 0 0;
+      color: #333;
+      font-size: 16px;
+    }
+    .policy-section {
+      margin-top: 28px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+    }
+    .policy-section h2 {
+      margin: 0 0 14px;
+      font-size: 22px;
+      line-height: 1.25;
+      letter-spacing: -.04em;
+    }
+    .policy-section h3 {
+      margin: 18px 0 8px;
+      font-size: 16px;
+    }
+    .policy-section p {
+      margin: 0 0 10px;
+      color: #3f3f3f;
+    }
+    .policy-section ul,
+    .policy-section ol {
+      margin: 0 0 12px;
+      padding-left: 22px;
+      color: #3f3f3f;
+    }
+    .policy-section li { margin: 0 0 6px; }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 14px 0;
+      border: 1px solid var(--line);
+    }
+    table {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+      background: #fff;
+      font-size: 14px;
+    }
+    th,
+    td {
+      padding: 14px;
+      border-bottom: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+    th:last-child,
+    td:last-child { border-right: 0; }
+    tr:last-child td { border-bottom: 0; }
+    th {
+      background: #f3f3f3;
+      font-weight: 900;
+      color: var(--ink);
+    }
+    .notice {
+      margin-top: 18px;
+      padding: 16px;
+      border: 1px solid var(--ink);
+      background: #fff;
+      color: #2e2e2e;
+      font-size: 14px;
+    }
+    .business-info {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 18px;
+      margin: 14px 0 0;
+      padding: 18px;
+      border: 1px solid var(--line);
+      background: #f8f8f8;
+      font-size: 14px;
+    }
+    .business-info div { min-width: 0; }
+    .business-info strong {
+      display: block;
+      margin-bottom: 2px;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: .08em;
+    }
+    footer {
+      margin-top: 34px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    @media (max-width: 720px) {
+      .topbar-inner,
+      main { width: min(100% - 28px, var(--max)); }
+      main { padding: 48px 0 72px; }
+      .topbar-inner { height: 64px; }
+      .brand span { display: none; }
+      .policy-section { padding: 20px; }
+      .business-info { grid-template-columns: 1fr; }
+      table { min-width: 640px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html" aria-label="바이브나인 신청 페이지로 이동">
+        <img src="https://smith.speedgabia.com/logo_data/vibe_sim.png" alt="바이브나인" />
+        <span>VIBE NINE</span>
+      </a>
+      <a class="back-link" href="index.html">신청 페이지로 돌아가기</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="privacyTitle">
+      <p class="eyebrow">Privacy Policy</p>
+      <h1 id="privacyTitle">개인정보처리방침</h1>
+      <p class="summary">바이브나인은 폴스타 업그레이드 및 틴팅 예약 신청 과정에서 필요한 최소한의 개인정보를 수집·이용하며, 개인정보보호법 등 관련 법령에 따라 안전하게 관리합니다.</p>
+      <p class="summary">시행일 : 2026년 05월 11일</p>
+    </section>
+
+    <section class="policy-section" aria-labelledby="article1">
+      <h2 id="article1">제1조 개인정보의 처리 목적</h2>
+      <p>바이브나인은 다음의 목적을 위하여 개인정보를 처리합니다. 처리한 개인정보는 아래 목적 이외의 용도로 이용하지 않으며, 이용 목적이 변경되는 경우 관련 법령에 따라 별도의 동의를 받는 등 필요한 조치를 이행합니다.</p>
+      <ol>
+        <li>폴스타 업그레이드 및 틴팅 예약 접수</li>
+        <li>시공 일정 상담, 예약 확인, 대리점 및 시공점과의 일정 조율</li>
+        <li>고객 문의 응대, 시공 관련 안내 및 고지</li>
+        <li>선택 동의 시 이벤트, 프로모션, 혜택 및 서비스 안내</li>
+      </ol>
+    </section>
+
+    <section class="policy-section" aria-labelledby="article2">
+      <h2 id="article2">제2조 처리하는 개인정보 항목</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">구분</th>
+              <th scope="col">수집 항목</th>
+              <th scope="col">수집·이용 목적</th>
+              <th scope="col">보유 및 이용 기간</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>필수</td>
+              <td>이름, 휴대전화 번호, 차량 모델, 인도 전시장, 시공점, 인도일자 및 시간, 시공점 차량 입고일자 및 시간, 선택 시공 옵션</td>
+              <td>예약 접수, 시공 일정 상담·조율, 고객 안내 및 문의 응대</td>
+              <td>예약 상담 및 시공 안내 목적 달성 후 파기합니다. 단, 분쟁 대응 및 관계 법령에 따른 보관이 필요한 경우 입력일로부터 최대 5년까지 보관할 수 있습니다.</td>
+            </tr>
+            <tr>
+              <td>선택</td>
+              <td>기타 문의사항</td>
+              <td>추가 문의 확인 및 맞춤 안내</td>
+              <td>예약 상담 및 시공 안내 목적 달성 후 파기합니다. 단, 분쟁 대응 및 관계 법령에 따른 보관이 필요한 경우 입력일로부터 최대 5년까지 보관할 수 있습니다.</td>
+            </tr>
+            <tr>
+              <td>선택</td>
+              <td>이름, 휴대전화 번호</td>
+              <td>이벤트, 프로모션, 혜택 및 서비스 안내</td>
+              <td>동의 철회 또는 입력일로부터 2년 중 먼저 도래하는 시점까지</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>이용자는 개인정보 수집·이용 동의를 거부할 권리가 있습니다. 다만 필수 항목 수집·이용에 동의하지 않을 경우 예약 접수 및 시공 안내가 제한될 수 있습니다.</p>
+    </section>
+
+    <section class="policy-section" aria-labelledby="article3">
+      <h2 id="article3">제3조 개인정보의 제3자 제공</h2>
+      <p>바이브나인은 원활한 예약 확인 및 시공 일정 조율을 위하여 아래와 같이 개인정보를 제3자에게 제공할 수 있습니다.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">제공받는 자</th>
+              <th scope="col">제공 목적</th>
+              <th scope="col">제공 항목</th>
+              <th scope="col">보유 및 이용 기간</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>바이브나인 대리점 및 고객이 선택한 시공점</td>
+              <td>예약 확인, 시공 일정 조율, 시공 관련 고객 안내</td>
+              <td>이름, 휴대전화 번호, 차량 모델, 인도 전시장, 시공점, 인도/입고 일정, 선택 시공 옵션, 기타 문의사항</td>
+              <td>제공 목적 달성 후 파기합니다. 단, 분쟁 대응을 위해 제공일로부터 최대 2년까지 보관할 수 있습니다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>이용자는 개인정보 제3자 제공 동의를 거부할 권리가 있습니다. 다만 동의하지 않을 경우 대리점 및 시공점을 통한 예약 안내가 제한될 수 있습니다.</p>
+    </section>
+
+    <section class="policy-section" aria-labelledby="article4">
+      <h2 id="article4">제4조 개인정보 처리의 위탁</h2>
+      <p>바이브나인은 현재 예약 신청 개인정보 처리 업무를 외부 업체에 위탁하지 않습니다. 향후 개인정보 처리 위탁이 발생하는 경우 위탁받는 자, 위탁 업무의 내용, 보유 및 이용 기간을 본 방침 또는 별도 안내를 통해 공개하겠습니다.</p>
+    </section>
+
+    <section class="policy-section" aria-labelledby="article5">
+      <h2 id="article5">제5조 개인정보의 파기 절차 및 방법</h2>
+      <p>바이브나인은 개인정보 보유 기간의 경과, 처리 목적 달성 등 개인정보가 불필요하게 되었을 때에는 지체 없이 해당 개인정보를 파기합니다.</p>
+      <ol>
+        <li>전자적 파일 형태의 정보는 복구 및 재생이 어렵도록 안전한 방법으로 삭제합니다.</li>
+        <li>종이 문서에 기록된 개인정보는 분쇄하거나 소각하는 방법으로 파기합니다.</li>
+        <li>관계 법령에 따라 일정 기간 보관해야 하는 경우 해당 기간 동안 별도로 분리하여 보관합니다.</li>
+      </ol>
+    </section>
+
+    <section class="policy-section" aria-labelledby="article6">
+      <h2 id="article6">제6조 정보주체의 권리·의무 및 행사 방법</h2>
+      <p>이용자는 바이브나인에 대해 언제든지 개인정보 열람, 정정, 삭제, 처리정지, 동의 철회를 요청할 수 있습니다. 요청은 전화 또는 기타 연락 수단을 통해 접수할 수 있으며, 바이브나인은 관련 법령에 따라 지체 없이 조치합니다.</p>
+      <p>다만 다른 법령에서 그 개인정보가 수집 대상으로 명시되어 있거나 보관 의무가 있는 경우에는 삭제 또는 처리정지가 제한될 수 있습니다.</p>
+    </section>
+
+    <section class="policy-section" aria-labelledby="article7">
+      <h2 id="article7">제7조 개인정보의 안전성 확보 조치</h2>
+      <p>바이브나인은 개인정보의 안전성 확보를 위해 다음과 같은 조치를 취합니다.</p>
+      <ol>
+        <li>개인정보 접근 권한의 최소화 및 관리</li>
+        <li>개인정보 취급 담당자에 대한 관리·감독</li>
+        <li>개인정보가 포함된 자료의 안전한 보관 및 접근 제한</li>
+        <li>개인정보 유출, 훼손, 분실 방지를 위한 내부 관리 절차 운영</li>
+      </ol>
+    </section>
+
+    <section class="policy-section" aria-labelledby="article8">
+      <h2 id="article8">제8조 개인정보 자동 수집 장치의 설치·운영 및 거부</h2>
+      <p>본 신청 페이지는 이용자의 행태정보를 추적하기 위한 쿠키 등 개인정보 자동 수집 장치를 운영하지 않습니다. 향후 쿠키 또는 유사 기술을 사용하는 경우 수집 항목, 이용 목적, 거부 방법을 별도로 안내하겠습니다.</p>
+    </section>
+
+    <section class="policy-section" aria-labelledby="article9">
+      <h2 id="article9">제9조 개인정보 보호책임자 및 문의처</h2>
+      <p>개인정보 처리와 관련한 문의, 열람·정정·삭제·처리정지 요청, 동의 철회 요청은 아래 연락처로 문의하실 수 있습니다.</p>
+      <div class="business-info">
+        <div><strong>상호</strong>바이브나인</div>
+        <div><strong>대표자</strong>김태준</div>
+        <div><strong>사업자등록번호</strong>139-88-02094</div>
+        <div><strong>연락처</strong>031-921-1210</div>
+        <div><strong>주소</strong>경기도 고양시 일산동구 일산로 418 (정발산동)</div>
+        <div><strong>개인정보 보호 담당</strong>바이브나인 고객상담 담당자</div>
+      </div>
+    </section>
+
+    <section class="policy-section" aria-labelledby="article10">
+      <h2 id="article10">제10조 권익침해 구제 방법</h2>
+      <p>이용자는 개인정보 침해로 인한 구제를 받기 위하여 개인정보침해신고센터, 개인정보분쟁조정위원회 등 관련 기관에 상담 또는 분쟁 해결을 신청할 수 있습니다.</p>
+    </section>
+
+    <section class="policy-section" aria-labelledby="article11">
+      <h2 id="article11">제11조 개인정보처리방침의 변경</h2>
+      <p>본 개인정보처리방침은 시행일로부터 적용됩니다. 법령, 정책 또는 서비스 내용 변경에 따라 본 방침이 변경되는 경우 신청 페이지 또는 별도 안내를 통해 고지합니다.</p>
+      <div class="notice">본 문서는 바이브나인 폴스타 업그레이드 신청 페이지의 수집 항목과 사업자 정보를 반영한 개인정보처리방침입니다. 실제 운영 방식, 접수 시스템, 위탁사 또는 제3자 제공 대상이 변경되는 경우 해당 내용을 최신 상태로 반영해야 합니다.</div>
+    </section>
+
+    <footer>
+      © VIBE NINE. 개인정보 문의: 031-921-1210
+    </footer>
+  </main>
+</body>
+</html>
