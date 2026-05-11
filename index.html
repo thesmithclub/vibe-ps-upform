@@ -816,34 +816,16 @@
       cursor: not-allowed;
       text-decoration: line-through;
     }
-    .time-wheel-picker {
+    .clock-time-picker {
       position: relative;
       margin: 18px -16px -16px;
+      padding: 0 0 18px;
       background: #f3f3f3;
       border-top: 1px solid rgba(0, 0, 0, .10);
       box-shadow: none;
       overflow: hidden;
     }
-    .time-wheel-picker::before,
-    .time-wheel-picker::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      z-index: 2;
-      pointer-events: none;
-    }
-    .time-wheel-picker::before {
-      top: 62px;
-      height: 42px;
-      background: transparent;
-    }
-    .time-wheel-picker::after {
-      bottom: 48px;
-      height: 40px;
-      background: transparent;
-    }
-    .time-wheel-title {
+    .clock-time-title {
       position: relative;
       z-index: 3;
       padding: 22px 22px 24px;
@@ -857,7 +839,7 @@
       letter-spacing: -.045em;
       text-shadow: none;
     }
-    .time-wheel-title::after {
+    .clock-time-title::after {
       content: '';
       position: absolute;
       left: 0;
@@ -867,92 +849,150 @@
       background: #141414;
       box-shadow: none;
     }
-    .time-wheel-grid {
-      position: relative;
-      display: grid;
-      grid-template-columns: minmax(78px, 1.08fr) minmax(0, .9fr) auto minmax(0, .9fr);
-      gap: 10px;
+    .clock-time-readout {
+      display: flex;
       align-items: center;
-      padding: 28px 28px 24px;
-      perspective: none;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px 18px 0;
     }
-    .time-wheel-grid::before {
-      content: '';
-      position: absolute;
-      left: 22px;
-      right: 22px;
-      top: calc(50% - 32px);
-      height: 64px;
-      transform: none;
-      border: 1px solid rgba(0, 0, 0, .18);
-      border-radius: 0;
-      background: #fff;
-      box-shadow: none;
-      pointer-events: none;
-    }
-    .time-wheel-column {
-      position: relative;
-      z-index: 3;
-      display: grid;
-      gap: 8px;
-      transform-style: flat;
-    }
-    .time-wheel-option {
-      min-height: 58px;
-      border: 0;
-      border-radius: 0;
-      background: transparent;
-      color: #b9b9b9;
-      cursor: pointer;
+    .clock-time-value {
+      color: #111;
       font-size: 28px;
       line-height: 1;
-      font-weight: 850;
-      text-align: center;
+      font-weight: 950;
+      letter-spacing: -.04em;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .clock-period-toggle {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      min-width: 132px;
+      border: 1px solid #111;
+      background: #fff;
+    }
+    .clock-period-btn,
+    .clock-step-btn,
+    .clock-number {
+      appearance: none;
+      -webkit-appearance: none;
+      border-radius: 0;
+      box-shadow: none;
       text-shadow: none;
       transition: none;
+      cursor: pointer;
+      font-family: inherit;
     }
-    .time-wheel-option:first-child:not(.is-selected):not(.is-empty) {
-      opacity: .58;
-      transform: none;
+    .clock-period-btn {
+      min-height: 38px;
+      border: 0;
+      border-left: 1px solid #111;
+      background: #fff;
+      color: #111;
+      font-size: 14px;
+      font-weight: 900;
     }
-    .time-wheel-option:last-child:not(.is-selected):not(.is-empty) {
-      opacity: .58;
-      transform: none;
+    .clock-period-btn:first-child { border-left: 0; }
+    .clock-period-btn.is-selected {
+      background: #111;
+      color: #fff;
     }
-    .time-wheel-option:hover {
-      color: #141414;
+    .clock-step-toggle {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin: 14px 18px 0;
+      border: 1px solid #d5d5d5;
+      background: #fff;
+    }
+    .clock-step-btn {
+      min-height: 40px;
+      border: 0;
+      border-left: 1px solid #d5d5d5;
+      background: #fff;
+      color: #777;
+      font-size: 13px;
+      font-weight: 900;
+    }
+    .clock-step-btn:first-child { border-left: 0; }
+    .clock-step-btn.is-active {
+      background: #111;
+      color: #fff;
+    }
+    .clock-face {
+      --clock-radius: 118px;
+      --clock-hand-length: 92px;
+      --clock-hand-angle: -90deg;
+      position: relative;
+      width: min(300px, calc(100vw - 96px));
+      aspect-ratio: 1;
+      margin: 20px auto 18px;
+      border: 2px solid #111;
+      border-radius: 50%;
       background: #fff;
       box-shadow: none;
     }
-    .time-wheel-option.is-empty {
-      pointer-events: none;
-      border-color: transparent;
-      background: transparent;
+    .clock-face::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 8px;
+      height: 8px;
+      margin: -4px 0 0 -4px;
+      border-radius: 50%;
+      background: #111;
+      z-index: 3;
     }
-    .time-wheel-option.is-selected {
+    .clock-hand {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: var(--clock-hand-length);
+      height: 2px;
+      background: #111;
+      transform-origin: 0 50%;
+      transform: rotate(var(--clock-hand-angle));
+      z-index: 2;
+      pointer-events: none;
+    }
+    .clock-numbers {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+    }
+    .clock-number {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 48px;
+      min-height: 36px;
+      margin: -18px 0 0 -24px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: #777;
+      font-size: 15px;
+      line-height: 1;
+      font-weight: 900;
+      text-align: center;
+      transform: rotate(var(--clock-angle)) translate(var(--clock-radius)) rotate(var(--clock-angle-reverse));
+    }
+    .clock-number:hover {
+      border-color: #111;
       color: #111;
       background: #fff;
-      border-top: 0;
-      border-bottom: 0;
-      box-shadow: none;
-      font-weight: 950;
-      transform: none;
     }
-    .time-wheel-separator {
-      position: relative;
-      z-index: 3;
-      color: #4c4c4c;
-      font-size: 30px;
-      font-weight: 900;
-      text-shadow: none;
-      transform: none;
+    .clock-number.is-selected {
+      border-color: #111;
+      background: #111;
+      color: #fff;
     }
     .picker-apply {
       position: relative;
       z-index: 3;
       width: calc(100% - 36px);
       min-height: 50px;
-      margin: 0 18px 18px;
+      margin: 0 18px;
       border: 1px solid rgba(255,255,255,.16);
       border-radius: 0;
       background: #111;
@@ -1120,10 +1160,12 @@
     .topbar,
     .form-card,
     .datetime-picker,
-    .time-wheel-picker,
-    .time-wheel-title,
-    .time-wheel-grid::before,
-    .time-wheel-option,
+    .clock-time-picker,
+    .clock-time-title,
+    .clock-face,
+    .clock-period-btn,
+    .clock-step-btn,
+    .clock-number,
     .picker-apply,
     .submit-btn,
     .toast,
@@ -1140,7 +1182,9 @@
     .vehicle-card .vehicle-check,
     input[type="text"], input[type="tel"], input[type="date"], input[type="time"], input[type="datetime-local"], select, textarea,
     .datetime-picker,
-    .time-wheel-option,
+    .clock-period-btn,
+    .clock-step-btn,
+    .clock-number,
     .picker-apply,
     .submit-btn,
     .toast,
@@ -1154,19 +1198,16 @@
     .vehicle-choice input:checked + .vehicle-card .vehicle-check,
     .picker-apply:hover,
     .picker-apply:active,
-    .submit-btn:hover,
-    .time-wheel-option:first-child:not(.is-selected):not(.is-empty),
-    .time-wheel-option:last-child:not(.is-selected):not(.is-empty),
-    .time-wheel-option.is-selected,
-    .time-wheel-separator {
+    .submit-btn:hover {
       transform: none;
     }
 
     .datetime-picker,
-    .time-wheel-picker,
-    .time-wheel-title,
-    .time-wheel-grid::before,
-    .time-wheel-option.is-selected,
+    .clock-time-picker,
+    .clock-time-title,
+    .clock-number.is-selected,
+    .clock-period-btn.is-selected,
+    .clock-step-btn.is-active,
     .picker-apply {
       background-image: none;
     }
@@ -1300,25 +1341,32 @@
       .datetime-picker {
         border-radius: 0;
       }
-      .time-wheel-title {
+      .clock-time-title {
         font-size: 28px;
         padding: 20px 18px 22px;
       }
-      .time-wheel-grid {
-        grid-template-columns: minmax(72px, 1.08fr) minmax(0, .9fr) auto minmax(0, .9fr);
-        gap: 6px;
-        padding: 24px 18px 20px;
+      .clock-time-readout {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 12px;
       }
-      .time-wheel-grid::before {
-        left: 14px;
-        right: 14px;
-      }
-      .time-wheel-option {
-        min-height: 54px;
-        font-size: 24px;
-      }
-      .time-wheel-separator {
+      .clock-time-value {
         font-size: 26px;
+      }
+      .clock-period-toggle {
+        width: 100%;
+        min-width: 0;
+      }
+      .clock-face {
+        --clock-radius: 98px;
+        --clock-hand-length: 76px;
+        width: min(252px, calc(100vw - 84px));
+      }
+      .clock-number {
+        width: 42px;
+        min-height: 32px;
+        margin: -16px 0 0 -21px;
+        font-size: 13px;
       }
       .picker-apply {
         width: calc(100% - 28px);
@@ -1999,17 +2047,21 @@
       return new Date(year, month - 1, day);
     }
 
-    const timeWheelHours = Array.from({ length: 12 }, (_, index) => index + 1);
-    const timeWheelMinutes = [0, 30];
-    const timeWheelPeriods = ['오전', '오후'];
+    const timeClockHours = Array.from({ length: 12 }, (_, index) => index + 1);
+    const timeClockMinutes = Array.from({ length: 12 }, (_, index) => index * 5);
+
+    function normalizeClockMinute(minuteValue) {
+      const minuteNumber = Number(minuteValue);
+      if (!Number.isFinite(minuteNumber)) return 0;
+      return Math.min(55, Math.max(0, Math.round(minuteNumber / 5) * 5));
+    }
 
     function createTimeState(timeValue = '09:00') {
       const [hourRaw = '09', minuteRaw = '00'] = timeValue.split(':');
       let hour24 = Number(hourRaw);
       if (!Number.isInteger(hour24) || hour24 < 0 || hour24 > 23) hour24 = 9;
 
-      const minuteNumber = Number(minuteRaw);
-      const minute = Number.isFinite(minuteNumber) && minuteNumber >= 30 ? 30 : 0;
+      const minute = normalizeClockMinute(minuteRaw);
       const period = hour24 >= 12 ? '오후' : '오전';
       const hour = hour24 % 12 || 12;
       return { hour, minute, period };
@@ -2021,31 +2073,34 @@
       return `${padNumber(hour24)}:${padNumber(minute)}`;
     }
 
-    function renderTimeWheelColumn(column, values, selectedValue, formatter, onSelect, cycle = false) {
-      column.innerHTML = '';
-      const selectedIndex = values.indexOf(selectedValue);
-      const positions = [selectedIndex - 1, selectedIndex, selectedIndex + 1];
+    function getClockAngle(value, mode) {
+      const index = mode === 'hour' ? value % 12 : value / 5;
+      return index * 30 - 90;
+    }
 
-      positions.forEach((position) => {
-        if (!cycle && (position < 0 || position >= values.length)) {
-          const spacer = document.createElement('span');
-          spacer.className = 'time-wheel-option is-empty';
-          spacer.setAttribute('aria-hidden', 'true');
-          column.appendChild(spacer);
-          return;
-        }
+    function renderClockFace(clockFace, clockNumbers, mode, selectedValue, onSelect) {
+      clockNumbers.innerHTML = '';
+      const values = mode === 'hour' ? timeClockHours : timeClockMinutes;
+      const formatter = mode === 'hour' ? String : padNumber;
+      const selectedAngle = getClockAngle(selectedValue, mode);
+      clockFace.style.setProperty('--clock-hand-angle', `${selectedAngle}deg`);
+      clockFace.dataset.mode = mode;
+      clockFace.setAttribute('aria-label', mode === 'hour' ? '시 선택' : '분 선택');
 
-        const value = values[(position + values.length) % values.length];
-        const displayValue = formatter(value);
+      values.forEach((value) => {
+        const angle = getClockAngle(value, mode);
         const button = document.createElement('button');
         button.type = 'button';
-        button.className = 'time-wheel-option';
-        button.dataset.value = displayValue;
-        button.textContent = displayValue;
+        button.className = 'clock-number';
+        button.dataset.value = String(value);
+        button.textContent = formatter(value);
+        button.style.setProperty('--clock-angle', `${angle}deg`);
+        button.style.setProperty('--clock-angle-reverse', `${-angle}deg`);
         button.setAttribute('aria-pressed', String(value === selectedValue));
+        button.setAttribute('aria-label', mode === 'hour' ? `${value}시` : `${padNumber(value)}분`);
         if (value === selectedValue) button.classList.add('is-selected');
         button.addEventListener('click', () => onSelect(value));
-        column.appendChild(button);
+        clockNumbers.appendChild(button);
       });
     }
 
@@ -2070,14 +2125,23 @@
           <span class="picker-weekday is-weekend">일</span>
         </div>
         <div class="picker-days"></div>
-        <p class="picker-help">토요일과 일요일은 선택할 수 없습니다. 시간은 30분 단위로 선택됩니다.</p>
-        <div class="time-wheel-picker" aria-label="시간 선택">
-          <div class="time-wheel-title">Set time</div>
-          <div class="time-wheel-grid">
-            <div class="time-wheel-column" data-unit="period" aria-label="오전 또는 오후"></div>
-            <div class="time-wheel-column" data-unit="hour" aria-label="시"></div>
-            <span class="time-wheel-separator" aria-hidden="true">:</span>
-            <div class="time-wheel-column" data-unit="minute" aria-label="분"></div>
+        <p class="picker-help">토요일과 일요일은 선택할 수 없습니다. 시간 선택 후 분을 5분 단위로 선택합니다.</p>
+        <div class="clock-time-picker" aria-label="시간 선택">
+          <div class="clock-time-title">Set time</div>
+          <div class="clock-time-readout">
+            <div class="clock-time-value" aria-live="polite">오전 09:00</div>
+            <div class="clock-period-toggle" aria-label="오전 또는 오후">
+              <button class="clock-period-btn" type="button" data-period="오전">오전</button>
+              <button class="clock-period-btn" type="button" data-period="오후">오후</button>
+            </div>
+          </div>
+          <div class="clock-step-toggle" role="tablist" aria-label="시간 또는 분 선택">
+            <button class="clock-step-btn" type="button" data-mode="hour" role="tab">시</button>
+            <button class="clock-step-btn" type="button" data-mode="minute" role="tab">분</button>
+          </div>
+          <div class="clock-face" aria-label="시 선택">
+            <span class="clock-hand" aria-hidden="true"></span>
+            <div class="clock-numbers"></div>
           </div>
           <button class="picker-apply" type="button">Done</button>
         </div>
@@ -2088,29 +2152,39 @@
       const days = picker.querySelector('.picker-days');
       const prev = picker.querySelector('.prev');
       const next = picker.querySelector('.next');
-      const hourColumn = picker.querySelector('.time-wheel-column[data-unit="hour"]');
-      const minuteColumn = picker.querySelector('.time-wheel-column[data-unit="minute"]');
-      const periodColumn = picker.querySelector('.time-wheel-column[data-unit="period"]');
+      const timeValueLabel = picker.querySelector('.clock-time-value');
+      const periodButtons = Array.from(picker.querySelectorAll('.clock-period-btn'));
+      const modeButtons = Array.from(picker.querySelectorAll('.clock-step-btn'));
+      const clockFace = picker.querySelector('.clock-face');
+      const clockNumbers = picker.querySelector('.clock-numbers');
       const apply = picker.querySelector('.picker-apply');
 
       let viewDate = new Date();
       let selectedDate = null;
       let timeState = createTimeState('09:00');
+      let clockMode = 'hour';
 
-      function renderTimeWheel() {
-        renderTimeWheelColumn(hourColumn, timeWheelHours, timeState.hour, String, (value) => {
-          timeState.hour = value;
-          renderTimeWheel();
-          setInputValue();
-        }, true);
-        renderTimeWheelColumn(minuteColumn, timeWheelMinutes, timeState.minute, padNumber, (value) => {
-          timeState.minute = value;
-          renderTimeWheel();
-          setInputValue();
+      function renderTimeClock() {
+        timeValueLabel.textContent = `${timeState.period} ${padNumber(timeState.hour)}:${padNumber(timeState.minute)}`;
+        periodButtons.forEach((button) => {
+          const isSelected = button.dataset.period === timeState.period;
+          button.classList.toggle('is-selected', isSelected);
+          button.setAttribute('aria-pressed', String(isSelected));
         });
-        renderTimeWheelColumn(periodColumn, timeWheelPeriods, timeState.period, String, (value) => {
-          timeState.period = value;
-          renderTimeWheel();
+        modeButtons.forEach((button) => {
+          const isActive = button.dataset.mode === clockMode;
+          button.classList.toggle('is-active', isActive);
+          button.setAttribute('aria-selected', String(isActive));
+        });
+        const selectedValue = clockMode === 'hour' ? timeState.hour : timeState.minute;
+        renderClockFace(clockFace, clockNumbers, clockMode, selectedValue, (value) => {
+          if (clockMode === 'hour') {
+            timeState.hour = value;
+            clockMode = 'minute';
+          } else {
+            timeState.minute = value;
+          }
+          renderTimeClock();
           setInputValue();
         });
       }
@@ -2180,9 +2254,10 @@
           viewDate = new Date();
         }
         timeState = createTimeState(timeValue || '09:00');
+        clockMode = 'hour';
         apply.disabled = !selectedDate;
         renderCalendar();
-        renderTimeWheel();
+        renderTimeClock();
         picker.classList.add('is-open');
         positionPicker();
       }
@@ -2198,6 +2273,19 @@
       next.addEventListener('click', () => {
         viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1);
         renderCalendar();
+      });
+      periodButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          timeState.period = button.dataset.period;
+          renderTimeClock();
+          setInputValue();
+        });
+      });
+      modeButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          clockMode = button.dataset.mode;
+          renderTimeClock();
+        });
       });
       apply.addEventListener('click', () => {
         setInputValue();
