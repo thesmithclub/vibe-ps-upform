@@ -656,7 +656,7 @@
     }
     input[type="datetime-local"], .datetime-display { cursor: pointer; }
     .service-center-search {
-      margin: 0 0 14px;
+      margin: 0;
       padding: 14px;
       border: 1px solid var(--line);
       background: #f7f7f5;
@@ -1814,54 +1814,16 @@
               </div>
 
               <div class="field full">
+                <input id="serviceCenter" name="serviceCenter" type="hidden">
                 <div class="service-center-search" id="serviceCenterSearchArea">
-                  <label class="service-center-search-label" for="serviceCenterSearch">시공점 빠른 검색</label>
+                  <label class="service-center-search-label" for="serviceCenterSearch">시공점 빠른 검색 <span class="req">*</span></label>
                   <div class="service-center-search-row">
-                    <input id="serviceCenterSearch" class="service-center-search-input" type="text" placeholder="지역명 또는 센터명을 검색하세요. 예: 하남, 부산" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="serviceCenterResults">
+                    <input id="serviceCenterSearch" class="service-center-search-input" type="text" placeholder="지역명 또는 센터명을 검색하세요. 예: 하남, 부산" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="serviceCenterResults" aria-required="true" required>
                     <button class="service-center-clear" id="serviceCenterClear" type="button">초기화</button>
                   </div>
                   <div class="service-center-results" id="serviceCenterResults" role="listbox" aria-label="시공점 검색 결과"></div>
                   <p class="service-center-status" id="serviceCenterStatus" aria-live="polite">검색어를 입력하거나 목록에서 시공점을 선택해주세요.</p>
                 </div>
-                <label for="serviceCenter">시공점을 선택하여 주세요. <span class="req">*</span></label>
-                <select id="serviceCenter" name="serviceCenter" required>
-                  <option value="" selected disabled>선택해주세요</option>
-                  <option>바이브나인 본사</option>
-                  <option>바이브나인 일산 센터</option>
-                  <option>바이브나인 서초 센터</option>
-                  <option>바이브나인 중랑 센터</option>
-                  <option>바이브나인 구로 센터</option>
-                  <option>바이브나인 논현 센터</option>
-                  <option>바이브나인 송파 센터</option>
-                  <option>바이브나인 신사 센터</option>
-                  <option>바이브나인 하남 센터</option>
-                  <option>바이브나인 판교 센터</option>
-                  <option>바이브나인 화성(동탄)센터</option>
-                  <option>바이브나인 안양 센터</option>
-                  <option>바이브나인 수원 센터</option>
-                  <option>바이브나인 인천남동 센터</option>
-                  <option>바이브나인 김해 센터</option>
-                  <option>바이브나인 진주 센터</option>
-                  <option>바이브나인 부산남구 센터</option>
-                  <option>바이브나인 부산 해운대 센터</option>
-                  <option>바이브나인 창원 센터</option>
-                  <option>바이브나인 구미칠곡 센터</option>
-                  <option>바이브나인 대구중동교 센터</option>
-                  <option>바이브나인 대구수성 센터</option>
-                  <option>바이브나인 울산 센터</option>
-                  <option>바이브나인 목포 센터</option>
-                  <option>바이브나인 여수신기 센터</option>
-                  <option>바이브나인 광주 센터</option>
-                  <option>바이브나인 전주 센터</option>
-                  <option>바이브나인 천안 센터</option>
-                  <option>바이브나인 청주 센터</option>
-                  <option>바이브나인 대전유성 센터</option>
-                  <option>바이브나인 대전동구 센터</option>
-                  <option>바이브나인 원주 센터</option>
-                  <option>바이브나인 제주 센터</option>
-                  <option>바이브나인 김포고촌 센터</option>
-                  <option>바이브나인 부산 수영 센터</option>
-                </select>
               </div>
 
               <div class="field full">
@@ -2078,11 +2040,48 @@
     const priceGuideImage = 'https://smith.speedgabia.com/dummy/PS4_price.jpg';
     const priceEstimateTotal = document.getElementById('priceEstimateTotal');
     const priceEstimateList = document.getElementById('priceEstimateList');
-    const serviceCenterSelect = document.getElementById('serviceCenter');
+    const serviceCenterInput = document.getElementById('serviceCenter');
     const serviceCenterSearch = document.getElementById('serviceCenterSearch');
     const serviceCenterResults = document.getElementById('serviceCenterResults');
     const serviceCenterStatus = document.getElementById('serviceCenterStatus');
     const serviceCenterClear = document.getElementById('serviceCenterClear');
+    const serviceCenterOptions = [
+      "바이브나인 본사",
+      "바이브나인 일산 센터",
+      "바이브나인 서초 센터",
+      "바이브나인 중랑 센터",
+      "바이브나인 구로 센터",
+      "바이브나인 논현 센터",
+      "바이브나인 송파 센터",
+      "바이브나인 신사 센터",
+      "바이브나인 하남 센터",
+      "바이브나인 판교 센터",
+      "바이브나인 화성(동탄)센터",
+      "바이브나인 안양 센터",
+      "바이브나인 수원 센터",
+      "바이브나인 인천남동 센터",
+      "바이브나인 김해 센터",
+      "바이브나인 진주 센터",
+      "바이브나인 부산남구 센터",
+      "바이브나인 부산 해운대 센터",
+      "바이브나인 창원 센터",
+      "바이브나인 구미칠곡 센터",
+      "바이브나인 대구중동교 센터",
+      "바이브나인 대구수성 센터",
+      "바이브나인 울산 센터",
+      "바이브나인 목포 센터",
+      "바이브나인 여수신기 센터",
+      "바이브나인 광주 센터",
+      "바이브나인 전주 센터",
+      "바이브나인 천안 센터",
+      "바이브나인 청주 센터",
+      "바이브나인 대전유성 센터",
+      "바이브나인 대전동구 센터",
+      "바이브나인 원주 센터",
+      "바이브나인 제주 센터",
+      "바이브나인 김포고촌 센터",
+      "바이브나인 부산 수영 센터"
+    ];
     const priceEstimateInputs = ['frontFilm', 'sideOneFilm', 'sideTwoFilm', 'glassRoofFilm', 'ppf', 'hipass']
       .map((id) => document.getElementById(id))
       .filter(Boolean);
@@ -2092,10 +2091,7 @@
     ];
 
     function getServiceCenterOptions() {
-      if (!serviceCenterSelect) return [];
-      return Array.from(serviceCenterSelect.options)
-        .filter((option) => option.value && !option.disabled)
-        .map((option) => option.value.trim());
+      return serviceCenterOptions.slice();
     }
 
     function normalizeServiceCenterQuery(value) {
@@ -2107,6 +2103,15 @@
       serviceCenterStatus.textContent = value ? `선택된 시공점: ${value}` : '검색어를 입력하거나 목록에서 시공점을 선택해주세요.';
     }
 
+    function updateServiceCenterValidity() {
+      if (!serviceCenterInput || !serviceCenterSearch) return;
+      if (!serviceCenterSearch.value.trim()) {
+        serviceCenterSearch.setCustomValidity('');
+        return;
+      }
+      serviceCenterSearch.setCustomValidity(serviceCenterInput.value ? '' : '검색 결과에서 시공점을 선택해주세요.');
+    }
+
     function closeServiceCenterResults() {
       if (!serviceCenterSearch || !serviceCenterResults) return;
       serviceCenterResults.classList.remove('is-open');
@@ -2114,16 +2119,17 @@
     }
 
     function selectServiceCenter(value) {
-      if (!serviceCenterSelect || !serviceCenterSearch) return;
-      serviceCenterSelect.value = value;
+      if (!serviceCenterInput || !serviceCenterSearch) return;
+      serviceCenterInput.value = value;
       serviceCenterSearch.value = value;
-      serviceCenterSelect.dispatchEvent(new Event('change', { bubbles: true }));
+      serviceCenterInput.dispatchEvent(new Event('change', { bubbles: true }));
       updateServiceCenterStatus(value);
+      updateServiceCenterValidity();
       closeServiceCenterResults();
     }
 
     function renderServiceCenterResults() {
-      if (!serviceCenterSelect || !serviceCenterSearch || !serviceCenterResults) return;
+      if (!serviceCenterInput || !serviceCenterSearch || !serviceCenterResults) return;
       const query = serviceCenterSearch.value.trim();
       const normalizedQuery = normalizeServiceCenterQuery(query);
       const matches = getServiceCenterOptions().filter((value) => {
@@ -2144,15 +2150,15 @@
           button.className = 'service-center-option';
           button.id = `serviceCenterOption${index}`;
           button.dataset.value = value;
-          button.setAttribute('aria-selected', String(serviceCenterSelect.value === value));
+          button.setAttribute('aria-selected', String(serviceCenterInput.value === value));
           button.textContent = value;
-          if (serviceCenterSelect.value === value) button.classList.add('is-selected');
+          if (serviceCenterInput.value === value) button.classList.add('is-selected');
           serviceCenterResults.appendChild(button);
         });
       }
 
-      if (serviceCenterSelect.value && serviceCenterSearch.value === serviceCenterSelect.value) {
-        updateServiceCenterStatus(serviceCenterSelect.value);
+      if (serviceCenterInput.value && serviceCenterSearch.value === serviceCenterInput.value) {
+        updateServiceCenterStatus(serviceCenterInput.value);
       } else if (query && matches.length) {
         serviceCenterStatus.textContent = `검색 결과 ${matches.length}개가 있습니다. 선택할 시공점을 클릭해주세요.`;
       } else if (query) {
@@ -2161,18 +2167,20 @@
         updateServiceCenterStatus('');
       }
 
+      updateServiceCenterValidity();
       serviceCenterResults.classList.add('is-open');
       serviceCenterSearch.setAttribute('aria-expanded', 'true');
     }
 
     function initServiceCenterSearch() {
-      if (!serviceCenterSelect || !serviceCenterSearch || !serviceCenterResults) return;
-      updateServiceCenterStatus(serviceCenterSelect.value);
+      if (!serviceCenterInput || !serviceCenterSearch || !serviceCenterResults) return;
+      updateServiceCenterStatus(serviceCenterInput.value);
+      updateServiceCenterValidity();
 
       serviceCenterSearch.addEventListener('focus', renderServiceCenterResults);
       serviceCenterSearch.addEventListener('input', () => {
-        if (serviceCenterSelect.value && serviceCenterSearch.value.trim() !== serviceCenterSelect.value) {
-          serviceCenterSelect.value = '';
+        if (serviceCenterInput.value && serviceCenterSearch.value.trim() !== serviceCenterInput.value) {
+          serviceCenterInput.value = '';
         }
         renderServiceCenterResults();
       });
@@ -2191,18 +2199,19 @@
       });
       if (serviceCenterClear) {
         serviceCenterClear.addEventListener('click', () => {
-          serviceCenterSelect.value = '';
+          serviceCenterInput.value = '';
           serviceCenterSearch.value = '';
-          serviceCenterSelect.dispatchEvent(new Event('change', { bubbles: true }));
+          serviceCenterInput.dispatchEvent(new Event('change', { bubbles: true }));
           updateServiceCenterStatus('');
           serviceCenterSearch.focus();
           renderServiceCenterResults();
         });
       }
-      serviceCenterSelect.addEventListener('change', () => {
-        const value = serviceCenterSelect.value;
+      serviceCenterInput.addEventListener('change', () => {
+        const value = serviceCenterInput.value;
         serviceCenterSearch.value = value;
         updateServiceCenterStatus(value);
+        updateServiceCenterValidity();
       });
       document.addEventListener('click', (event) => {
         if (event.target.closest('#serviceCenterSearchArea')) return;
@@ -2793,6 +2802,7 @@
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       syncDateTimeFields();
+      updateServiceCenterValidity();
       if (!form.reportValidity()) return;
       toast.classList.add('show');
       window.setTimeout(() => toast.classList.remove('show'), 3600);
