@@ -752,7 +752,10 @@
       box-shadow: none;
       padding: 16px;
       display: none;
-      overflow: hidden;
+      max-height: calc(100vh - 28px);
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
       transform-origin: top left;
     }
     .datetime-picker.is-open {
@@ -843,14 +846,14 @@
     .time-wheel-title {
       position: relative;
       z-index: 3;
-      padding: 18px 18px 15px;
-      color: #1f1f1f;
+      padding: 22px 22px 24px;
+      color: #111;
       background: #f3f3f3;
       border-bottom: 0;
       box-shadow: none;
-      font-size: 25px;
+      font-size: 31px;
       line-height: 1;
-      font-weight: 700;
+      font-weight: 900;
       letter-spacing: -.045em;
       text-shadow: none;
     }
@@ -860,17 +863,17 @@
       left: 0;
       right: 0;
       bottom: 0;
-      height: 3px;
+      height: 4px;
       background: #141414;
       box-shadow: none;
     }
     .time-wheel-grid {
       position: relative;
       display: grid;
-      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) minmax(0, 1fr);
-      gap: 12px;
+      grid-template-columns: minmax(78px, 1.08fr) minmax(0, .9fr) auto minmax(0, .9fr);
+      gap: 10px;
       align-items: center;
-      padding: 24px 28px 20px;
+      padding: 28px 28px 24px;
       perspective: none;
     }
     .time-wheel-grid::before {
@@ -878,8 +881,8 @@
       position: absolute;
       left: 22px;
       right: 22px;
-      top: calc(50% - 24px);
-      height: 48px;
+      top: calc(50% - 32px);
+      height: 64px;
       transform: none;
       border: 1px solid rgba(0, 0, 0, .18);
       border-radius: 0;
@@ -895,15 +898,15 @@
       transform-style: flat;
     }
     .time-wheel-option {
-      min-height: 42px;
+      min-height: 58px;
       border: 0;
       border-radius: 0;
       background: transparent;
-      color: #9b9b9b;
+      color: #b9b9b9;
       cursor: pointer;
-      font-size: 22px;
+      font-size: 28px;
       line-height: 1;
-      font-weight: 600;
+      font-weight: 850;
       text-align: center;
       text-shadow: none;
       transition: none;
@@ -932,15 +935,15 @@
       border-top: 0;
       border-bottom: 0;
       box-shadow: none;
-      font-weight: 850;
+      font-weight: 950;
       transform: none;
     }
     .time-wheel-separator {
       position: relative;
       z-index: 3;
       color: #4c4c4c;
-      font-size: 26px;
-      font-weight: 800;
+      font-size: 30px;
+      font-weight: 900;
       text-shadow: none;
       transform: none;
     }
@@ -1298,16 +1301,24 @@
         border-radius: 0;
       }
       .time-wheel-title {
-        font-size: 23px;
-        padding: 17px 16px 14px;
+        font-size: 28px;
+        padding: 20px 18px 22px;
       }
       .time-wheel-grid {
-        gap: 8px;
-        padding: 22px 18px 18px;
+        grid-template-columns: minmax(72px, 1.08fr) minmax(0, .9fr) auto minmax(0, .9fr);
+        gap: 6px;
+        padding: 24px 18px 20px;
       }
       .time-wheel-grid::before {
         left: 14px;
         right: 14px;
+      }
+      .time-wheel-option {
+        min-height: 54px;
+        font-size: 24px;
+      }
+      .time-wheel-separator {
+        font-size: 26px;
       }
       .picker-apply {
         width: calc(100% - 28px);
@@ -1990,7 +2001,7 @@
 
     const timeWheelHours = Array.from({ length: 12 }, (_, index) => index + 1);
     const timeWheelMinutes = [0, 30];
-    const timeWheelPeriods = ['AM', 'PM'];
+    const timeWheelPeriods = ['오전', '오후'];
 
     function createTimeState(timeValue = '09:00') {
       const [hourRaw = '09', minuteRaw = '00'] = timeValue.split(':');
@@ -1999,14 +2010,14 @@
 
       const minuteNumber = Number(minuteRaw);
       const minute = Number.isFinite(minuteNumber) && minuteNumber >= 30 ? 30 : 0;
-      const period = hour24 >= 12 ? 'PM' : 'AM';
+      const period = hour24 >= 12 ? '오후' : '오전';
       const hour = hour24 % 12 || 12;
       return { hour, minute, period };
     }
 
     function formatTimeState({ hour, minute, period }) {
       let hour24 = hour % 12;
-      if (period === 'PM') hour24 += 12;
+      if (period === '오후') hour24 += 12;
       return `${padNumber(hour24)}:${padNumber(minute)}`;
     }
 
@@ -2063,10 +2074,10 @@
         <div class="time-wheel-picker" aria-label="시간 선택">
           <div class="time-wheel-title">Set time</div>
           <div class="time-wheel-grid">
+            <div class="time-wheel-column" data-unit="period" aria-label="오전 또는 오후"></div>
             <div class="time-wheel-column" data-unit="hour" aria-label="시"></div>
             <span class="time-wheel-separator" aria-hidden="true">:</span>
             <div class="time-wheel-column" data-unit="minute" aria-label="분"></div>
-            <div class="time-wheel-column" data-unit="period" aria-label="오전 또는 오후"></div>
           </div>
           <button class="picker-apply" type="button">Done</button>
         </div>
@@ -2115,10 +2126,11 @@
         const rect = input.getBoundingClientRect();
         const margin = 14;
         const pickerWidth = Math.min(420, window.innerWidth - margin * 2);
+        const pickerHeight = picker.offsetHeight || 640;
         let left = Math.min(rect.left, window.innerWidth - pickerWidth - margin);
         left = Math.max(margin, left);
         let top = rect.bottom + 8;
-        if (top + 560 > window.innerHeight) top = Math.max(margin, rect.top - 560);
+        if (top + pickerHeight > window.innerHeight) top = Math.max(margin, rect.top - pickerHeight - 8);
         picker.style.left = `${left}px`;
         picker.style.top = `${top}px`;
       }
