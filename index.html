@@ -746,17 +746,18 @@
       position: fixed;
       z-index: 80;
       width: min(720px, calc(100vw - 28px));
-      background: #f7f2fa;
-      border: 1px solid rgba(103, 80, 164, .20);
-      border-radius: 28px;
-      box-shadow: 0 20px 52px rgba(32, 24, 54, .18);
+      background: #fff;
+      border: 1px solid #111;
+      border-radius: 0;
+      box-shadow: none;
       padding: 22px;
       max-height: calc(100vh - 28px);
       overflow-y: auto;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
       transform-origin: top left;
-      color: #1d1b20;
+      transition: none;
+      color: #111;
       display: none;
       grid-template-columns: minmax(250px, 1fr) 330px;
       align-items: start;
@@ -785,7 +786,7 @@
       margin-bottom: 12px;
     }
     .picker-title {
-      color: #1d1b20;
+      color: #111;
       font-size: 15px;
       font-weight: 800;
       letter-spacing: -.02em;
@@ -793,14 +794,15 @@
     .picker-nav {
       width: 36px;
       height: 36px;
-      border: 0;
-      border-radius: 50%;
-      background: #ede7f6;
-      color: #6750a4;
+      border: 1px solid #111;
+      border-radius: 0;
+      background: #fff;
+      color: #111;
       cursor: pointer;
       font-size: 22px;
       line-height: 1;
       font-weight: 800;
+      transition: none;
     }
     .picker-weekdays,
     .picker-days {
@@ -811,17 +813,17 @@
     .picker-weekdays {
       margin: 0 0 8px;
       padding: 0 12px;
-      color: #6f6878;
+      color: #555;
       font-size: 11px;
       font-weight: 800;
       text-align: center;
     }
-    .picker-weekday.is-weekend { color: #b2a8bb; }
+    .picker-weekday.is-weekend { color: #aaa; }
     .picker-days {
       padding: 12px;
-      border: 1px solid rgba(103, 80, 164, .12);
-      border-radius: 18px;
-      background: rgba(255, 255, 255, .72);
+      border: 1px solid #d8d8d8;
+      border-radius: 0;
+      background: #fff;
     }
     .picker-day {
       min-height: 34px;
@@ -829,18 +831,19 @@
       border: 0;
       border-radius: 50%;
       background: transparent;
-      color: #1d1b20;
+      color: #111;
       cursor: pointer;
       font-size: 13px;
       font-weight: 700;
+      transition: none;
     }
-    .picker-day:hover { background: #ede7f6; color: #4f378b; }
-    .picker-day.is-other-month { color: #a9a2ae; background: transparent; }
-    .picker-day.is-selected { background: #6750a4; color: #fff; }
+    .picker-day:hover { background: #f1f1f1; color: #111; }
+    .picker-day.is-other-month { color: #999; background: transparent; }
+    .picker-day.is-selected { background: #111; color: #fff; }
     .picker-day.is-weekend,
     .picker-day:disabled {
       background: transparent;
-      color: #c5bdca;
+      color: #bbb;
       cursor: not-allowed;
       text-decoration: none;
     }
@@ -857,7 +860,7 @@
       position: relative;
       z-index: 3;
       padding: 0;
-      color: #5f5868;
+      color: #555;
       background: transparent;
       border: 0;
       box-shadow: none;
@@ -879,7 +882,7 @@
       align-items: center;
       gap: 8px;
       min-width: 0;
-      color: #1d1b20;
+      color: #111;
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
     }
@@ -893,16 +896,17 @@
       -webkit-appearance: none;
       box-shadow: none;
       text-shadow: none;
+      transition: none;
       cursor: pointer;
       font-family: inherit;
     }
     .clock-time-chip {
       width: 88px;
       min-height: 72px;
-      border: 0;
-      border-radius: 8px;
-      background: #ece7f2;
-      color: #1d1b20;
+      border: 1px solid #111;
+      border-radius: 0;
+      background: #f5f5f5;
+      color: #111;
       padding: 0 8px 4px;
       font-size: 47px;
       line-height: 1;
@@ -911,14 +915,14 @@
       text-align: center;
     }
     .clock-time-chip.is-active {
-      background: #c7b7ff;
-      color: #4f378b;
+      background: #111;
+      color: #fff;
     }
     .clock-time-colon {
       display: inline-flex;
       align-items: center;
       min-height: 72px;
-      color: #1d1b20;
+      color: #111;
       font-size: 46px;
       line-height: 1;
       font-weight: 700;
@@ -928,24 +932,24 @@
       display: grid;
       grid-template-rows: repeat(2, minmax(0, 1fr));
       min-width: 58px;
-      border: 1px solid #79747e;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, .35);
+      border: 1px solid #111;
+      border-radius: 0;
+      background: #fff;
       overflow: hidden;
     }
     .clock-period-btn {
       min-height: 36px;
       border: 0;
       background: transparent;
-      color: #49454f;
+      color: #333;
       font-size: 14px;
       font-weight: 700;
       letter-spacing: -.01em;
     }
-    .clock-period-btn:first-child { border-bottom: 1px solid #79747e; }
+    .clock-period-btn:first-child { border-bottom: 1px solid #111; }
     .clock-period-btn.is-selected {
-      background: #f4a7f2;
-      color: #351a55;
+      background: #111;
+      color: #fff;
     }
     .clock-face {
       --clock-radius: 96px;
@@ -955,10 +959,11 @@
       width: min(252px, calc(100vw - 88px));
       aspect-ratio: 1;
       margin: 24px auto 18px;
-      border: 0;
+      border: 1px solid #d8d8d8;
       border-radius: 50%;
-      background: #ece7f2;
-      box-shadow: inset 0 0 0 1px rgba(103, 80, 164, .03);
+      background: #f3f3f3;
+      box-shadow: none;
+      transition: none;
     }
     .clock-face::before {
       content: '';
@@ -969,7 +974,7 @@
       height: 8px;
       margin: -4px 0 0 -4px;
       border-radius: 50%;
-      background: #6750a4;
+      background: #111;
       z-index: 3;
     }
     .clock-hand {
@@ -978,11 +983,12 @@
       top: 50%;
       width: var(--clock-hand-length);
       height: 2px;
-      background: #6750a4;
+      background: #111;
       transform-origin: 0 50%;
       transform: rotate(var(--clock-hand-angle));
       z-index: 2;
       pointer-events: none;
+      transition: none;
     }
     .clock-numbers {
       position: absolute;
@@ -999,7 +1005,7 @@
       border: 0;
       border-radius: 50%;
       background: transparent;
-      color: #1d1b20;
+      color: #111;
       font-size: 15px;
       line-height: 1;
       font-weight: 600;
@@ -1007,11 +1013,11 @@
       transform: rotate(var(--clock-angle)) translate(var(--clock-radius)) rotate(var(--clock-angle-reverse));
     }
     .clock-number:hover {
-      color: #4f378b;
-      background: rgba(103, 80, 164, .12);
+      color: #111;
+      background: #e9e9e9;
     }
     .clock-number.is-selected {
-      background: #6750a4;
+      background: #111;
       color: #fff;
     }
     .clock-face[data-mode="minute"] .clock-number {
@@ -1032,7 +1038,7 @@
       border: 0;
       border-radius: 50%;
       background: transparent;
-      color: #49454f;
+      color: #333;
       display: inline-grid;
       place-items: center;
       padding: 0;
@@ -1056,32 +1062,32 @@
       min-height: 40px;
       margin: 0;
       border: 0;
-      border-radius: 999px;
+      border-radius: 0;
       background: transparent;
-      color: #6750a4;
+      color: #111;
       padding: 0 12px;
       font-weight: 800;
       font-size: 14px;
       letter-spacing: -.01em;
       box-shadow: none;
-      transition: background-color .14s ease, color .14s ease;
+      transition: none;
     }
     .picker-cancel:hover,
     .picker-apply:hover {
-      background: rgba(103, 80, 164, .10);
+      background: #f1f1f1;
       transform: none;
       box-shadow: none;
     }
     .picker-cancel:active,
     .picker-apply:active {
-      background: rgba(103, 80, 164, .18);
+      background: #e5e5e5;
       transform: none;
       box-shadow: none;
     }
-    .picker-apply:disabled { color: #b9aec4; cursor: not-allowed; }
+    .picker-apply:disabled { color: #aaa; cursor: not-allowed; }
     .picker-help {
       margin: 10px 2px 0;
-      color: #756d7f;
+      color: #666;
       font-size: 12px;
       line-height: 1.45;
     }
@@ -1381,7 +1387,7 @@
       .datetime-picker {
         width: min(360px, calc(100vw - 20px));
         padding: 20px;
-        border-radius: 28px;
+        border-radius: 0;
         grid-template-columns: 1fr;
       }
       .datetime-picker.is-open {
