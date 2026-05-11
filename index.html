@@ -655,6 +655,103 @@
       transition: none;
     }
     input[type="datetime-local"], .datetime-display { cursor: pointer; }
+    .service-center-search {
+      margin: 0 0 14px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      background: #f7f7f5;
+    }
+    .service-center-search-label {
+      margin-bottom: 9px;
+    }
+    .service-center-search-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: stretch;
+    }
+    .service-center-clear {
+      min-height: 52px;
+      padding: 0 16px;
+      border: 1px solid #cfcfcf;
+      border-radius: 0;
+      background: #fff;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 800;
+      transition: none;
+      white-space: nowrap;
+    }
+    .service-center-clear:hover,
+    .service-center-clear:focus-visible {
+      border-color: #111;
+      background: #111;
+      color: #fff;
+      outline: none;
+    }
+    .service-center-results {
+      display: none;
+      margin-top: 8px;
+      max-height: 248px;
+      overflow-y: auto;
+      border: 1px solid #111;
+      background: #fff;
+    }
+    .service-center-results.is-open {
+      display: block;
+    }
+    .service-center-option {
+      width: 100%;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 14px;
+      border: 0;
+      border-bottom: 1px solid #ececec;
+      border-radius: 0;
+      background: #fff;
+      color: var(--ink);
+      cursor: pointer;
+      text-align: left;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.4;
+      transition: none;
+    }
+    .service-center-option:last-child { border-bottom: 0; }
+    .service-center-option:hover,
+    .service-center-option:focus-visible,
+    .service-center-option.is-selected {
+      background: #111;
+      color: #fff;
+      outline: none;
+    }
+    .service-center-option.is-selected::after {
+      content: "선택됨";
+      margin-left: 12px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      white-space: nowrap;
+    }
+    .service-center-empty {
+      padding: 14px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      word-break: keep-all;
+    }
+    .service-center-status {
+      margin: 8px 0 0;
+      min-height: 18px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      font-weight: 600;
+      word-break: keep-all;
+    }
     .datetime-display-wrap {
       position: relative;
     }
@@ -1381,6 +1478,18 @@
       .field.full { grid-column: auto; }
       .field { margin-bottom: 18px; }
       label { font-size: 13.5px; line-height: 1.48; }
+      .service-center-search {
+        padding: 13px;
+      }
+      .service-center-search-row {
+        grid-template-columns: 1fr;
+      }
+      .service-center-clear {
+        min-height: 46px;
+      }
+      .service-center-results {
+        max-height: 220px;
+      }
       input[type="text"], input[type="tel"], input[type="date"], input[type="time"], input[type="datetime-local"], select, textarea {
         min-height: 54px;
         font-size: 16px;
@@ -1656,6 +1765,15 @@
               </div>
 
               <div class="field full">
+                <div class="service-center-search" id="serviceCenterSearchArea">
+                  <label class="service-center-search-label" for="serviceCenterSearch">시공점 빠른 검색</label>
+                  <div class="service-center-search-row">
+                    <input id="serviceCenterSearch" class="service-center-search-input" type="text" placeholder="지역명 또는 센터명을 검색하세요. 예: 하남, 부산" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="serviceCenterResults">
+                    <button class="service-center-clear" id="serviceCenterClear" type="button">초기화</button>
+                  </div>
+                  <div class="service-center-results" id="serviceCenterResults" role="listbox" aria-label="시공점 검색 결과"></div>
+                  <p class="service-center-status" id="serviceCenterStatus" aria-live="polite">검색어를 입력하거나 목록에서 시공점을 선택해주세요.</p>
+                </div>
                 <label for="serviceCenter">시공점을 선택하여 주세요. <span class="req">*</span></label>
                 <select id="serviceCenter" name="serviceCenter" required>
                   <option value="" selected disabled>선택해주세요</option>
@@ -1867,6 +1985,11 @@
     const priceGuideImage = 'https://smith.speedgabia.com/dummy/PS4_price.jpg';
     const priceEstimateTotal = document.getElementById('priceEstimateTotal');
     const priceEstimateList = document.getElementById('priceEstimateList');
+    const serviceCenterSelect = document.getElementById('serviceCenter');
+    const serviceCenterSearch = document.getElementById('serviceCenterSearch');
+    const serviceCenterResults = document.getElementById('serviceCenterResults');
+    const serviceCenterStatus = document.getElementById('serviceCenterStatus');
+    const serviceCenterClear = document.getElementById('serviceCenterClear');
     const priceEstimateInputs = ['frontFilm', 'sideOneFilm', 'sideTwoFilm', 'glassRoofFilm', 'ppf', 'hipass']
       .map((id) => document.getElementById(id))
       .filter(Boolean);
@@ -1874,6 +1997,127 @@
       { source: 'deliveryDateTime', date: 'deliveryDate', time: 'deliveryTime' },
       { source: 'centerInDateTime', date: 'centerInDate', time: 'centerInTime' }
     ];
+
+    function getServiceCenterOptions() {
+      if (!serviceCenterSelect) return [];
+      return Array.from(serviceCenterSelect.options)
+        .filter((option) => option.value && !option.disabled)
+        .map((option) => option.value.trim());
+    }
+
+    function normalizeServiceCenterQuery(value) {
+      return value.replace(/\s+/g, '').toLowerCase();
+    }
+
+    function updateServiceCenterStatus(value) {
+      if (!serviceCenterStatus) return;
+      serviceCenterStatus.textContent = value ? `선택된 시공점: ${value}` : '검색어를 입력하거나 목록에서 시공점을 선택해주세요.';
+    }
+
+    function closeServiceCenterResults() {
+      if (!serviceCenterSearch || !serviceCenterResults) return;
+      serviceCenterResults.classList.remove('is-open');
+      serviceCenterSearch.setAttribute('aria-expanded', 'false');
+    }
+
+    function selectServiceCenter(value) {
+      if (!serviceCenterSelect || !serviceCenterSearch) return;
+      serviceCenterSelect.value = value;
+      serviceCenterSearch.value = value;
+      serviceCenterSelect.dispatchEvent(new Event('change', { bubbles: true }));
+      updateServiceCenterStatus(value);
+      closeServiceCenterResults();
+    }
+
+    function renderServiceCenterResults() {
+      if (!serviceCenterSelect || !serviceCenterSearch || !serviceCenterResults) return;
+      const query = serviceCenterSearch.value.trim();
+      const normalizedQuery = normalizeServiceCenterQuery(query);
+      const matches = getServiceCenterOptions().filter((value) => {
+        if (!normalizedQuery) return true;
+        return normalizeServiceCenterQuery(value).includes(normalizedQuery);
+      });
+
+      serviceCenterResults.innerHTML = '';
+      if (!matches.length) {
+        const empty = document.createElement('div');
+        empty.className = 'service-center-empty';
+        empty.textContent = '검색 결과가 없습니다. 지역명 또는 센터명을 다시 입력해주세요.';
+        serviceCenterResults.appendChild(empty);
+      } else {
+        matches.forEach((value, index) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'service-center-option';
+          button.id = `serviceCenterOption${index}`;
+          button.dataset.value = value;
+          button.setAttribute('aria-selected', String(serviceCenterSelect.value === value));
+          button.textContent = value;
+          if (serviceCenterSelect.value === value) button.classList.add('is-selected');
+          serviceCenterResults.appendChild(button);
+        });
+      }
+
+      if (serviceCenterSelect.value && serviceCenterSearch.value === serviceCenterSelect.value) {
+        updateServiceCenterStatus(serviceCenterSelect.value);
+      } else if (query && matches.length) {
+        serviceCenterStatus.textContent = `검색 결과 ${matches.length}개가 있습니다. 선택할 시공점을 클릭해주세요.`;
+      } else if (query) {
+        serviceCenterStatus.textContent = '검색 결과가 없습니다. 지역명 또는 센터명을 다시 입력해주세요.';
+      } else {
+        updateServiceCenterStatus('');
+      }
+
+      serviceCenterResults.classList.add('is-open');
+      serviceCenterSearch.setAttribute('aria-expanded', 'true');
+    }
+
+    function initServiceCenterSearch() {
+      if (!serviceCenterSelect || !serviceCenterSearch || !serviceCenterResults) return;
+      updateServiceCenterStatus(serviceCenterSelect.value);
+
+      serviceCenterSearch.addEventListener('focus', renderServiceCenterResults);
+      serviceCenterSearch.addEventListener('input', () => {
+        if (serviceCenterSelect.value && serviceCenterSearch.value.trim() !== serviceCenterSelect.value) {
+          serviceCenterSelect.value = '';
+        }
+        renderServiceCenterResults();
+      });
+      serviceCenterSearch.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closeServiceCenterResults();
+        if (event.key !== 'Enter') return;
+        const firstOption = serviceCenterResults.querySelector('.service-center-option');
+        if (!serviceCenterResults.classList.contains('is-open') || !firstOption) return;
+        event.preventDefault();
+        selectServiceCenter(firstOption.dataset.value);
+      });
+      serviceCenterResults.addEventListener('click', (event) => {
+        const selectedOption = event.target.closest('.service-center-option');
+        if (!selectedOption) return;
+        selectServiceCenter(selectedOption.dataset.value);
+      });
+      if (serviceCenterClear) {
+        serviceCenterClear.addEventListener('click', () => {
+          serviceCenterSelect.value = '';
+          serviceCenterSearch.value = '';
+          serviceCenterSelect.dispatchEvent(new Event('change', { bubbles: true }));
+          updateServiceCenterStatus('');
+          serviceCenterSearch.focus();
+          renderServiceCenterResults();
+        });
+      }
+      serviceCenterSelect.addEventListener('change', () => {
+        const value = serviceCenterSelect.value;
+        serviceCenterSearch.value = value;
+        updateServiceCenterStatus(value);
+      });
+      document.addEventListener('click', (event) => {
+        if (event.target.closest('#serviceCenterSearchArea')) return;
+        closeServiceCenterResults();
+      });
+    }
+
+    initServiceCenterSearch();
 
     function syncDateTimeFields() {
       dateTimePairs.forEach(({ source, date, time }) => {
