@@ -1262,7 +1262,7 @@
 
     .privacy-box {
       margin-top: 18px;
-      padding: 22px;
+      padding: 0;
       border: 1px solid var(--line);
       background: #f7f7f7;
       color: #4d4d4d;
@@ -1270,21 +1270,70 @@
       line-height: 1.68;
       word-break: keep-all;
     }
-    .privacy-box h3 {
-      margin: 18px 0 8px;
+    .privacy-disclosure {
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+    .privacy-disclosure:last-child { border-bottom: 0; }
+    .privacy-disclosure summary {
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 16px;
       color: var(--ink);
+      cursor: pointer;
       font-size: 14px;
       line-height: 1.45;
       font-weight: 900;
+      list-style: none;
     }
-    .privacy-box h3:first-child { margin-top: 0; }
-    .privacy-box p { margin: 0 0 8px; }
+    .privacy-disclosure summary::-webkit-details-marker { display: none; }
+    .privacy-disclosure summary:focus-visible {
+      outline: 2px solid #111;
+      outline-offset: -2px;
+    }
+    .privacy-summary-title { flex: 1 1 auto; }
+    .privacy-summary-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #555;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .privacy-close-label { display: none; }
+    .privacy-disclosure[open] .privacy-open-label { display: none; }
+    .privacy-disclosure[open] .privacy-close-label { display: inline; }
+    .privacy-toggle-mark::before {
+      content: "+";
+      display: inline-grid;
+      place-items: center;
+      width: 18px;
+      height: 18px;
+      border: 1px solid #111;
+      color: #111;
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 900;
+    }
+    .privacy-disclosure[open] .privacy-toggle-mark::before { content: "−"; }
+    .privacy-detail {
+      padding: 0 16px 16px;
+      border-top: 1px solid var(--line);
+      background: #f7f7f7;
+    }
+    .privacy-box p { margin: 10px 0 0; }
+    .privacy-box p:first-child { margin-top: 12px; }
     .privacy-box p:last-child { margin-bottom: 0; }
     .privacy-box ul {
-      margin: 0 0 10px;
+      margin: 12px 0 0;
       padding-left: 18px;
     }
     .privacy-box li { margin: 0 0 6px; }
+    .privacy-box li:last-child { margin-bottom: 0; }
     .privacy-box a {
       color: var(--ink);
       font-weight: 800;
@@ -1923,39 +1972,83 @@
               <label for="marketingConsent">이벤트·프로모션 등 광고성 정보 수신에 동의합니다. <span class="optional">(선택)</span></label>
             </div>
 
-            <div class="privacy-box" id="privacyPolicy" aria-label="개인정보 수집 및 이용 안내">
-              <h3>개인정보 수집·이용 동의 <span class="req">*</span></h3>
-              <ul>
-                <li>처리자 : 바이브나인</li>
-                <li>수집·이용 목적 : 폴스타 틴팅 예약 접수, 시공 일정 상담·조율, 고객 안내 및 문의 응대</li>
-                <li>필수 수집 항목 : 이름, 휴대전화 번호, 차량 모델, 인도 전시장, 시공점, 인도/입고 일정, 선택 시공 옵션</li>
-                <li>선택 수집 항목 : 기타 문의사항</li>
-                <li>보유 및 이용 기간 : 예약 상담 및 시공 안내 목적 달성 후 파기합니다. 단, 분쟁 대응 및 관계 법령에 따른 보관이 필요한 경우 입력일로부터 최대 5년까지 보관할 수 있습니다.</li>
-                <li>동의 거부 권리 및 불이익 : 필수 항목 수집·이용에 동의하지 않을 경우 예약 접수 및 시공 안내가 제한됩니다.</li>
-              </ul>
+            <div class="privacy-box" id="privacyPolicy" aria-label="개인정보 동의 및 처리방침 안내">
+              <details class="privacy-disclosure">
+                <summary>
+                  <span class="privacy-summary-title">개인정보 수집·이용 동의 <span class="req">*</span></span>
+                  <span class="privacy-summary-action" aria-hidden="true">
+                    <span class="privacy-open-label">펼쳐보기</span>
+                    <span class="privacy-close-label">접기</span>
+                    <span class="privacy-toggle-mark"></span>
+                  </span>
+                </summary>
+                <div class="privacy-detail">
+                  <ul>
+                    <li>처리자 : 바이브나인</li>
+                    <li>수집·이용 목적 : 폴스타 틴팅 예약 접수, 시공 일정 상담·조율, 고객 안내 및 문의 응대</li>
+                    <li>필수 수집 항목 : 이름, 휴대전화 번호, 차량 모델, 인도 전시장, 시공점, 인도/입고 일정, 선택 시공 옵션</li>
+                    <li>선택 수집 항목 : 기타 문의사항</li>
+                    <li>보유 및 이용 기간 : 예약 상담 및 시공 안내 목적 달성 후 파기합니다. 단, 분쟁 대응 및 관계 법령에 따른 보관이 필요한 경우 입력일로부터 최대 5년까지 보관할 수 있습니다.</li>
+                    <li>동의 거부 권리 및 불이익 : 필수 항목 수집·이용에 동의하지 않을 경우 예약 접수 및 시공 안내가 제한됩니다.</li>
+                  </ul>
+                </div>
+              </details>
 
-              <h3>개인정보 제3자 제공 동의 <span class="req">*</span></h3>
-              <ul>
-                <li>제공받는 자 : 바이브나인 대리점 및 고객이 선택한 시공점</li>
-                <li>제공 목적 : 예약 확인, 시공 일정 조율, 시공 관련 고객 안내</li>
-                <li>제공 항목 : 이름, 휴대전화 번호, 차량 모델, 인도 전시장, 시공점, 인도/입고 일정, 선택 시공 옵션, 기타 문의사항</li>
-                <li>보유 및 이용 기간 : 제공 목적 달성 후 파기합니다. 단, 분쟁 대응을 위해 제공일로부터 최대 2년까지 보관할 수 있습니다.</li>
-                <li>동의 거부 권리 및 불이익 : 제3자 제공에 동의하지 않을 경우 대리점 및 시공점을 통한 예약 안내가 제한됩니다.</li>
-              </ul>
+              <details class="privacy-disclosure">
+                <summary>
+                  <span class="privacy-summary-title">개인정보 제3자 제공 동의 <span class="req">*</span></span>
+                  <span class="privacy-summary-action" aria-hidden="true">
+                    <span class="privacy-open-label">펼쳐보기</span>
+                    <span class="privacy-close-label">접기</span>
+                    <span class="privacy-toggle-mark"></span>
+                  </span>
+                </summary>
+                <div class="privacy-detail">
+                  <ul>
+                    <li>제공받는 자 : 바이브나인 대리점 및 고객이 선택한 시공점</li>
+                    <li>제공 목적 : 예약 확인, 시공 일정 조율, 시공 관련 고객 안내</li>
+                    <li>제공 항목 : 이름, 휴대전화 번호, 차량 모델, 인도 전시장, 시공점, 인도/입고 일정, 선택 시공 옵션, 기타 문의사항</li>
+                    <li>보유 및 이용 기간 : 제공 목적 달성 후 파기합니다. 단, 분쟁 대응을 위해 제공일로부터 최대 2년까지 보관할 수 있습니다.</li>
+                    <li>동의 거부 권리 및 불이익 : 제3자 제공에 동의하지 않을 경우 대리점 및 시공점을 통한 예약 안내가 제한됩니다.</li>
+                  </ul>
+                </div>
+              </details>
 
-              <h3>광고성 정보 수신 동의 <span class="optional">선택</span></h3>
-              <ul>
-                <li>이용 목적 : 이벤트, 프로모션, 혜택 및 서비스 안내</li>
-                <li>이용 항목 : 이름, 휴대전화 번호</li>
-                <li>보유 및 이용 기간 : 동의 철회 또는 입력일로부터 2년 중 먼저 도래하는 시점까지</li>
-                <li>선택 동의이므로 동의하지 않아도 예약 접수에는 제한이 없습니다.</li>
-              </ul>
+              <details class="privacy-disclosure">
+                <summary>
+                  <span class="privacy-summary-title">광고성 정보 수신 동의 <span class="optional">선택</span></span>
+                  <span class="privacy-summary-action" aria-hidden="true">
+                    <span class="privacy-open-label">펼쳐보기</span>
+                    <span class="privacy-close-label">접기</span>
+                    <span class="privacy-toggle-mark"></span>
+                  </span>
+                </summary>
+                <div class="privacy-detail">
+                  <ul>
+                    <li>이용 목적 : 이벤트, 프로모션, 혜택 및 서비스 안내</li>
+                    <li>이용 항목 : 이름, 휴대전화 번호</li>
+                    <li>보유 및 이용 기간 : 동의 철회 또는 입력일로부터 2년 중 먼저 도래하는 시점까지</li>
+                    <li>선택 동의이므로 동의하지 않아도 예약 접수에는 제한이 없습니다.</li>
+                  </ul>
+                </div>
+              </details>
 
-              <h3>개인정보처리방침 및 사업자 정보</h3>
-              <p><a href="privacy.html" target="_blank" rel="noopener">개인정보처리방침 보기</a></p>
-              <p>사업자 정보 : 바이브나인 / 대표자 김태준 / 사업자등록번호 139-88-02094</p>
-              <p>주소 : 경기도 고양시 일산동구 일산로 418 (정발산동)</p>
-              <p>연락처 : 031-921-1210</p>
+              <details class="privacy-disclosure">
+                <summary>
+                  <span class="privacy-summary-title">개인정보처리방침 및 사업자 정보</span>
+                  <span class="privacy-summary-action" aria-hidden="true">
+                    <span class="privacy-open-label">펼쳐보기</span>
+                    <span class="privacy-close-label">접기</span>
+                    <span class="privacy-toggle-mark"></span>
+                  </span>
+                </summary>
+                <div class="privacy-detail">
+                  <p><a href="privacy.html" target="_blank" rel="noopener">개인정보처리방침 보기</a></p>
+                  <p>사업자 정보 : 바이브나인 / 대표자 김태준 / 사업자등록번호 139-88-02094</p>
+                  <p>주소 : 경기도 고양시 일산동구 일산로 418 (정발산동)</p>
+                  <p>연락처 : 031-921-1210</p>
+                </div>
+              </details>
             </div>
 
             <div class="submit-row">
