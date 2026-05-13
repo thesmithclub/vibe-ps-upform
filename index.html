@@ -752,6 +752,41 @@
       font-weight: 600;
       word-break: keep-all;
     }
+    .service-center-detail {
+      display: none;
+      margin-top: 12px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+    }
+    .service-center-detail.is-visible {
+      display: grid;
+      gap: 8px;
+    }
+    .service-center-detail-row {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .service-center-detail-label {
+      color: var(--muted);
+      font-weight: 800;
+    }
+    .service-center-detail-value {
+      min-width: 0;
+      color: var(--ink);
+      font-weight: 700;
+      word-break: keep-all;
+    }
+    .service-center-detail-value a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
     .datetime-display-wrap {
       position: relative;
     }
@@ -937,7 +972,9 @@
     .picker-day:hover { background: #f1f1f1; color: #111; }
     .picker-day.is-other-month { color: #999; background: transparent; }
     .picker-day.is-selected { background: #111; color: #fff; }
-    .picker-day.is-weekend,
+    .picker-day.is-weekend {
+      color: #666;
+    }
     .picker-day:disabled {
       background: transparent;
       color: #bbb;
@@ -1123,6 +1160,12 @@
       background: #111;
       color: #fff;
     }
+    .clock-number:disabled,
+    .clock-period-btn:disabled {
+      color: #aaa;
+      background: transparent;
+      cursor: not-allowed;
+    }
     .clock-face[data-mode="minute"] .clock-number {
       font-size: 20px;
       font-weight: 500;
@@ -1253,6 +1296,59 @@
       min-height: 22px;
       line-height: 1.35;
     }
+    .option-detail {
+      margin-top: 10px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+    .option-detail[hidden] {
+      display: none;
+    }
+    .option-detail label {
+      margin-bottom: 8px;
+    }
+    .option-detail + .check-row {
+      margin-top: 10px;
+    }
+    .ppf-preview {
+      margin-top: 10px;
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 14px;
+    }
+    .ppf-preview[hidden] {
+      display: none;
+    }
+    .ppf-preview img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .ppf-preview[hidden] + .check-row {
+      margin-top: 10px;
+    }
+    .field.is-disabled label,
+    .field.is-disabled .label-note {
+      color: #9b9b9b;
+    }
+    .field.is-disabled select {
+      background: #f1f1f1;
+      color: #9b9b9b;
+      cursor: not-allowed;
+    }
+    .field-message {
+      display: none;
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+      font-weight: 600;
+      word-break: keep-all;
+    }
+    .field-message.is-visible {
+      display: block;
+    }
 
     .divider {
       height: 1px;
@@ -1341,6 +1437,35 @@
     }
 
     .submit-row { margin-top: 24px; }
+    .submit-result {
+      display: none;
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid #111;
+      background: #fff;
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.65;
+      word-break: keep-all;
+    }
+    .submit-result.is-visible {
+      display: block;
+    }
+    .submit-result p {
+      margin: 0 0 6px;
+    }
+    .submit-result p:last-child {
+      margin-bottom: 0;
+    }
+    .submit-result strong {
+      font-weight: 900;
+    }
+    .submit-result a {
+      color: var(--ink);
+      font-weight: 900;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
     .submit-btn {
       width: 100%;
       min-height: 60px;
@@ -1354,6 +1479,10 @@
       transition: none;
     }
     .submit-btn:hover { background: #000; transform: none; }
+    .submit-btn:disabled {
+      background: #777;
+      cursor: wait;
+    }
 
     .mobile-sticky {
       display: none;
@@ -1790,7 +1919,7 @@
               </div>
 
               <div class="field">
-                <label for="phone">연락받을 번호를 입력하여 주세요. <span class="req">*</span></label>
+                <label for="phone">계약 당시 기재하신 번호로 기재 바랍니다. <span class="req">*</span></label>
                 <input id="phone" name="phone" type="tel" inputmode="numeric" pattern="[0-9\-\s]+" autocomplete="tel" required>
               </div>
 
@@ -1810,11 +1939,16 @@
                   <option>대전</option>
                   <option>부산</option>
                   <option>제주</option>
+                  <option>수원</option>
+                  <option>대구</option>
+                  <option>광주</option>
                 </select>
               </div>
 
               <div class="field full">
                 <input id="serviceCenter" name="serviceCenter" type="hidden">
+                <input id="serviceCenterPhone" name="serviceCenterPhone" type="hidden">
+                <input id="serviceCenterAddress" name="serviceCenterAddress" type="hidden">
                 <div class="service-center-search" id="serviceCenterSearchArea">
                   <label class="service-center-search-label" for="serviceCenterSearch">시공점 빠른 검색 <span class="req">*</span></label>
                   <div class="service-center-search-row">
@@ -1823,11 +1957,12 @@
                   </div>
                   <div class="service-center-results" id="serviceCenterResults" role="listbox" aria-label="시공점 검색 결과"></div>
                   <p class="service-center-status" id="serviceCenterStatus" aria-live="polite">검색어를 입력하거나 목록에서 시공점을 선택해주세요.</p>
+                  <div class="service-center-detail" id="serviceCenterDetail" aria-live="polite"></div>
                 </div>
               </div>
 
               <div class="field full">
-                <label for="centerInDateTime">시공점 차량 입고일과 시간을 선택해 주세요. <span class="req">*</span><span class="label-note">(토요일 오후, 일요일 및 공휴일은 시공이 불가능 할 수 있습니다.)</span></label>
+                <label for="centerInDateTime">시공점 차량 입고일과 시간을 선택해 주세요. <span class="req">*</span><span class="label-note">(입고 시간은 오전 9시~오후 6시까지 가능하며, 늦은 시간 입고 시 익일 출고로 진행될 수 있습니다. 일요일은 선택할 수 없습니다.)</span></label>
                 <input id="centerInDateTime" name="centerInDateTime" type="datetime-local" required>
                 <input id="centerInDate" name="centerInDate" type="hidden">
                 <input id="centerInTime" name="centerInTime" type="hidden">
@@ -1852,6 +1987,8 @@
                 <label for="sideOneFilm">측면 (1열) 필름 및 농도를 선택하여 주세요. <span class="req">*</span></label>
                 <select id="sideOneFilm" name="sideOneFilm" required>
                   <option value="" selected disabled>선택해주세요</option>
+                  <option>발키리 15% । 업그레이드 필름</option>
+                  <option>발키리 30% । 업그레이드 필름</option>
                   <option>벨벳 5% । 업그레이드 필름</option>
                   <option>벨벳 15% । 업그레이드 필름</option>
                   <option>벨벳 30% । 업그레이드 필름</option>
@@ -1867,6 +2004,8 @@
                 <label for="sideTwoFilm">측면 (2열) 필름 및 농도를 선택하여 주세요.</label>
                 <select id="sideTwoFilm" name="sideTwoFilm">
                   <option value="" selected>선택해주세요</option>
+                  <option>발키리 15% । 업그레이드 필름</option>
+                  <option>발키리 30% । 업그레이드 필름</option>
                   <option>벨벳 5% । 업그레이드 필름</option>
                   <option>벨벳 15% । 업그레이드 필름</option>
                   <option>벨벳 30% । 업그레이드 필름</option>
@@ -1894,10 +2033,42 @@
                 </select>
               </div>
 
+              <div class="field is-disabled" id="rearFilmField">
+                <label for="rearFilm">후면 유리 필름 및 농도를 선택하여 주세요.</label>
+                <select id="rearFilm" name="rearFilm" disabled>
+                  <option value="" selected>선택하신 차량은 후면 유리가 없습니다.</option>
+                  <option>발키리 15% । 업그레이드 필름</option>
+                  <option>발키리 30% । 업그레이드 필름</option>
+                  <option>벨벳 5% । 업그레이드 필름</option>
+                  <option>벨벳 15% । 업그레이드 필름</option>
+                  <option>벨벳 30% । 업그레이드 필름</option>
+                  <option>벨벳 40% । 업그레이드 필름</option>
+                  <option>볼티지 5% । 기본 필름</option>
+                  <option>볼티지 15% । 기본 필름</option>
+                  <option>볼티지 35% । 기본 필름</option>
+                  <option>볼티지 45% । 기본 필름</option>
+                </select>
+              </div>
+
               <div class="field full">
+                <div class="check-row">
+                  <input id="blackbox" name="blackbox" type="checkbox" value="true">
+                  <label for="blackbox">블랙박스 추가 장착</label>
+                </div>
+                <div class="option-detail" id="blackboxChannelWrap" hidden>
+                  <label for="blackboxChannel">블랙박스 채널을 선택해 주세요. <span class="req">*</span></label>
+                  <select id="blackboxChannel" name="blackboxChannel" disabled>
+                    <option value="" selected>선택해주세요</option>
+                    <option value="1ch">1채널 । 추가금 18만원</option>
+                    <option value="2ch">2채널 । 추가금 25만원</option>
+                  </select>
+                </div>
                 <div class="check-row">
                   <input id="ppf" name="ppf" type="checkbox" value="true">
                   <label for="ppf">PPF 생활보호 3종 옵션 선택 (추가금 15만원)</label>
+                </div>
+                <div class="ppf-preview" id="ppfPreview" hidden>
+                  <img src="https://smith.speedgabia.com/dummy/PS4_ppf.jpg" alt="폴스타4 PPF 생활보호 3종 안내" loading="lazy">
                 </div>
                 <div class="check-row">
                   <input id="hipass" name="hipass" type="checkbox" value="true">
@@ -1914,7 +2085,9 @@
                     <strong class="price-estimate-total" id="priceEstimateTotal">0원</strong>
                   </div>
                   <ul class="price-estimate-list" id="priceEstimateList"></ul>
-                  <p class="price-estimate-note">예약금을 제외한 비용은 대리점에서 결제가 진행됩니다.</p>
+                  <p class="price-estimate-note" id="priceEstimateNote">전체 볼티지 기본작업은 네이버페이 예약금 결제가 필요하지 않습니다.</p>
+                  <input id="estimatedTotal" name="estimatedTotal" type="hidden" value="0">
+                  <input id="naverPayRequired" name="naverPayRequired" type="hidden" value="불필요">
                 </div>
               </div>
             </div>
@@ -2016,6 +2189,7 @@
             <div class="submit-row">
               <button class="submit-btn" type="submit">신청하기</button>
             </div>
+            <div class="submit-result" id="submitResult" role="status" aria-live="polite"></div>
           </form>
         </div>
       </div>
@@ -2030,8 +2204,13 @@
   <div class="toast" id="toast" role="status" aria-live="polite">디자인 시안입니다. 실제 접수 연동은 다음 단계에서 연결하면 됩니다.</div>
 
   <script>
+    // Apps Script 웹 앱 배포 URL을 입력하면 구글시트 접수가 활성화됩니다.
+    const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwfCPmN7RqzN0boA6CuYz1XfSdBiJbeuVx5oyG5iWHPWlryIxmNlp3lNhkYKJFjnNuCzQ/exec';
+    const RESERVATION_PAYMENT_URL = 'https://smartstore.naver.com/smithclubmall/products/8130313777';
     const form = document.getElementById('reservationForm');
     const toast = document.getElementById('toast');
+    const submitButton = form ? form.querySelector('.submit-btn') : null;
+    const submitResult = document.getElementById('submitResult');
     const mobileSticky = document.querySelector('.mobile-sticky');
     const reservationSection = document.getElementById('reservation');
     const priceGuideButton = document.getElementById('priceGuideButton');
@@ -2040,49 +2219,63 @@
     const priceGuideImage = 'https://smith.speedgabia.com/dummy/PS4_price.jpg';
     const priceEstimateTotal = document.getElementById('priceEstimateTotal');
     const priceEstimateList = document.getElementById('priceEstimateList');
+    const priceEstimateNote = document.getElementById('priceEstimateNote');
+    const estimatedTotalInput = document.getElementById('estimatedTotal');
+    const naverPayRequiredInput = document.getElementById('naverPayRequired');
+    const blackboxInput = document.getElementById('blackbox');
+    const blackboxChannelInput = document.getElementById('blackboxChannel');
+    const blackboxChannelWrap = document.getElementById('blackboxChannelWrap');
+    const ppfInput = document.getElementById('ppf');
+    const ppfPreview = document.getElementById('ppfPreview');
+    const rearFilmField = document.getElementById('rearFilmField');
+    const rearFilmInput = document.getElementById('rearFilm');
     const serviceCenterInput = document.getElementById('serviceCenter');
     const serviceCenterSearch = document.getElementById('serviceCenterSearch');
     const serviceCenterResults = document.getElementById('serviceCenterResults');
     const serviceCenterStatus = document.getElementById('serviceCenterStatus');
     const serviceCenterClear = document.getElementById('serviceCenterClear');
-    const serviceCenterOptions = [
-      "바이브나인 본사",
-      "바이브나인 일산 센터",
-      "바이브나인 서초 센터",
-      "바이브나인 중랑 센터",
-      "바이브나인 구로 센터",
-      "바이브나인 논현 센터",
-      "바이브나인 송파 센터",
-      "바이브나인 신사 센터",
-      "바이브나인 하남 센터",
-      "바이브나인 판교 센터",
-      "바이브나인 화성(동탄)센터",
-      "바이브나인 안양 센터",
-      "바이브나인 수원 센터",
-      "바이브나인 인천남동 센터",
-      "바이브나인 김해 센터",
-      "바이브나인 진주 센터",
-      "바이브나인 부산남구 센터",
-      "바이브나인 부산 해운대 센터",
-      "바이브나인 창원 센터",
-      "바이브나인 구미칠곡 센터",
-      "바이브나인 대구중동교 센터",
-      "바이브나인 대구수성 센터",
-      "바이브나인 울산 센터",
-      "바이브나인 목포 센터",
-      "바이브나인 여수신기 센터",
-      "바이브나인 광주 센터",
-      "바이브나인 전주 센터",
-      "바이브나인 천안 센터",
-      "바이브나인 청주 센터",
-      "바이브나인 대전유성 센터",
-      "바이브나인 대전동구 센터",
-      "바이브나인 원주 센터",
-      "바이브나인 제주 센터",
-      "바이브나인 김포고촌 센터",
-      "바이브나인 부산 수영 센터"
+    const serviceCenterDetail = document.getElementById('serviceCenterDetail');
+    const serviceCenterPhoneInput = document.getElementById('serviceCenterPhone');
+    const serviceCenterAddressInput = document.getElementById('serviceCenterAddress');
+    const serviceCenterDirectory = [
+      { name: "바이브나인 본사", phone: "010-5004-2414", address: "경기도 고양시 일산동구 일산로 418" },
+      { name: "바이브나인 일산 센터", phone: "010-3543-5540", address: "경기도 고양시 일산동구 식사로 12" },
+      { name: "바이브나인 서초 센터", phone: "010-5418-1109", address: "서울특별시 서초구 반포대로 84" },
+      { name: "바이브나인 중랑 센터", phone: "010-7279-9555", address: "서울특별시 중랑구 겸재로 240" },
+      { name: "바이브나인 구로 센터", phone: "010-3729-7686", address: "서울특별시 구로구 구로동로 43길 44-6" },
+      { name: "바이브나인 논현 센터", phone: "010-4847-8199", address: "서울특별시 강남구 언주로133길 32" },
+      { name: "바이브나인 송파 센터", phone: "010-8209-8783", address: "서울특별시 송파구 삼전로 53" },
+      { name: "바이브나인 신사 센터", phone: "010-5127-1844", address: "서울특별시 강남구 논현동 6-8" },
+      { name: "바이브나인 하남 센터", phone: "010-9140-5887", address: "경기도 하남시 신우실로 140" },
+      { name: "바이브나인 판교 센터", phone: "010-7666-3755", address: "경기도 성남시 분당구 대왕판교로 46-6" },
+      { name: "바이브나인 화성(동탄)센터", phone: "010-5539-1474", address: "경기도 화성시 동탄순환대로 731" },
+      { name: "바이브나인 안양 센터", phone: "010-7292-6627", address: "경기도 안양시 만안구 만안로 74" },
+      { name: "바이브나인 수원 센터", phone: "010-9489-8261", address: "경기도 수원시 장안구 장안로 475-5" },
+      { name: "바이브나인 인천남동 센터", phone: "010-9369-7336", address: "인천광역시 남동구 경인로 738" },
+      { name: "바이브나인 인천송도 센터", phone: "010-8284-6357", address: "인천 연수구 능허대로 257" },
+      { name: "바이브나인 김해 센터", phone: "010-4992-1204", address: "경상남도 김해대로 2324번길 48-8" },
+      { name: "바이브나인 진주 센터", phone: "010-4446-5542", address: "경상남도 진주시 모덕로21-1" },
+      { name: "바이브나인 부산 해운대 센터", phone: "010-8446-6007", address: "부산광역시 해운대구 우동 1102-50" },
+      { name: "바이브나인 창원 센터", phone: "010-3845-1919", address: "경상남도 창원시 마산회원구 3·15대로 594" },
+      { name: "바이브나인 구미칠곡 센터", phone: "010-6356-0456", address: "경상북도 칠곡군 북삼읍 금오대로 169" },
+      { name: "바이브나인 대구중동교 센터", phone: "010-4659-5454", address: "대구광역시 남구 용두방천3길 50" },
+      { name: "바이브나인 대구수성 센터", phone: "010-2526-3958", address: "대구광역시 수성구 들안로 145-1" },
+      { name: "바이브나인 울산 센터", phone: "010-9303-3690", address: "울산 북구 진장17길 43" },
+      { name: "바이브나인 목포 센터", phone: "010-5741-7070", address: "전라남도 목포시 교육로 104" },
+      { name: "바이브나인 여수신기 센터", phone: "010-4162-1518", address: "전라남도 여수시 신기동 18-7" },
+      { name: "바이브나인 광주 센터", phone: "010-6623-0130", address: "광주광역시 북구 중흥동 704-11" },
+      { name: "바이브나인 전주 센터", phone: "010-4038-3663", address: "전라북도 전주시 덕진구 송천동2가 43" },
+      { name: "바이브나인 천안 센터", phone: "010-5299-3503", address: "충청남도 천안시 동남구 쌍용대로100" },
+      { name: "바이브나인 대전유성 센터", phone: "010-8920-3866", address: "대전광역시 유성구 유성대로 582" },
+      { name: "바이브나인 대전동구 센터", phone: "010-2546-6037", address: "대전광역시 동구 한밭대로 1305" },
+      { name: "바이브나인 원주 센터", phone: "010-5415-2123", address: "강원 원주시 늘품로 253" },
+      { name: "바이브나인 제주 센터", phone: "010-9546-2622", address: "제주특별자치도 제주시 월광로 161-1" },
+      { name: "바이브나인 김포고촌 센터", phone: "010-5271-2684", address: "경기도 김포시 고촌읍 은행영사정로51번길 11" },
+      { name: "바이브나인 부산 수영 센터", phone: "010-5496-7396", address: "부산광역시 수영구 수영로 624 수영돼지국밥 옆 1층" }
     ];
-    const priceEstimateInputs = ['frontFilm', 'sideOneFilm', 'sideTwoFilm', 'glassRoofFilm', 'ppf', 'hipass']
+    const serviceCenterOptions = serviceCenterDirectory.map((center) => center.name);
+    const serviceCenterDetailMap = Object.fromEntries(serviceCenterDirectory.map((center) => [center.name, center]));
+    const priceEstimateInputs = ['frontFilm', 'sideOneFilm', 'sideTwoFilm', 'rearFilm', 'glassRoofFilm', 'blackbox', 'blackboxChannel', 'ppf', 'hipass']
       .map((id) => document.getElementById(id))
       .filter(Boolean);
     const dateTimePairs = [
@@ -2101,6 +2294,51 @@
     function updateServiceCenterStatus(value) {
       if (!serviceCenterStatus) return;
       serviceCenterStatus.textContent = value ? `선택된 시공점: ${value}` : '검색어를 입력하거나 목록에서 시공점을 선택해주세요.';
+    }
+
+    function createServiceCenterDetailRow(label, value, linkUrl) {
+      const row = document.createElement('div');
+      row.className = 'service-center-detail-row';
+
+      const labelEl = document.createElement('span');
+      labelEl.className = 'service-center-detail-label';
+      labelEl.textContent = label;
+
+      const valueEl = document.createElement('span');
+      valueEl.className = 'service-center-detail-value';
+      if (linkUrl) {
+        const link = document.createElement('a');
+        link.href = linkUrl;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.textContent = value;
+        valueEl.appendChild(link);
+      } else {
+        valueEl.textContent = value;
+      }
+
+      row.append(labelEl, valueEl);
+      return row;
+    }
+
+    function createNaverMapUrl(address) {
+      return `https://map.naver.com/p/search/${encodeURIComponent(address)}`;
+    }
+
+    function updateServiceCenterDetail(value) {
+      const detail = serviceCenterDetailMap[value];
+      if (serviceCenterPhoneInput) serviceCenterPhoneInput.value = detail ? detail.phone : '';
+      if (serviceCenterAddressInput) serviceCenterAddressInput.value = detail ? detail.address : '';
+      if (!serviceCenterDetail) return;
+
+      serviceCenterDetail.innerHTML = '';
+      serviceCenterDetail.classList.toggle('is-visible', Boolean(detail));
+      if (!detail) return;
+
+      serviceCenterDetail.append(
+        createServiceCenterDetailRow('전화번호', detail.phone),
+        createServiceCenterDetailRow('주소', detail.address, createNaverMapUrl(detail.address))
+      );
     }
 
     function updateServiceCenterValidity() {
@@ -2175,12 +2413,14 @@
     function initServiceCenterSearch() {
       if (!serviceCenterInput || !serviceCenterSearch || !serviceCenterResults) return;
       updateServiceCenterStatus(serviceCenterInput.value);
+      updateServiceCenterDetail(serviceCenterInput.value);
       updateServiceCenterValidity();
 
       serviceCenterSearch.addEventListener('focus', renderServiceCenterResults);
       serviceCenterSearch.addEventListener('input', () => {
         if (serviceCenterInput.value && serviceCenterSearch.value.trim() !== serviceCenterInput.value) {
           serviceCenterInput.value = '';
+          updateServiceCenterDetail('');
         }
         renderServiceCenterResults();
       });
@@ -2203,6 +2443,7 @@
           serviceCenterSearch.value = '';
           serviceCenterInput.dispatchEvent(new Event('change', { bubbles: true }));
           updateServiceCenterStatus('');
+          updateServiceCenterDetail('');
           serviceCenterSearch.focus();
           renderServiceCenterResults();
         });
@@ -2211,6 +2452,7 @@
         const value = serviceCenterInput.value;
         serviceCenterSearch.value = value;
         updateServiceCenterStatus(value);
+        updateServiceCenterDetail(value);
         updateServiceCenterValidity();
       });
       document.addEventListener('click', (event) => {
@@ -2264,25 +2506,46 @@
       return input ? input.value : '';
     }
 
+    const sideFilmPriority = {
+      valkyrie: 3,
+      velvet: 2,
+      voltage: 1,
+      '': 0
+    };
+
+    const frontSidePriceTable = {
+      'voltage/voltage': null,
+      'velvet/voltage': { label: '전면 벨벳 업그레이드', amount: 200000 },
+      'voltage/velvet': { label: '측면 벨벳 업그레이드', amount: 300000 },
+      'velvet/velvet': { label: '전·측면 벨벳 업그레이드', amount: 500000 },
+      'valkyrie/voltage': { label: '전면 발키리 업그레이드', amount: 250000 },
+      'voltage/valkyrie': { label: '측면 발키리 업그레이드', amount: 450000 },
+      'valkyrie/velvet': { label: '전면 발키리 + 측면 벨벳 업그레이드', amount: 600000 },
+      'velvet/valkyrie': { label: '전면 벨벳 + 측면 발키리 업그레이드', amount: 650000 }
+    };
+
+    function getSideFilmGrade() {
+      return ['sideOneFilm', 'sideTwoFilm']
+        .map((id) => getFilmGrade(getSelectedOptionText(id)))
+        .filter(Boolean)
+        .sort((a, b) => sideFilmPriority[b] - sideFilmPriority[a])[0] || 'voltage';
+    }
+
     function getFrontSideEstimate() {
-      const front = getFilmGrade(getSelectedOptionText('frontFilm'));
-      const sideOne = getFilmGrade(getSelectedOptionText('sideOneFilm'));
-      const sideTwo = getFilmGrade(getSelectedOptionText('sideTwoFilm'));
-      const sideGrades = [sideOne, sideTwo].filter(Boolean);
-      const selectedGrades = [front, ...sideGrades].filter(Boolean);
-      const upgradeGrades = selectedGrades.filter((grade) => grade && grade !== 'voltage');
+      const front = getFilmGrade(getSelectedOptionText('frontFilm')) || 'voltage';
+      const side = getSideFilmGrade();
 
-      if (!upgradeGrades.length) return null;
-
-      if (front === 'valkyrie' && sideGrades.length && sideGrades.every((grade) => grade === 'velvet')) {
-        return { label: '전면 발키리 + 측면 벨벳 업그레이드', amount: 600000 };
+      if (front === 'valkyrie' && side === 'valkyrie') {
+        return {
+          invalid: true,
+          frontGrade: front,
+          sideGrade: side,
+          message: '전면 발키리 + 측면 발키리는 심한 전파방해 사유로 선택할 수 없습니다.'
+        };
       }
 
-      if (upgradeGrades.includes('valkyrie')) {
-        return { label: '발키리 업그레이드', amount: 700000 };
-      }
-
-      return { label: '벨벳 업그레이드', amount: 500000 };
+      const estimate = frontSidePriceTable[`${front}/${side}`];
+      return estimate ? { ...estimate, frontGrade: front, sideGrade: side } : null;
     }
 
     function getRoofEstimate() {
@@ -2292,6 +2555,70 @@
       return null;
     }
 
+    function updateSideValkyrieAvailability() {
+      const front = getFilmGrade(getSelectedOptionText('frontFilm'));
+      const shouldDisableValkyrie = front === 'valkyrie';
+      ['sideOneFilm', 'sideTwoFilm'].forEach((id) => {
+        const select = document.getElementById(id);
+        if (!select) return;
+        Array.from(select.options).forEach((option) => {
+          if (!option.textContent.includes('발키리')) return;
+          option.disabled = shouldDisableValkyrie;
+        });
+        if (shouldDisableValkyrie && getFilmGrade(select.value) === 'valkyrie') {
+          select.value = '';
+        }
+      });
+    }
+
+    function updateRearFilmState() {
+      if (!rearFilmInput) return;
+      const isAvailable = getSelectedVehicleModel() === '폴스타3';
+      const placeholder = rearFilmInput.options[0];
+      rearFilmInput.disabled = !isAvailable;
+      if (placeholder) {
+        placeholder.textContent = isAvailable ? '선택해주세요' : '선택하신 차량은 후면 유리가 없습니다.';
+      }
+      if (!isAvailable) rearFilmInput.value = '';
+      if (rearFilmField) rearFilmField.classList.toggle('is-disabled', !isAvailable);
+    }
+
+    function updatePpfPreview() {
+      if (!ppfPreview || !ppfInput) return;
+      ppfPreview.hidden = !(getSelectedVehicleModel() === '폴스타4' && ppfInput.checked);
+    }
+
+    function updateBlackboxOptionState() {
+      if (!blackboxInput || !blackboxChannelInput || !blackboxChannelWrap) return;
+      const isSelected = blackboxInput.checked;
+      blackboxChannelWrap.hidden = !isSelected;
+      blackboxChannelInput.disabled = !isSelected;
+      blackboxChannelInput.required = isSelected;
+      if (!isSelected) {
+        blackboxChannelInput.value = '';
+        blackboxChannelInput.setCustomValidity('');
+      }
+    }
+
+    function getBlackboxEstimate() {
+      if (!blackboxInput || !blackboxInput.checked) return null;
+      const channel = blackboxChannelInput ? blackboxChannelInput.value : '';
+      if (channel === '1ch') return { label: '블랙박스 1채널', amount: 180000 };
+      if (channel === '2ch') return { label: '블랙박스 2채널', amount: 250000 };
+      return { invalid: true, message: '블랙박스 채널을 선택해 주세요.' };
+    }
+
+    function isReservationPaymentRequired() {
+      const front = getFilmGrade(getSelectedOptionText('frontFilm')) || 'voltage';
+      const side = getSideFilmGrade();
+      const rear = rearFilmInput && !rearFilmInput.disabled ? getFilmGrade(rearFilmInput.value) : '';
+      const roof = getFilmGrade(getSelectedOptionText('glassRoofFilm'));
+      const hipass = document.getElementById('hipass');
+      const hasFilmUpgrade = [front, side, rear].some((grade) => grade && grade !== 'voltage');
+      const hasPaidAddOn = Boolean(roof || (blackboxInput && blackboxInput.checked) || (ppfInput && ppfInput.checked) || (hipass && hipass.checked));
+      return hasFilmUpgrade || hasPaidAddOn;
+    }
+
     function calculatePriceEstimate() {
       const vehicleModel = getSelectedVehicleModel();
       const items = [];
@@ -2299,7 +2626,8 @@
       if (vehicleModel !== '폴스타4') {
         return {
           total: 0,
-          items: [`${vehicleModel} 가격표는 준비중입니다. 폴스타4 선택 시 가격표 기준 예상가가 표시됩니다.`]
+          items: [`${vehicleModel} 가격표는 준비중입니다. 폴스타4 선택 시 가격표 기준 예상가가 표시됩니다.`],
+          naverPayRequired: null
         };
       }
 
@@ -2307,22 +2635,34 @@
       const roof = getRoofEstimate();
       let filmTotal = 0;
 
-      if (frontSide && roof && roof.label === '글라스루프 벨벳' && frontSide.label === '벨벳 업그레이드') {
-        filmTotal = 750000;
-        items.push({ label: '전·측면 벨벳 + 루프 벨벳 패키지', amount: 750000 });
-      } else {
-        if (frontSide) {
-          filmTotal += frontSide.amount;
-          items.push(frontSide);
-        }
-        if (roof) {
-          filmTotal += roof.amount;
-          items.push(roof);
-        }
+      if (frontSide && frontSide.invalid) {
+        return {
+          total: 0,
+          items: [frontSide.message],
+          invalid: true,
+          naverPayRequired: null
+        };
+      }
+
+      if (frontSide) {
+        filmTotal += frontSide.amount;
+        items.push(frontSide);
+      }
+      if (roof) {
+        filmTotal += roof.amount;
+        items.push(roof);
       }
 
       let total = filmTotal;
-      const hasUpgradeConstruction = Boolean(frontSide || (roof && roof.label === '글라스루프 벨벳'));
+      const hasFrontUpgrade = Boolean(frontSide && frontSide.frontGrade !== 'voltage');
+
+      const blackbox = getBlackboxEstimate();
+      if (blackbox && blackbox.invalid) {
+        items.push(blackbox.message);
+      } else if (blackbox) {
+        total += blackbox.amount;
+        items.push(blackbox);
+      }
 
       const ppf = document.getElementById('ppf');
       if (ppf && ppf.checked) {
@@ -2332,8 +2672,8 @@
 
       const hipass = document.getElementById('hipass');
       if (hipass && hipass.checked) {
-        if (hasUpgradeConstruction) {
-          items.push({ label: '하이패스 매립 추가 시공 (업그레이드 무상)', amount: 0 });
+        if (hasFrontUpgrade) {
+          items.push({ label: '하이패스 매립 추가 시공 (전면 업그레이드 무상)', amount: 0 });
         } else {
           total += 20000;
           items.push({ label: '하이패스 매립 추가 시공', amount: 20000 });
@@ -2342,12 +2682,35 @@
 
       return {
         total,
-        items: items.length ? items : ['선택된 내역이 없습니다.']
+        items: items.length ? items : ['선택된 내역이 없습니다.'],
+        naverPayRequired: total > 0
       };
+    }
+
+    function updateFilmSelectionValidity() {
+      updateSideValkyrieAvailability();
+      const frontInput = document.getElementById('frontFilm');
+      const sideInputs = ['sideOneFilm', 'sideTwoFilm']
+        .map((id) => document.getElementById(id))
+        .filter(Boolean);
+      const frontGrade = frontInput ? getFilmGrade(frontInput.value) : '';
+      const hasSideValkyrie = sideInputs.some((input) => getFilmGrade(input.value) === 'valkyrie');
+      const message = frontGrade === 'valkyrie' && hasSideValkyrie
+        ? '전면과 측면 모두 발키리는 선택할 수 없습니다.'
+        : '';
+
+      if (frontInput) frontInput.setCustomValidity(message);
+      sideInputs.forEach((input) => {
+        input.setCustomValidity(message && getFilmGrade(input.value) === 'valkyrie' ? message : '');
+      });
     }
 
     function updatePriceEstimate() {
       if (!priceEstimateTotal || !priceEstimateList) return;
+      updateRearFilmState();
+      updateFilmSelectionValidity();
+      updateBlackboxOptionState();
+      updatePpfPreview();
       const estimate = calculatePriceEstimate();
       priceEstimateTotal.textContent = formatWon(estimate.total);
       priceEstimateList.innerHTML = '';
@@ -2357,6 +2720,26 @@
         li.textContent = typeof item === 'string' ? item : `${item.label} · ${formatWon(item.amount)}`;
         priceEstimateList.appendChild(li);
       });
+
+      if (estimatedTotalInput) estimatedTotalInput.value = String(estimate.total);
+      const paymentRequired = isReservationPaymentRequired();
+      if (naverPayRequiredInput) {
+        if (estimate.invalid) {
+          naverPayRequiredInput.value = '선택 오류';
+        } else {
+          naverPayRequiredInput.value = paymentRequired ? '필요' : '불필요';
+        }
+      }
+
+      if (priceEstimateNote) {
+        if (estimate.invalid) {
+          priceEstimateNote.textContent = '선택할 수 없는 필름 조합입니다. 전면 또는 측면 필름을 변경해주세요.';
+        } else if (paymentRequired) {
+          priceEstimateNote.textContent = '네이버페이 예약금 결제가 필요한 선택입니다. 예약금을 제외한 비용은 대리점에서 결제가 진행됩니다.';
+        } else {
+          priceEstimateNote.textContent = '전체 볼티지 기본작업은 네이버페이 예약금 결제가 필요하지 않습니다.';
+        }
+      }
     }
 
     function closePriceGuide() {
@@ -2457,9 +2840,32 @@
       input.addEventListener('input', () => updateDateTimeDisplay(input, displayText));
     }
 
-    function isWeekend(date) {
-      const day = date.getDay();
-      return day === 0 || day === 6;
+    function isSunday(date) {
+      return date.getDay() === 0;
+    }
+
+    function getDateTimeValidationMessage(input) {
+      if (!input || !input.value) return '';
+      const { dateValue, timeValue } = parseDateTimeValue(input.value);
+      const parsedDate = createDateFromValue(dateValue);
+      if (parsedDate && isSunday(parsedDate)) return '일요일은 선택할 수 없습니다.';
+
+      const range = getTimeRangeForInput(input);
+      if (range && timeValue) {
+        const value = timeValueToMinutes(timeValue);
+        const min = timeValueToMinutes(range.min);
+        const max = timeValueToMinutes(range.max);
+        if (value === null || value < min || value > max) {
+          return '입고 시간은 오전 9시부터 오후 6시까지 선택해 주세요.';
+        }
+      }
+
+      return '';
+    }
+
+    function updateDateTimeValidity(input) {
+      if (!input) return;
+      input.setCustomValidity(getDateTimeValidationMessage(input));
     }
 
     function createDateFromValue(dateValue) {
@@ -2494,12 +2900,58 @@
       return `${padNumber(hour24)}:${padNumber(minute)}`;
     }
 
+    function getTimeRangeForInput(input) {
+      if (input && input.id === 'centerInDateTime') {
+        return { min: '09:00', max: '18:00' };
+      }
+      return null;
+    }
+
+    function timeValueToMinutes(timeValue) {
+      const [hourRaw = '0', minuteRaw = '0'] = timeValue.split(':');
+      const hour = Number(hourRaw);
+      const minute = Number(minuteRaw);
+      if (!Number.isFinite(hour) || !Number.isFinite(minute)) return null;
+      return hour * 60 + minute;
+    }
+
+    function timeStateToMinutes(timeState) {
+      return timeValueToMinutes(formatTimeState(timeState));
+    }
+
+    function isTimeStateAllowedForInput(input, timeState) {
+      const range = getTimeRangeForInput(input);
+      if (!range) return true;
+      const value = timeStateToMinutes(timeState);
+      const min = timeValueToMinutes(range.min);
+      const max = timeValueToMinutes(range.max);
+      return value !== null && value >= min && value <= max;
+    }
+
+    function coerceTimeStateForInput(input, timeState) {
+      if (isTimeStateAllowedForInput(input, timeState)) return timeState;
+      const range = getTimeRangeForInput(input);
+      if (!range) return timeState;
+      const value = timeStateToMinutes(timeState);
+      const max = timeValueToMinutes(range.max);
+      if (value !== null && value > max) return createTimeState(range.max);
+      return createTimeState(range.min);
+    }
+
+    function hasAllowedMinuteForHour(input, timeState, hour) {
+      return timeClockMinutes.some((minute) => isTimeStateAllowedForInput(input, { ...timeState, hour, minute }));
+    }
+
+    function hasAllowedHourForPeriod(input, timeState, period) {
+      return timeClockHours.some((hour) => hasAllowedMinuteForHour(input, { ...timeState, period }, hour));
+    }
+
     function getClockAngle(value, mode) {
       const index = mode === 'hour' ? value % 12 : value / 5;
       return index * 30 - 90;
     }
 
-    function renderClockFace(clockFace, clockNumbers, mode, selectedValue, onSelect) {
+    function renderClockFace(clockFace, clockNumbers, mode, selectedValue, onSelect, isDisabled = () => false) {
       clockNumbers.innerHTML = '';
       const values = mode === 'hour' ? timeClockHours : timeClockMinutes;
       const formatter = mode === 'hour' ? String : padNumber;
@@ -2519,13 +2971,23 @@
         button.style.setProperty('--clock-angle-reverse', `${-angle}deg`);
         button.setAttribute('aria-pressed', String(value === selectedValue));
         button.setAttribute('aria-label', mode === 'hour' ? `${value}시` : `${padNumber(value)}분`);
+        if (isDisabled(value)) {
+          button.disabled = true;
+          button.setAttribute('aria-disabled', 'true');
+        }
         if (value === selectedValue) button.classList.add('is-selected');
-        button.addEventListener('click', () => onSelect(value));
+        button.addEventListener('click', () => {
+          if (button.disabled) return;
+          onSelect(value);
+        });
         clockNumbers.appendChild(button);
       });
     }
 
     function createDateTimePicker(input) {
+      const pickerHelpText = input.id === 'centerInDateTime'
+        ? '일요일은 선택할 수 없습니다. 입고 시간은 오전 9시부터 오후 6시까지 가능합니다.'
+        : '일요일은 선택할 수 없습니다. 시간 선택 후 분을 5분 단위로 선택합니다.';
       const picker = document.createElement('div');
       picker.className = 'datetime-picker';
       picker.setAttribute('role', 'dialog');
@@ -2546,7 +3008,7 @@
           <span class="picker-weekday is-weekend">일</span>
         </div>
         <div class="picker-days"></div>
-        <p class="picker-help">토요일과 일요일은 선택할 수 없습니다. 시간 선택 후 분을 5분 단위로 선택합니다.</p>
+        <p class="picker-help">${pickerHelpText}</p>
         <div class="clock-time-picker" aria-label="시간 선택">
           <div class="clock-time-title">Select time</div>
           <div class="clock-time-readout">
@@ -2600,13 +3062,17 @@
       let clockMode = 'hour';
 
       function renderTimeClock() {
+        timeState = coerceTimeStateForInput(input, timeState);
         timeHourButton.textContent = padNumber(timeState.hour);
         timeMinuteButton.textContent = padNumber(timeState.minute);
         timeValueLabel.setAttribute('aria-label', `${timeState.period} ${padNumber(timeState.hour)}시 ${padNumber(timeState.minute)}분`);
         periodButtons.forEach((button) => {
           const isSelected = button.dataset.period === timeState.period;
+          const isDisabled = !hasAllowedHourForPeriod(input, timeState, button.dataset.period);
+          button.disabled = isDisabled;
           button.classList.toggle('is-selected', isSelected);
           button.setAttribute('aria-pressed', String(isSelected));
+          button.setAttribute('aria-disabled', String(isDisabled));
         });
         modeButtons.forEach((button) => {
           const isActive = button.dataset.mode === clockMode;
@@ -2614,6 +3080,10 @@
           button.setAttribute('aria-selected', String(isActive));
         });
         const selectedValue = clockMode === 'hour' ? timeState.hour : timeState.minute;
+        const isDisabled = (value) => {
+          if (clockMode === 'hour') return !hasAllowedMinuteForHour(input, timeState, value);
+          return !isTimeStateAllowedForInput(input, { ...timeState, minute: value });
+        };
         renderClockFace(clockFace, clockNumbers, clockMode, selectedValue, (value) => {
           if (clockMode === 'hour') {
             timeState.hour = value;
@@ -2621,9 +3091,10 @@
           } else {
             timeState.minute = value;
           }
+          timeState = coerceTimeStateForInput(input, timeState);
           renderTimeClock();
           setInputValue();
-        });
+        }, isDisabled);
       }
 
       function setInputValue() {
@@ -2665,8 +3136,8 @@
           button.setAttribute('aria-label', `${cellDate.getFullYear()}년 ${cellDate.getMonth() + 1}월 ${cellDate.getDate()}일`);
 
           if (cellDate.getMonth() !== month) button.classList.add('is-other-month');
-          if (isWeekend(cellDate)) {
-            button.classList.add('is-weekend');
+          if (cellDate.getDay() === 0 || cellDate.getDay() === 6) button.classList.add('is-weekend');
+          if (isSunday(cellDate)) {
             button.disabled = true;
           }
           if (selectedDate && cellDate.toDateString() === selectedDate.toDateString()) button.classList.add('is-selected');
@@ -2683,7 +3154,7 @@
       function openPicker() {
         const { dateValue, timeValue } = parseDateTimeValue(input.value);
         const parsedDate = createDateFromValue(dateValue);
-        if (parsedDate && !isWeekend(parsedDate)) {
+        if (parsedDate && !isSunday(parsedDate)) {
           selectedDate = parsedDate;
           viewDate = new Date(parsedDate.getFullYear(), parsedDate.getMonth(), 1);
         } else {
@@ -2713,7 +3184,9 @@
       });
       periodButtons.forEach((button) => {
         button.addEventListener('click', () => {
+          if (button.disabled) return;
           timeState.period = button.dataset.period;
+          timeState = coerceTimeStateForInput(input, timeState);
           renderTimeClock();
           setInputValue();
         });
@@ -2784,10 +3257,146 @@
       }, true);
     }
 
+    function getInputValue(id) {
+      const input = document.getElementById(id);
+      return input ? input.value.trim() : '';
+    }
+
+    function getCheckboxValue(id) {
+      const input = document.getElementById(id);
+      return input && input.checked ? '예' : '아니오';
+    }
+
+    function getSelectedOptionLabel(input) {
+      if (!input || !input.value) return '';
+      const option = input.options ? input.options[input.selectedIndex] : null;
+      return option ? option.textContent.trim() : input.value.trim();
+    }
+
+    function getEstimateItemsText() {
+      if (!priceEstimateList) return '';
+      return Array.from(priceEstimateList.querySelectorAll('li'))
+        .map((item) => item.textContent.trim())
+        .filter(Boolean)
+        .join(' / ');
+    }
+
+    function buildSubmissionPayload() {
+      updatePriceEstimate();
+      syncDateTimeFields();
+
+      const serviceCenterName = getInputValue('serviceCenter');
+      const serviceCenter = serviceCenterDetailMap[serviceCenterName] || {};
+      const paymentRequired = isReservationPaymentRequired();
+
+      return {
+        submittedAt: new Date().toISOString(),
+        contractor: getInputValue('contractor'),
+        phone: getInputValue('phone'),
+        vehicleModel: getSelectedVehicleModel(),
+        deliveryDateTime: getInputValue('deliveryDateTime'),
+        deliveryDate: getInputValue('deliveryDate'),
+        deliveryTime: getInputValue('deliveryTime'),
+        deliveryShowroom: getInputValue('deliveryShowroom'),
+        serviceCenter: serviceCenterName,
+        serviceCenterPhone: serviceCenter.phone || getInputValue('serviceCenterPhone'),
+        serviceCenterAddress: serviceCenter.address || getInputValue('serviceCenterAddress'),
+        serviceCenterMapUrl: serviceCenter.address ? createNaverMapUrl(serviceCenter.address) : '',
+        centerInDateTime: getInputValue('centerInDateTime'),
+        centerInDate: getInputValue('centerInDate'),
+        centerInTime: getInputValue('centerInTime'),
+        frontFilm: getInputValue('frontFilm'),
+        sideOneFilm: getInputValue('sideOneFilm'),
+        sideTwoFilm: getInputValue('sideTwoFilm'),
+        rearFilm: rearFilmInput && !rearFilmInput.disabled ? rearFilmInput.value : '선택하신 차량은 후면 유리가 없습니다.',
+        glassRoofFilm: getInputValue('glassRoofFilm'),
+        blackbox: getCheckboxValue('blackbox'),
+        blackboxChannel: blackboxInput && blackboxInput.checked ? getSelectedOptionLabel(blackboxChannelInput) : '',
+        ppf: getCheckboxValue('ppf'),
+        hipass: getCheckboxValue('hipass'),
+        memo: getInputValue('memo'),
+        estimatedTotal: getInputValue('estimatedTotal'),
+        estimatedTotalLabel: priceEstimateTotal ? priceEstimateTotal.textContent.trim() : '',
+        estimatedItems: getEstimateItemsText(),
+        naverPayRequired: paymentRequired ? '필요' : '불필요',
+        paymentUrl: paymentRequired ? RESERVATION_PAYMENT_URL : '',
+        privacyConsent: getCheckboxValue('privacy'),
+        thirdPartyConsent: getCheckboxValue('thirdPartyConsent'),
+        marketingConsent: getCheckboxValue('marketingConsent'),
+        pageUrl: window.location.href,
+        userAgent: navigator.userAgent
+      };
+    }
+
+    function appendResultText(container, text, isStrong = false) {
+      const paragraph = document.createElement('p');
+      const node = isStrong ? document.createElement('strong') : document.createElement('span');
+      node.textContent = text;
+      paragraph.appendChild(node);
+      container.appendChild(paragraph);
+    }
+
+    function appendResultLink(container, label, url, text) {
+      const paragraph = document.createElement('p');
+      const labelNode = document.createElement('span');
+      labelNode.textContent = label;
+      const link = document.createElement('a');
+      link.href = url;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.textContent = text;
+      paragraph.append(labelNode, link);
+      container.appendChild(paragraph);
+    }
+
+    function renderSubmitResult(payload) {
+      if (!submitResult) return;
+      submitResult.innerHTML = '';
+      appendResultText(submitResult, '접수 완료되었습니다.', true);
+      appendResultText(submitResult, `지정하신 대리점은 ${payload.serviceCenter || '-'} 입니다.`);
+      appendResultText(submitResult, `연락처 : ${payload.serviceCenterPhone || '-'}`);
+      if (payload.serviceCenterMapUrl && payload.serviceCenterAddress) {
+        appendResultLink(submitResult, '주소 : ', payload.serviceCenterMapUrl, payload.serviceCenterAddress);
+      } else {
+        appendResultText(submitResult, `주소 : ${payload.serviceCenterAddress || '-'}`);
+      }
+      if (payload.paymentUrl) {
+        appendResultLink(submitResult, '', payload.paymentUrl, '예약금 결제 페이지');
+      }
+      appendResultText(submitResult, '궁금하신 사항은 031-921-1210 로 연락 부탁드립니다.');
+      submitResult.classList.add('is-visible');
+      submitResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function showToast(message) {
+      if (!toast) return;
+      toast.textContent = message;
+      toast.classList.add('show');
+      window.setTimeout(() => toast.classList.remove('show'), 3600);
+    }
+
+    async function submitToGoogleSheet(payload) {
+      if (!GOOGLE_APPS_SCRIPT_URL) {
+        throw new Error('GOOGLE_APPS_SCRIPT_URL이 설정되지 않았습니다.');
+      }
+
+      await fetch(GOOGLE_APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
+        body: JSON.stringify(payload)
+      });
+    }
+
     dateTimePairs.forEach(({ source }) => {
       const sourceInput = document.getElementById(source);
       if (!sourceInput) return;
-      sourceInput.addEventListener('input', syncDateTimeFields);
+      sourceInput.addEventListener('input', () => {
+        syncDateTimeFields();
+        updateDateTimeValidity(sourceInput);
+      });
       createDateTimePicker(sourceInput);
     });
 
@@ -2799,13 +3408,33 @@
       stickyObserver.observe(reservationSection);
     }
 
-    form.addEventListener('submit', (event) => {
+    form.addEventListener('submit', async (event) => {
       event.preventDefault();
       syncDateTimeFields();
       updateServiceCenterValidity();
+      updateFilmSelectionValidity();
+      updateBlackboxOptionState();
+      dateTimePairs.forEach(({ source }) => updateDateTimeValidity(document.getElementById(source)));
       if (!form.reportValidity()) return;
-      toast.classList.add('show');
-      window.setTimeout(() => toast.classList.remove('show'), 3600);
+
+      const payload = buildSubmissionPayload();
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = '접수 중입니다.';
+      }
+
+      try {
+        await submitToGoogleSheet(payload);
+        renderSubmitResult(payload);
+        showToast('접수 완료되었습니다.');
+      } catch (error) {
+        showToast(error.message || '접수 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      } finally {
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = '신청하기';
+        }
+      }
     });
   </script>
 </body>
