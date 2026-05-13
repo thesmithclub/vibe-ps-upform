@@ -3383,6 +3383,7 @@
       const paymentRequired = isReservationPaymentRequired();
 
       return {
+        submissionId: `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`,
         submittedAt: new Date().toISOString(),
         contractor: getInputValue('contractor'),
         phone: getInputValue('phone'),
@@ -3486,18 +3487,44 @@
       }
 
       const requestUrl = `${GOOGLE_APPS_SCRIPT_URL}?payload=${encodeURIComponent(JSON.stringify(payload))}`;
-      const response = await fetch(requestUrl, {
-        method: 'GET',
-        cache: 'no-store'
-      });
+      const controller = new AbortController();
+      const timeoutId = window.setTimeout(() => controller.abort(), 10000);
 
-      if (!response.ok) {
-        throw new Error(`구글 시트 전송 실패: HTTP ${response.status}`);
-      }
+      try {
+        const response = await fetch(requestUrl, {
+          method: 'GET',
+          cache: 'no-store',
+          signal: controller.signal
+        });
 
-      const result = await response.json().catch(() => null);
-      if (!result || result.ok !== true || result.saved !== true) {
-        throw new Error(result?.error || '구글 시트 전송 응답을 확인할 수 없습니다.');
+        if (!response.ok) {
+          throw new Error(`구글 시트 전송 실패: HTTP ${response.status}`);
+        }
+
+        const result = await response.json().catch(() => null);
+        if (!result || result.ok !== true || result.saved !== true) {
+          throw new Error(result?.error || '구글 시트 전송 응답을 확인할 수 없습니다.');
+        }
+      } catch (error) {
+        if (error.name !== 'AbortError') throw error;
+
+        const fallbackController = new AbortController();
+        const fallbackTimeoutId = window.setTimeout(() => fallbackController.abort(), 8000);
+
+        try {
+          await fetch(requestUrl, {
+            method: 'GET',
+            mode: 'no-cors',
+            cache: 'no-store',
+            signal: fallbackController.signal
+          });
+        } catch (fallbackError) {
+          throw new Error('구글 시트 응답이 지연되고 있습니다. 잠시 후 다시 시도해주세요.');
+        } finally {
+          window.clearTimeout(fallbackTimeoutId);
+        }
+      } finally {
+        window.clearTimeout(timeoutId);
       }
     }
 
