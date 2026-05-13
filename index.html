@@ -1507,6 +1507,85 @@
     }
     .toast.show { opacity: 1; transform: translateX(-50%); }
 
+    .success-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(0,0,0,.48);
+    }
+    .success-modal[hidden] {
+      display: none;
+    }
+    .success-modal-panel {
+      width: min(520px, 100%);
+      border: 1px solid #111;
+      background: #fff;
+      color: var(--ink);
+      box-shadow: none;
+    }
+    .success-modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+    }
+    .success-modal-title {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.3;
+      font-weight: 900;
+    }
+    .success-modal-close {
+      width: 36px;
+      height: 36px;
+      border: 1px solid #111;
+      background: #fff;
+      color: #111;
+      cursor: pointer;
+      font-size: 22px;
+      line-height: 1;
+      font-weight: 700;
+    }
+    .success-modal-body {
+      padding: 20px;
+      font-size: 14px;
+      line-height: 1.65;
+      word-break: keep-all;
+    }
+    .success-modal-body p {
+      margin: 0 0 7px;
+    }
+    .success-modal-body p:last-child {
+      margin-bottom: 0;
+    }
+    .success-modal-body strong {
+      font-weight: 900;
+    }
+    .success-modal-body a {
+      color: var(--ink);
+      font-weight: 900;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .success-modal-actions {
+      padding: 0 20px 20px;
+    }
+    .success-modal-confirm {
+      width: 100%;
+      min-height: 50px;
+      border: 0;
+      background: #111;
+      color: #fff;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
 
     /* Flat visual system override: keep the page chrome flat while allowing the custom picker to use the requested rounded Material-style treatment. */
     .topbar,
@@ -2202,6 +2281,18 @@
   </nav>
 
   <div class="toast" id="toast" role="status" aria-live="polite">디자인 시안입니다. 실제 접수 연동은 다음 단계에서 연결하면 됩니다.</div>
+  <div class="success-modal" id="successModal" role="dialog" aria-modal="true" aria-labelledby="successModalTitle" hidden>
+    <div class="success-modal-panel">
+      <div class="success-modal-head">
+        <h2 class="success-modal-title" id="successModalTitle">접수 완료</h2>
+        <button class="success-modal-close" type="button" data-success-modal-close aria-label="닫기">×</button>
+      </div>
+      <div class="success-modal-body" id="successModalBody"></div>
+      <div class="success-modal-actions">
+        <button class="success-modal-confirm" type="button" data-success-modal-close>확인</button>
+      </div>
+    </div>
+  </div>
 
   <script>
     // Apps Script 웹 앱 배포 URL을 입력하면 구글시트 접수가 활성화됩니다.
@@ -2211,6 +2302,8 @@
     const toast = document.getElementById('toast');
     const submitButton = form ? form.querySelector('.submit-btn') : null;
     const submitResult = document.getElementById('submitResult');
+    const successModal = document.getElementById('successModal');
+    const successModalBody = document.getElementById('successModalBody');
     const mobileSticky = document.querySelector('.mobile-sticky');
     const reservationSection = document.getElementById('reservation');
     const priceGuideButton = document.getElementById('priceGuideButton');
@@ -3350,22 +3443,34 @@
     }
 
     function renderSubmitResult(payload) {
-      if (!submitResult) return;
-      submitResult.innerHTML = '';
-      appendResultText(submitResult, '접수 완료되었습니다.', true);
-      appendResultText(submitResult, `지정하신 대리점은 ${payload.serviceCenter || '-'} 입니다.`);
-      appendResultText(submitResult, `연락처 : ${payload.serviceCenterPhone || '-'}`);
+      const resultContainer = successModalBody || submitResult;
+      if (!resultContainer) return;
+      resultContainer.innerHTML = '';
+      appendResultText(resultContainer, '접수 완료되었습니다.', true);
+      appendResultText(resultContainer, `지정하신 대리점은 ${payload.serviceCenter || '-'} 입니다.`);
+      appendResultText(resultContainer, `연락처 : ${payload.serviceCenterPhone || '-'}`);
       if (payload.serviceCenterMapUrl && payload.serviceCenterAddress) {
-        appendResultLink(submitResult, '주소 : ', payload.serviceCenterMapUrl, payload.serviceCenterAddress);
+        appendResultLink(resultContainer, '주소 : ', payload.serviceCenterMapUrl, payload.serviceCenterAddress);
       } else {
-        appendResultText(submitResult, `주소 : ${payload.serviceCenterAddress || '-'}`);
+        appendResultText(resultContainer, `주소 : ${payload.serviceCenterAddress || '-'}`);
       }
       if (payload.paymentUrl) {
-        appendResultLink(submitResult, '', payload.paymentUrl, '예약금 결제 페이지');
+        appendResultLink(resultContainer, '', payload.paymentUrl, '예약금 결제 페이지');
       }
-      appendResultText(submitResult, '궁금하신 사항은 031-921-1210 로 연락 부탁드립니다.');
-      submitResult.classList.add('is-visible');
-      submitResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      appendResultText(resultContainer, '궁금하신 사항은 031-921-1210 로 연락 부탁드립니다.');
+
+      if (submitResult) {
+        submitResult.innerHTML = '';
+        submitResult.classList.remove('is-visible');
+      }
+      if (successModal) {
+        successModal.hidden = false;
+        const closeButton = successModal.querySelector('[data-success-modal-close]');
+        if (closeButton) closeButton.focus();
+      } else if (submitResult) {
+        submitResult.classList.add('is-visible');
+        submitResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
     }
 
     function showToast(message) {
@@ -3390,6 +3495,45 @@
       });
     }
 
+    function closeSuccessModal() {
+      if (!successModal) return;
+      successModal.hidden = true;
+    }
+
+    function resetReservationForm() {
+      if (!form) return;
+      form.reset();
+      syncDateTimeFields();
+
+      if (submitResult) {
+        submitResult.innerHTML = '';
+        submitResult.classList.remove('is-visible');
+      }
+      if (serviceCenterInput) serviceCenterInput.value = '';
+      if (serviceCenterSearch) serviceCenterSearch.value = '';
+      updateServiceCenterStatus('');
+      updateServiceCenterDetail('');
+      closeServiceCenterResults();
+
+      dateTimePairs.forEach(({ source }) => {
+        const sourceInput = document.getElementById(source);
+        if (!sourceInput) return;
+        updateDateTimeValidity(sourceInput);
+        sourceInput.dispatchEvent(new Event('input', { bubbles: true }));
+      });
+
+      document.querySelectorAll('.privacy-disclosure[open]').forEach((details) => {
+        details.open = false;
+      });
+
+      updatePriceGuideButton();
+      updateRearFilmState();
+      updateFilmSelectionValidity();
+      updateBlackboxOptionState();
+      updatePpfPreview();
+      updatePriceEstimate();
+    }
+
     dateTimePairs.forEach(({ source }) => {
       const sourceInput = document.getElementById(source);
       if (!sourceInput) return;
@@ -3406,6 +3550,17 @@
         mobileSticky.classList.toggle('is-hidden', isFormVisible);
       }, { threshold: 0.04 });
       stickyObserver.observe(reservationSection);
+    }
+
+    if (successModal) {
+      successModal.addEventListener('click', (event) => {
+        if (event.target === successModal || event.target.closest('[data-success-modal-close]')) {
+          closeSuccessModal();
+        }
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !successModal.hidden) closeSuccessModal();
+      });
     }
 
     form.addEventListener('submit', async (event) => {
@@ -3426,6 +3581,7 @@
       try {
         await submitToGoogleSheet(payload);
         renderSubmitResult(payload);
+        resetReservationForm();
         showToast('접수 완료되었습니다.');
       } catch (error) {
         showToast(error.message || '접수 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
