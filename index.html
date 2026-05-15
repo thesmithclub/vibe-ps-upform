@@ -1578,12 +1578,17 @@
     .success-modal-confirm {
       width: 100%;
       min-height: 50px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       border: 0;
       background: #111;
       color: #fff;
       cursor: pointer;
       font-size: 15px;
       font-weight: 900;
+      text-align: center;
+      text-decoration: none;
     }
 
 
@@ -2289,7 +2294,7 @@
       </div>
       <div class="success-modal-body" id="successModalBody"></div>
       <div class="success-modal-actions">
-        <button class="success-modal-confirm" type="button" data-success-modal-close>확인</button>
+        <a class="success-modal-confirm" href="https://smartstore.naver.com/smithclubmall/products/8130313777">결제페이지로 이동하기</a>
       </div>
     </div>
   </div>
@@ -2624,6 +2629,11 @@
         .sort((a, b) => sideFilmPriority[b] - sideFilmPriority[a])[0] || 'voltage';
     }
 
+    function areSideFilmsAllVoltage() {
+      return ['sideOneFilm', 'sideTwoFilm']
+        .every((id) => (getFilmGrade(getSelectedOptionText(id)) || 'voltage') === 'voltage');
+    }
+
     function getFrontSideEstimate() {
       const front = getFilmGrade(getSelectedOptionText('frontFilm')) || 'voltage';
       const side = getSideFilmGrade();
@@ -2765,8 +2775,8 @@
 
       const hipass = document.getElementById('hipass');
       if (hipass && hipass.checked) {
-        if (hasFrontUpgrade) {
-          items.push({ label: '하이패스 매립 추가 시공 (전면 업그레이드 무상)', amount: 0 });
+        if (hasFrontUpgrade && !areSideFilmsAllVoltage()) {
+          items.push({ label: '하이패스 매립 추가 시공', amount: 0 });
         } else {
           total += 20000;
           items.push({ label: '하이패스 매립 추가 시공', amount: 20000 });
@@ -3455,9 +3465,6 @@
       } else {
         appendResultText(resultContainer, `주소 : ${payload.serviceCenterAddress || '-'}`);
       }
-      if (payload.paymentUrl) {
-        appendResultLink(resultContainer, '', payload.paymentUrl, '예약금 결제 페이지');
-      }
       appendResultText(resultContainer, '궁금하신 사항은 031-921-1210 로 연락 부탁드립니다.');
 
       if (submitResult) {
@@ -3466,8 +3473,10 @@
       }
       if (successModal) {
         successModal.hidden = false;
+        const actionButton = successModal.querySelector('.success-modal-confirm');
         const closeButton = successModal.querySelector('[data-success-modal-close]');
-        if (closeButton) closeButton.focus();
+        if (actionButton) actionButton.focus();
+        else if (closeButton) closeButton.focus();
       } else if (submitResult) {
         submitResult.classList.add('is-visible');
         submitResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
