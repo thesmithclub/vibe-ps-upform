@@ -866,6 +866,21 @@
       font-weight: 500;
     }
 
+    .film-valkyrie-warning {
+      margin: 10px 0 0;
+      padding: 10px 13px;
+      background: oklch(97% 0.025 70);
+      border-left: 3px solid oklch(62% 0.14 58);
+      color: oklch(34% 0.08 58);
+      font-size: 12px;
+      line-height: 1.6;
+      word-break: keep-all;
+      display: none;
+    }
+    .film-valkyrie-warning.is-visible {
+      display: block;
+    }
+
     .price-estimate-note {
       margin: 10px 0 0;
       color: var(--muted);
@@ -2143,6 +2158,8 @@
                 </select>
               </div>
 
+              <p class="film-valkyrie-warning" id="valkyrieWarning">반사필름의 특성상 일부 환경에서는 수신율 저하가 발생할 수 있습니다.</p>
+
               <div class="field full">
                 <div class="check-row">
                   <input id="blackbox" name="blackbox" type="checkbox" value="true">
@@ -2629,7 +2646,8 @@
       'valkyrie/voltage': { label: '전면 발키리 업그레이드', amount: 250000 },
       'voltage/valkyrie': { label: '측면 발키리 업그레이드', amount: 450000 },
       'valkyrie/velvet': { label: '전면 발키리 + 측면 벨벳 업그레이드', amount: 600000 },
-      'velvet/valkyrie': { label: '전면 벨벳 + 측면 발키리 업그레이드', amount: 650000 }
+      'velvet/valkyrie': { label: '전면 벨벳 + 측면 발키리 업그레이드', amount: 650000 },
+      'valkyrie/valkyrie': { label: '전·측면 발키리 업그레이드', amount: 700000 }
     };
 
     function getSideFilmGrade() {
@@ -2648,15 +2666,6 @@
       const front = getFilmGrade(getSelectedOptionText('frontFilm')) || 'voltage';
       const side = getSideFilmGrade();
 
-      if (front === 'valkyrie' && side === 'valkyrie') {
-        return {
-          invalid: true,
-          frontGrade: front,
-          sideGrade: side,
-          message: '전면 발키리 + 측면 발키리는 심한 전파방해 사유로 선택할 수 없습니다.'
-        };
-      }
-
       const estimate = frontSidePriceTable[`${front}/${side}`];
       return estimate ? { ...estimate, frontGrade: front, sideGrade: side } : null;
     }
@@ -2669,19 +2678,23 @@
     }
 
     function updateSideValkyrieAvailability() {
-      const front = getFilmGrade(getSelectedOptionText('frontFilm'));
-      const shouldDisableValkyrie = front === 'valkyrie';
       ['sideOneFilm', 'sideTwoFilm'].forEach((id) => {
         const select = document.getElementById(id);
         if (!select) return;
         Array.from(select.options).forEach((option) => {
-          if (!option.textContent.includes('발키리')) return;
-          option.disabled = shouldDisableValkyrie;
+          option.disabled = false;
         });
-        if (shouldDisableValkyrie && getFilmGrade(select.value) === 'valkyrie') {
-          select.value = '';
-        }
       });
+    }
+
+    function updateValkyrieWarning() {
+      const warning = document.getElementById('valkyrieWarning');
+      if (!warning) return;
+      const front = getFilmGrade(getSelectedOptionText('frontFilm'));
+      const sideOne = getFilmGrade(getSelectedOptionText('sideOneFilm'));
+      const sideTwo = getFilmGrade(getSelectedOptionText('sideTwoFilm'));
+      const hasValkyrie = front === 'valkyrie' || sideOne === 'valkyrie' || sideTwo === 'valkyrie';
+      warning.classList.toggle('is-visible', hasValkyrie);
     }
 
     function updateRearFilmState() {
@@ -2757,13 +2770,25 @@
         };
       }
 
-      if (frontSide) {
-        filmTotal += frontSide.amount;
-        items.push(frontSide);
-      }
-      if (roof) {
-        filmTotal += roof.amount;
-        items.push(roof);
+      const roofGrade = getFilmGrade(getSelectedOptionText('glassRoofFilm'));
+      const isVelvetVelvetRoofVelvet = frontSide && frontSide.frontGrade === 'velvet' && frontSide.sideGrade === 'velvet' && roofGrade === 'velvet';
+      const isValkyrieValkyrieRoofVelvet = frontSide && frontSide.frontGrade === 'valkyrie' && frontSide.sideGrade === 'valkyrie' && roofGrade === 'velvet';
+
+      if (isVelvetVelvetRoofVelvet) {
+        filmTotal = 750000;
+        items.push({ label: '전·측면 벨벳 + 루프 벨벳 패키지', amount: 750000 });
+      } else if (isValkyrieValkyrieRoofVelvet) {
+        filmTotal = 850000;
+        items.push({ label: '전·측면 발키리 + 루프 벨벳 패키지', amount: 850000 });
+      } else {
+        if (frontSide) {
+          filmTotal += frontSide.amount;
+          items.push(frontSide);
+        }
+        if (roof) {
+          filmTotal += roof.amount;
+          items.push(roof);
+        }
       }
 
       let total = filmTotal;
@@ -2802,20 +2827,13 @@
 
     function updateFilmSelectionValidity() {
       updateSideValkyrieAvailability();
+      updateValkyrieWarning();
       const frontInput = document.getElementById('frontFilm');
       const sideInputs = ['sideOneFilm', 'sideTwoFilm']
         .map((id) => document.getElementById(id))
         .filter(Boolean);
-      const frontGrade = frontInput ? getFilmGrade(frontInput.value) : '';
-      const hasSideValkyrie = sideInputs.some((input) => getFilmGrade(input.value) === 'valkyrie');
-      const message = frontGrade === 'valkyrie' && hasSideValkyrie
-        ? '전면과 측면 모두 발키리는 선택할 수 없습니다.'
-        : '';
-
-      if (frontInput) frontInput.setCustomValidity(message);
-      sideInputs.forEach((input) => {
-        input.setCustomValidity(message && getFilmGrade(input.value) === 'valkyrie' ? message : '');
-      });
+      if (frontInput) frontInput.setCustomValidity('');
+      sideInputs.forEach((input) => input.setCustomValidity(''));
     }
 
     function updatePriceEstimate() {
