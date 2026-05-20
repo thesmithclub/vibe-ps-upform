@@ -2786,26 +2786,33 @@
     }
 
     function isReservationPaymentRequired(isInvalid = false) {
-      if (isInvalid) return false;
-      const front = getFilmGrade(getSelectedOptionText('frontFilm')) || 'voltage';
+      return getReservationDepositAmount(isInvalid) > 0;
+    }
+
+    function hasBaseReservationDepositOption() {
       const side = getSideFilmGrade();
       const rear = rearFilmInput && !rearFilmInput.disabled ? getFilmGrade(rearFilmInput.value) : '';
-      const roof = getFilmGrade(getSelectedOptionText('glassRoofFilm'));
+      const ppf = document.getElementById('ppf');
       const hipass = document.getElementById('hipass');
-      const hasFilmUpgrade = [front, side, rear].some((grade) => grade && grade !== 'voltage');
-      const hasPaidAddOn = Boolean(roof || (blackboxInput && blackboxInput.checked) || (ppfInput && ppfInput.checked) || (hipass && hipass.checked));
-      return hasFilmUpgrade || hasPaidAddOn;
+      const hasSideOrRearUpgrade = [side, rear].some((grade) => grade && grade !== 'voltage');
+      return hasSideOrRearUpgrade || Boolean(ppf && ppf.checked) || Boolean(hipass && hipass.checked);
     }
 
-    function hasReducedReservationDepositOption() {
+    function getAdditionalReservationDepositCount() {
       const front = getFilmGrade(getSelectedOptionText('frontFilm')) || 'voltage';
       const roof = getFilmGrade(getSelectedOptionText('glassRoofFilm'));
-      return front !== 'voltage' || Boolean(roof) || Boolean(blackboxInput && blackboxInput.checked);
+      return [
+        front !== 'voltage',
+        Boolean(roof),
+        Boolean(blackboxInput && blackboxInput.checked)
+      ].filter(Boolean).length;
     }
 
-    function getReservationDepositAmount(paymentRequired, isInvalid = false) {
-      if (!paymentRequired || isInvalid) return 0;
-      return hasReducedReservationDepositOption() ? REDUCED_RESERVATION_DEPOSIT : DEFAULT_RESERVATION_DEPOSIT;
+    function getReservationDepositAmount(isInvalid = false) {
+      if (isInvalid) return 0;
+      const baseDeposit = hasBaseReservationDepositOption() ? DEFAULT_RESERVATION_DEPOSIT : 0;
+      const additionalDeposit = getAdditionalReservationDepositCount() * REDUCED_RESERVATION_DEPOSIT;
+      return baseDeposit + additionalDeposit;
     }
 
     function calculatePriceEstimate() {
@@ -2916,8 +2923,8 @@
       });
 
       if (estimatedTotalInput) estimatedTotalInput.value = String(estimate.total);
-      const paymentRequired = isReservationPaymentRequired(estimate.invalid);
-      const reservationDeposit = getReservationDepositAmount(paymentRequired, estimate.invalid);
+      const reservationDeposit = getReservationDepositAmount(estimate.invalid);
+      const paymentRequired = reservationDeposit > 0;
       if (reservationDepositAmount) reservationDepositAmount.textContent = formatWon(reservationDeposit);
       if (reservationDepositInput) reservationDepositInput.value = String(reservationDeposit);
       if (naverPayRequiredInput) {
