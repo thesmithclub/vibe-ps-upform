@@ -854,6 +854,31 @@
       white-space: nowrap;
     }
 
+    .price-estimate-deposit {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 18px;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid rgba(0,0,0,.08);
+    }
+
+    .price-estimate-deposit-label {
+      color: var(--ink-2);
+      font-size: 13px;
+      line-height: 1.4;
+      font-weight: 800;
+    }
+
+    .price-estimate-deposit-value {
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.2;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
     .price-estimate-list {
       display: grid;
       gap: 5px;
@@ -2211,9 +2236,14 @@
                     <span class="price-estimate-label">예상가격</span>
                     <strong class="price-estimate-total" id="priceEstimateTotal">0원</strong>
                   </div>
+                  <div class="price-estimate-deposit">
+                    <span class="price-estimate-deposit-label">예약금</span>
+                    <strong class="price-estimate-deposit-value" id="reservationDepositAmount">0원</strong>
+                  </div>
                   <ul class="price-estimate-list" id="priceEstimateList"></ul>
                   <p class="price-estimate-note" id="priceEstimateNote">전체 볼티지 기본작업은 네이버페이 예약금 결제가 필요하지 않습니다.</p>
                   <input id="estimatedTotal" name="estimatedTotal" type="hidden" value="0">
+                  <input id="reservationDeposit" name="reservationDeposit" type="hidden" value="0">
                   <input id="naverPayRequired" name="naverPayRequired" type="hidden" value="불필요">
                 </div>
               </div>
@@ -2362,7 +2392,9 @@
     const priceEstimateTotal = document.getElementById('priceEstimateTotal');
     const priceEstimateList = document.getElementById('priceEstimateList');
     const priceEstimateNote = document.getElementById('priceEstimateNote');
+    const reservationDepositAmount = document.getElementById('reservationDepositAmount');
     const estimatedTotalInput = document.getElementById('estimatedTotal');
+    const reservationDepositInput = document.getElementById('reservationDeposit');
     const naverPayRequiredInput = document.getElementById('naverPayRequired');
     const blackboxInput = document.getElementById('blackbox');
     const blackboxChannelInput = document.getElementById('blackboxChannel');
@@ -2424,6 +2456,8 @@
       { source: 'deliveryDateTime', date: 'deliveryDate', time: 'deliveryTime' },
       { source: 'centerInDateTime', date: 'centerInDate', time: 'centerInTime' }
     ];
+    const DEFAULT_RESERVATION_DEPOSIT = 50000;
+    const REDUCED_RESERVATION_DEPOSIT = 30000;
 
     function getServiceCenterOptions() {
       return serviceCenterOptions.slice();
@@ -2762,6 +2796,17 @@
       return hasFilmUpgrade || hasPaidAddOn;
     }
 
+    function hasReducedReservationDepositOption() {
+      const front = getFilmGrade(getSelectedOptionText('frontFilm')) || 'voltage';
+      const roof = getFilmGrade(getSelectedOptionText('glassRoofFilm'));
+      return front !== 'voltage' || Boolean(roof) || Boolean(blackboxInput && blackboxInput.checked);
+    }
+
+    function getReservationDepositAmount(paymentRequired, isInvalid = false) {
+      if (!paymentRequired || isInvalid) return 0;
+      return hasReducedReservationDepositOption() ? REDUCED_RESERVATION_DEPOSIT : DEFAULT_RESERVATION_DEPOSIT;
+    }
+
     function calculatePriceEstimate() {
       const vehicleModel = getSelectedVehicleModel();
       const items = [];
@@ -2871,6 +2916,9 @@
 
       if (estimatedTotalInput) estimatedTotalInput.value = String(estimate.total);
       const paymentRequired = isReservationPaymentRequired();
+      const reservationDeposit = getReservationDepositAmount(paymentRequired, estimate.invalid);
+      if (reservationDepositAmount) reservationDepositAmount.textContent = formatWon(reservationDeposit);
+      if (reservationDepositInput) reservationDepositInput.value = String(reservationDeposit);
       if (naverPayRequiredInput) {
         if (estimate.invalid) {
           naverPayRequiredInput.value = '선택 오류';
@@ -2883,7 +2931,7 @@
         if (estimate.invalid) {
           priceEstimateNote.textContent = '선택할 수 없는 필름 조합입니다. 전면 또는 측면 필름을 변경해주세요.';
         } else if (paymentRequired) {
-          priceEstimateNote.textContent = '네이버페이 예약금 결제가 필요한 선택입니다. 예약금을 제외한 비용은 대리점에서 결제가 진행됩니다.';
+          priceEstimateNote.textContent = `네이버페이 예약금 ${formatWon(reservationDeposit)} 결제가 필요한 선택입니다. 예약금은 예상가격에 합산되지 않으며, 잔여 비용은 대리점에서 결제가 진행됩니다.`;
         } else {
           priceEstimateNote.textContent = '전체 볼티지 기본작업은 네이버페이 예약금 결제가 필요하지 않습니다.';
         }
@@ -3466,6 +3514,8 @@
         memo: getInputValue('memo'),
         estimatedTotal: getInputValue('estimatedTotal'),
         estimatedTotalLabel: priceEstimateTotal ? priceEstimateTotal.textContent.trim() : '',
+        reservationDeposit: getInputValue('reservationDeposit'),
+        reservationDepositLabel: reservationDepositAmount ? reservationDepositAmount.textContent.trim() : '',
         estimatedItems: getEstimateItemsText(),
         naverPayRequired: paymentRequired ? '필요' : '불필요',
         paymentUrl: paymentRequired ? RESERVATION_PAYMENT_URL : '',
