@@ -2035,6 +2035,7 @@
           </div>
           <div class="price-guide" aria-live="polite">
             <button class="price-guide-btn" id="priceGuideButton" type="button">폴스타4 업그레이드 안내 가격표 확인하기 (클릭)</button>
+            <button class="price-guide-btn" id="filmSpecGuideButton" type="button">바이브나인 필름 상세스팩 확인하기 (클릭)</button>
             <div class="price-guide-panel" id="priceGuidePanel" aria-label="업그레이드 안내 가격표"></div>
           </div>
         </div>
@@ -2223,7 +2224,7 @@
                 </div>
                 <div class="check-row">
                   <input id="hipass" name="hipass" type="checkbox" value="true">
-                  <label for="hipass">하이패스 매립 추가 시공</label>
+                  <label for="hipass">하이패스 매립 추가 시공 (글로브박스)</label>
                 </div>
               </div>
 
@@ -2372,7 +2373,7 @@
       </div>
       <div class="success-modal-body" id="successModalBody"></div>
       <div class="success-modal-actions">
-        <a class="success-modal-confirm" href="https://smartstore.naver.com/smithclubmall/products/8130313777">결제페이지로 이동하기</a>
+        <a class="success-modal-confirm" href="https://smartstore.naver.com/smithclubmall/products/8130313777">예약금 결제 페이지로 이동하기</a>
       </div>
     </div>
   </div>
@@ -2390,9 +2391,11 @@
     const mobileSticky = document.querySelector('.mobile-sticky');
     const reservationSection = document.getElementById('reservation');
     const priceGuideButton = document.getElementById('priceGuideButton');
+    const filmSpecGuideButton = document.getElementById('filmSpecGuideButton');
     const priceGuidePanel = document.getElementById('priceGuidePanel');
     const vehicleModelInputs = Array.from(document.querySelectorAll('input[name="vehicleModel"]'));
     const priceGuideImage = 'https://smith.speedgabia.com/dummy/PS4_price.jpg';
+    const filmSpecGuideImage = 'https://images.unsplash.com/photo-1777670999393-cf5a69a58de9?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw1fHx8ZW58MHx8fHx8';
     const priceEstimateTotal = document.getElementById('priceEstimateTotal');
     const priceEstimateList = document.getElementById('priceEstimateList');
     const priceEstimateNote = document.getElementById('priceEstimateNote');
@@ -2881,7 +2884,7 @@
       if (hipass && hipass.checked) {
         const hipassAmount = manWon(frontSide.hipassMan);
         total += hipassAmount;
-        items.push({ label: '하이패스 매립 추가 시공', amount: hipassAmount });
+        items.push({ label: '하이패스 매립 추가 시공 (글로브박스)', amount: hipassAmount });
       }
 
       const reservationDeposit = getReservationDeposit(frontSide, Boolean(roof), hasBlackbox);
@@ -2962,10 +2965,15 @@
       return '<button class="price-guide-close" type="button" data-price-guide-close>접기</button>';
     }
 
-    function openPriceGuide() {
+    function openPriceGuide(imageUrl, imageAlt) {
       if (!priceGuidePanel) return;
       const vehicleModel = getSelectedVehicleModel();
       priceGuidePanel.classList.add('is-open');
+
+      if (imageUrl) {
+        priceGuidePanel.innerHTML = `<img src="${imageUrl}" alt="${imageAlt}" loading="lazy">${renderPriceGuideCloseButton()}`;
+        return;
+      }
 
       if (vehicleModel === '폴스타4') {
         priceGuidePanel.innerHTML = `<img src="${priceGuideImage}" alt="폴스타4 업그레이드 안내 가격표" loading="lazy">${renderPriceGuideCloseButton()}`;
@@ -2994,8 +3002,11 @@
     });
 
     if (priceGuideButton) {
-      priceGuideButton.addEventListener('click', openPriceGuide);
+      priceGuideButton.addEventListener('click', () => openPriceGuide());
       updatePriceGuideButton();
+    }
+    if (filmSpecGuideButton) {
+      filmSpecGuideButton.addEventListener('click', () => openPriceGuide(filmSpecGuideImage, '바이브나인 필름 상세스팩'));
     }
 
     updatePriceEstimate();
