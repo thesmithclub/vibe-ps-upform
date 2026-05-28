@@ -579,13 +579,35 @@
     .notice {
       margin-top: 32px;
       padding: 22px;
+      border: 1px solid var(--line);
       background: var(--dark);
       color: #fff;
       font-size: 15px;
       line-height: 1.55;
+      text-align: center;
       word-break: keep-all;
     }
-    .notice b { color: #fff; }
+    .notice b {
+      color: #fff;
+    }
+    .notice-emphasis {
+      display: inline-block;
+      margin-top: 4px;
+      color: #ffe45c;
+      font-weight: 900;
+      text-shadow: none;
+      transform-origin: center center;
+      animation: noticeScale 1.55s ease-in-out infinite;
+      will-change: transform;
+    }
+    @keyframes noticeScale {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.045);
+      }
+    }
 
     .form-card {
       background: #fff;
@@ -2048,7 +2070,7 @@
           <p class="section-kicker">Reservation Form</p>
           <h2 class="section-title">정보를 입력하여주세요.</h2>
           <p class="section-copy">폴스타 차량 전용 틴팅 예약을 간편하게 신청해 주세요.<br>전문 상담 후 일정과 시공 내용을 안내드립니다.</p>
-          <div class="notice"><b>안내</b><br>원활한 시공 예약을 위해 최소 3일 전 접수 부탁드립니다.</div>
+          <div class="notice"><span class="notice-emphasis">원활한 시공 예약을 위해 최소 3일 전 접수 부탁드립니다.</span></div>
         </div>
 
         <div class="form-card">
@@ -2205,15 +2227,7 @@
               <div class="field full">
                 <div class="check-row">
                   <input id="blackbox" name="blackbox" type="checkbox" value="true">
-                  <label for="blackbox">블랙박스 추가 장착</label>
-                </div>
-                <div class="option-detail" id="blackboxChannelWrap" hidden>
-                  <label for="blackboxChannel">블랙박스 채널을 선택해 주세요. <span class="req">*</span></label>
-                  <select id="blackboxChannel" name="blackboxChannel" disabled>
-                    <option value="" selected>선택해주세요</option>
-                    <option value="1ch">1채널 । 추가금 18만원</option>
-                    <option value="2ch">2채널 । 추가금 25만원</option>
-                  </select>
+                  <label for="blackbox">블랙박스 장착</label>
                 </div>
                 <div class="check-row">
                   <input id="ppf" name="ppf" type="checkbox" value="true">
@@ -2221,10 +2235,6 @@
                 </div>
                 <div class="ppf-preview" id="ppfPreview" hidden>
                   <img src="https://smith.speedgabia.com/dummy/PS4_ppf.jpg" alt="폴스타4 PPF 생활보호 3종 안내" loading="lazy">
-                </div>
-                <div class="check-row">
-                  <input id="hipass" name="hipass" type="checkbox" value="true">
-                  <label for="hipass">하이패스 매립 추가 시공 (글로브박스)</label>
                 </div>
               </div>
 
@@ -2406,8 +2416,6 @@
     const serviceCenterPaymentInput = document.getElementById('serviceCenterPayment');
     const naverPayRequiredInput = document.getElementById('naverPayRequired');
     const blackboxInput = document.getElementById('blackbox');
-    const blackboxChannelInput = document.getElementById('blackboxChannel');
-    const blackboxChannelWrap = document.getElementById('blackboxChannelWrap');
     const ppfInput = document.getElementById('ppf');
     const ppfPreview = document.getElementById('ppfPreview');
     const rearFilmField = document.getElementById('rearFilmField');
@@ -2458,9 +2466,10 @@
     ];
     const serviceCenterOptions = serviceCenterDirectory.map((center) => center.name);
     const serviceCenterDetailMap = Object.fromEntries(serviceCenterDirectory.map((center) => [center.name, center]));
-    const priceEstimateInputs = ['frontFilm', 'sideOneFilm', 'sideTwoFilm', 'rearFilm', 'glassRoofFilm', 'blackbox', 'blackboxChannel', 'ppf', 'hipass']
+    const priceEstimateInputs = ['frontFilm', 'sideOneFilm', 'sideTwoFilm', 'rearFilm', 'glassRoofFilm', 'blackbox', 'ppf']
       .map((id) => document.getElementById(id))
       .filter(Boolean);
+    let isSubmitting = false;
     const dateTimePairs = [
       { source: 'deliveryDateTime', date: 'deliveryDate', time: 'deliveryTime' },
       { source: 'centerInDateTime', date: 'centerInDate', time: 'centerInTime' }
@@ -2702,12 +2711,12 @@
     };
 
     const frontSidePriceTable = {
-      'voltage/voltage': { label: '전·측면 볼티지 기본작업', amountMan: 0, depositMan: 0, hipassMan: 2, roofVoltageMan: 25, roofVelvetMan: 30 },
-      'velvet/voltage': { label: '전면 벨벳 업그레이드', amountMan: 20, depositMan: 3, hipassMan: 2, roofVoltageMan: 25, roofVelvetMan: 30 },
-      'valkyrie/voltage': { label: '전면 발키리 업그레이드', amountMan: 25, depositMan: 3, hipassMan: 2, roofVoltageMan: 25, roofVelvetMan: 30 },
-      'velvet/velvet': { label: '전·측면 벨벳 업그레이드', amountMan: 50, depositMan: 5, hipassMan: 0, roofVoltageMan: 25, roofVelvetMan: 25 },
-      'valkyrie/valkyrie': { label: '전·측면 발키리 업그레이드', amountMan: 70, depositMan: 5, hipassMan: 0, roofVoltageMan: 25, roofVelvetMan: 15 },
-      'valkyrie/velvet': { label: '전면 발키리 + 측면 벨벳 업그레이드', amountMan: 60, depositMan: 5, hipassMan: 0, roofVoltageMan: 25, roofVelvetMan: 30 }
+      'voltage/voltage': { label: '전·측면 볼티지 기본작업', amountMan: 0, depositMan: 0, roofVoltageMan: 25, roofVelvetMan: 30 },
+      'velvet/voltage': { label: '전면 벨벳 업그레이드', amountMan: 20, depositMan: 3, roofVoltageMan: 25, roofVelvetMan: 30 },
+      'valkyrie/voltage': { label: '전면 발키리 업그레이드', amountMan: 25, depositMan: 3, roofVoltageMan: 25, roofVelvetMan: 30 },
+      'velvet/velvet': { label: '전·측면 벨벳 업그레이드', amountMan: 50, depositMan: 5, roofVoltageMan: 25, roofVelvetMan: 25 },
+      'valkyrie/valkyrie': { label: '전·측면 발키리 업그레이드', amountMan: 70, depositMan: 5, roofVoltageMan: 25, roofVelvetMan: 15 },
+      'valkyrie/velvet': { label: '전면 발키리 + 측면 벨벳 업그레이드', amountMan: 60, depositMan: 5, roofVoltageMan: 25, roofVelvetMan: 30 }
     };
 
     function getFrontSidePriceKey(front, side) {
@@ -2793,33 +2802,26 @@
       ppfPreview.hidden = !(getSelectedVehicleModel() === '폴스타4' && ppfInput.checked);
     }
 
+    function getBlackboxOptionLabel() {
+      const vehicleModel = getSelectedVehicleModel();
+      if (vehicleModel === '폴스타3') return '블랙박스 2채널 + 하이패스 일체형';
+      if (vehicleModel === '폴스타4') return '블랙박스 1채널 + 하이패스 일체형';
+      return '블랙박스 + 하이패스 일체형';
+    }
+
     function updateBlackboxOptionState() {
-      if (!blackboxInput || !blackboxChannelInput || !blackboxChannelWrap) return;
-      const isSelected = blackboxInput.checked;
-      blackboxChannelWrap.hidden = !isSelected;
-      blackboxChannelInput.disabled = !isSelected;
-      blackboxChannelInput.required = isSelected;
-      if (!isSelected) {
-        blackboxChannelInput.value = '';
-        blackboxChannelInput.setCustomValidity('');
-      }
     }
 
     function getBlackboxEstimate() {
       if (!blackboxInput || !blackboxInput.checked) return null;
-      const channel = blackboxChannelInput ? blackboxChannelInput.value : '';
-      if (channel === '1ch') return { label: '블랙박스 1채널', amount: manWon(18) };
-      if (channel === '2ch') return { label: '블랙박스 2채널', amount: manWon(25) };
-      return { invalid: true, message: '블랙박스 채널을 선택해 주세요.' };
+      return { label: getBlackboxOptionLabel(), amount: 0 };
     }
 
-    function getReservationDeposit(frontSide, hasRoof, hasBlackbox, isInvalid = false) {
+    function getReservationDeposit(frontSide, hasRoof, isInvalid = false) {
       if (isInvalid || !frontSide || frontSide.invalid) return 0;
 
       let depositMan = frontSide.depositMan;
-      if (hasRoof && hasBlackbox) {
-        depositMan += frontSide.depositMan >= 5 ? 3 : 5;
-      } else if ((hasRoof || hasBlackbox) && frontSide.depositMan < 5) {
+      if (hasRoof && frontSide.depositMan < 5) {
         depositMan += 3;
       }
 
@@ -2865,11 +2867,9 @@
       }
 
       const blackbox = getBlackboxEstimate();
-      let hasBlackbox = false;
       if (blackbox && blackbox.invalid) {
         items.push(blackbox.message);
       } else if (blackbox) {
-        hasBlackbox = true;
         total += blackbox.amount;
         items.push(blackbox);
       }
@@ -2880,14 +2880,7 @@
         items.push({ label: 'PPF 생활보호 3종', amount: manWon(15) });
       }
 
-      const hipass = document.getElementById('hipass');
-      if (hipass && hipass.checked) {
-        const hipassAmount = manWon(frontSide.hipassMan);
-        total += hipassAmount;
-        items.push({ label: '하이패스 매립 추가 시공 (글로브박스)', amount: hipassAmount });
-      }
-
-      const reservationDeposit = getReservationDeposit(frontSide, Boolean(roof), hasBlackbox);
+      const reservationDeposit = getReservationDeposit(frontSide, Boolean(roof));
       const serviceCenterPayment = Math.max(total - reservationDeposit, 0);
 
       return {
@@ -3534,9 +3527,9 @@
         rearFilm: rearFilmInput && !rearFilmInput.disabled ? rearFilmInput.value : '선택하신 차량은 후면 유리가 없습니다.',
         glassRoofFilm: getInputValue('glassRoofFilm'),
         blackbox: getCheckboxValue('blackbox'),
-        blackboxChannel: blackboxInput && blackboxInput.checked ? getSelectedOptionLabel(blackboxChannelInput) : '',
+        blackboxChannel: blackboxInput && blackboxInput.checked ? getBlackboxOptionLabel() : '',
         ppf: getCheckboxValue('ppf'),
-        hipass: getCheckboxValue('hipass'),
+        hipass: blackboxInput && blackboxInput.checked ? '예' : '아니오',
         memo: getInputValue('memo'),
         estimatedTotal: getInputValue('estimatedTotal'),
         estimatedTotalLabel: priceEstimateTotal ? priceEstimateTotal.textContent.trim() : '',
@@ -3628,7 +3621,7 @@
 
       const requestUrl = `${GOOGLE_APPS_SCRIPT_URL}?payload=${encodeURIComponent(JSON.stringify(payload))}`;
       const controller = new AbortController();
-      const timeoutId = window.setTimeout(() => controller.abort(), 10000);
+      const timeoutId = window.setTimeout(() => controller.abort(), 30000);
 
       try {
         const response = await fetch(requestUrl, {
@@ -3646,23 +3639,10 @@
           throw new Error(result?.error || '구글 시트 전송 응답을 확인할 수 없습니다.');
         }
       } catch (error) {
-        if (error.name !== 'AbortError') throw error;
-
-        const fallbackController = new AbortController();
-        const fallbackTimeoutId = window.setTimeout(() => fallbackController.abort(), 8000);
-
-        try {
-          await fetch(requestUrl, {
-            method: 'GET',
-            mode: 'no-cors',
-            cache: 'no-store',
-            signal: fallbackController.signal
-          });
-        } catch (fallbackError) {
-          throw new Error('구글 시트 응답이 지연되고 있습니다. 잠시 후 다시 시도해주세요.');
-        } finally {
-          window.clearTimeout(fallbackTimeoutId);
+        if (error.name === 'AbortError') {
+          throw new Error('구글 시트 응답이 지연되고 있습니다. 중복 접수 방지를 위해 잠시 후 시트를 확인해주세요.');
         }
+        throw error;
       } finally {
         window.clearTimeout(timeoutId);
       }
@@ -3762,6 +3742,7 @@
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
+      if (isSubmitting) return;
       updatePhoneValidity();
       syncDateTimeFields();
       updateServiceCenterValidity();
@@ -3770,6 +3751,7 @@
       dateTimePairs.forEach(({ source }) => updateDateTimeValidity(document.getElementById(source)));
       if (!form.reportValidity()) return;
 
+      isSubmitting = true;
       const payload = buildSubmissionPayload();
       if (submitButton) {
         submitButton.disabled = true;
@@ -3784,6 +3766,7 @@
       } catch (error) {
         showToast(error.message || '접수 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
       } finally {
+        isSubmitting = false;
         if (submitButton) {
           submitButton.disabled = false;
           submitButton.textContent = '신청하기';
